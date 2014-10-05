@@ -40,7 +40,7 @@ fi
 
 ## German
 cd /tmp/
-if curl --output /dev/null --silent --head --fail " http://langpacks.mahara.org/da-1.10_STABLE.tar.gz"; then
+if curl --output /dev/null --silent --head --fail "http://langpacks.mahara.org/de-1.10_STABLE.tar.gz"; then
         wget http://langpacks.mahara.org/de-1.10_STABLE.tar.gz
 else
         wget http://langpacks.mahara.org/de-master.tar.gz
