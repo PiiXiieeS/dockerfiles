@@ -11,11 +11,8 @@ if [ ! -f /var/www/html/mahara/config.php ]; then
   #This is so the passwords show up in logs. 
   echo mysql root password: $MYSQL_PASSWORD
   echo mahara password: $MAHARA_PASSWORD
-  echo ssh root password: $SSH_PASSWORD
-  echo root:$SSH_PASSWORD | chpasswd
   echo $MYSQL_PASSWORD > /mysql-root-pw.txt
   echo $MAHARA_PASSWORD > /mahara-db-pw.txt
-  echo $SSH_PASSWORD > /ssh-pw.txt
 
   cp -ax /var/www/html/mahara/config-dist.php /var/www/html/mahara/config.php
   sed -i "s|dbtype   = 'postgres'|dbtype   = 'mysql'|g" /var/www/html/mahara/config.php
@@ -28,11 +25,6 @@ if [ ! -f /var/www/html/mahara/config.php ]; then
   sed -i 's|\/\/ \$cfg->passwordsaltmain|\$cfg->passwordsaltmain|g' /var/www/html/mahara/config.php
   sed -i "s|passwordsaltmain = 'some long random string here with lots of characters'|passwordsaltmain = '$MAHARA_SALD'|g" /var/www/html/mahara/config.php
   sed -i "s|emailcontact = ''|emailcontact = '$MAHARA_EMAIL'|g" /var/www/html/mahara/config.php
-
-  echo 'root:root' |chpasswd
-  sed -i 's/PermitRootLogin without-password/PermitRootLogin Yes/' /etc/ssh/sshd_config
-  sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-
   chown www-data:www-data /var/www/html/mahara/config.php
 
   echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION;" > /tmp/mahara.sql
@@ -43,5 +35,24 @@ if [ ! -f /var/www/html/mahara/config.php ]; then
   mysql -uroot -p$MYSQL_PASSWORD < /tmp/mahara.sql
   killall mysqld
 fi
-# start all the services
+
+## Language pack
+
+## German
+cd /tmp/
+if curl --output /dev/null --silent --head --fail " http://langpacks.mahara.org/da-1.10_STABLE.tar.gz"; then
+        wget http://langpacks.mahara.org/de-1.10_STABLE.tar.gz
+else
+        wget http://langpacks.mahara.org/de-master.tar.gz
+fi
+mkdir /var/maharadata/langpacks && tar -xf de* -C /var/maharadata/langpacks/
+chown -R www-data:www-data /var/maharadata/langpacks/de.utf8
+rm -r /tmp/de*
+
+## SSH
+echo 'root:root' |chpasswd
+sed -i 's/PermitRootLogin without-password/PermitRootLogin Yes/' /etc/ssh/sshd_config
+sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_confi
+
+## Start all the services
 /usr/local/bin/supervisord -n
