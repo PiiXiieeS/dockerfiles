@@ -3,6 +3,13 @@ MAHARA_ROOT=/var/www/html/mahara
 
 mkdir /tmp/mahara-plugins && cd /tmp/mahara-plugins
 
+## Theme
+
+## Essential by Julian (@moodleman) Ridden, modified by s.pallett@federation.edu.au
+git clone https://github.com/spallett/mahara-theme-essential.git
+cp -ax mahara-theme-essential $MAHARA_ROOT/theme/essential
+chown -R www-data:www-data $MAHARA_ROOT/theme/essential
+
 ## Artefact
 
 ## Adminmessage by TU Darmstadt
