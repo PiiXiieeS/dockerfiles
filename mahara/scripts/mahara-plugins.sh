@@ -16,11 +16,15 @@ chown -R www-data:www-data $MAHARA_ROOT/theme/essential
 git clone https://gitorious.org/didaktik-tu-darmstadt/adminmessage.git
 cp -ax adminmessage/artefact/adminmessage $MAHARA_ROOT/artefact/
 chown -R www-data:www-data  $MAHARA_ROOT/artefact/adminmessage
+mkdir -p /var/maharadata/langpacks/de.utf8/artefact/adminmessage/lang
+cp -ax $MAHARA_ROOT/artefact/adminmessage/lang/de.utf8 /var/maharadata/langpacks/de.utf8/artefact/adminmessage/lang/
 
 ## Groupmessages by TU Darmstadt
 git clone https://gitorious.org/didaktik-tu-darmstadt/groupmessages.git
 cp -ax groupmessages/artefact/groupmessages $MAHARA_ROOT/artefact/
 chown -R www-data:www-data  $MAHARA_ROOT/artefact/groupmessages
+mkdir -p /var/maharadata/langpacks/de.utf8/artefact/groupmessages/lang
+cp -ax $MAHARA_ROOT/artefact/groupmessages/lang/de.utf8 /var/maharadata/langpacks/de.utf8/artefact/groupmessages/lang/
 
 ## Blocktype
 

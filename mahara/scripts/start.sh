@@ -45,14 +45,15 @@ if curl --output /dev/null --silent --head --fail "http://langpacks.mahara.org/d
 else
         wget http://langpacks.mahara.org/de-master.tar.gz
 fi
-mkdir /var/maharadata/langpacks && tar -xf de* -C /var/maharadata/langpacks/
+mkdir /var/maharadata/langpacks
+tar -xf de-* -C /var/maharadata/langpacks/
 chown -R www-data:www-data /var/maharadata/langpacks/de.utf8
-rm -r /tmp/de*
+#rm -r /tmp/de*
 
 ## SSH
 echo 'root:root' |chpasswd
 sed -i 's/PermitRootLogin without-password/PermitRootLogin Yes/' /etc/ssh/sshd_config
-sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_confi
+sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 
 ## Start all the services
 /usr/local/bin/supervisord -n
