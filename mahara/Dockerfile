@@ -49,6 +49,9 @@ RUN chown -R www-data:www-data /var/www/html/mahara
 RUN rm -r /tmp/mahara*
 RUN mkdir /var/maharadata
 RUN chown -R www-data:www-data /var/maharadata; chmod 777 /var/maharadata
+RUN touch /var/log/mahara_cron.log
+RUN chown -R www-data:www-data /var/log/mahara_cron.log
+RUN echo "* * * * * www-data php /var/www/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
 
 ## Mahara plugins
