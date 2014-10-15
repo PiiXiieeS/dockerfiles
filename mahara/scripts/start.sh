@@ -25,6 +25,7 @@ if [ ! -f /var/www/html/mahara/config.php ]; then
   sed -i 's|\/\/ \$cfg->passwordsaltmain|\$cfg->passwordsaltmain|g' /var/www/html/mahara/config.php
   sed -i "s|passwordsaltmain = 'some long random string here with lots of characters'|passwordsaltmain = '$MAHARA_SALD'|g" /var/www/html/mahara/config.php
   sed -i "s|emailcontact = ''|emailcontact = '$MAHARA_EMAIL'|g" /var/www/html/mahara/config.php
+  sed -i "s|\/\/ closing php tag intentionally omitted to prevent whitespace issues|\$cfg->cleanurls = true;\n\$cfg->cleanurlinvalidcharacters = '/[^a-zA-Z0-9]+/';\$cfg->cleanurlvalidate = '/^[a-z0-9-]*\$/';\n\$cfg->cleanurlusereditable = true;\n\n\/\/ closing php tag intentionally omitted to prevent whitespace issues|g" /var/www/html/mahara/config.php
   chown www-data:www-data /var/www/html/mahara/config.php
 
   echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION;" > /tmp/mahara.sql
@@ -34,6 +35,14 @@ if [ ! -f /var/www/html/mahara/config.php ]; then
   mysqladmin -u root password $MYSQL_PASSWORD
   mysql -uroot -p$MYSQL_PASSWORD < /tmp/mahara.sql
   killall mysqld
+fi
+
+## Clearn URL
+if [ -f /etc/apache2/sites-available/000-default.conf ]; then
+ service apache2 start
+ a2enmod rewrite
+ sed -i "s*</VirtualHost>*\n                <IfModule mod_rewrite.c>\n                        RewriteEngine on\n                        RewriteRule ^/mahara/user/([a-z0-9-]+)/?\$ /mahara/user/view.php?profile=\$1\&%{QUERY_STRING}\n                        RewriteRule ^/mahara/user/([a-z0-9-]+)/([a-z0-9-]+)/?\$ /mahara/view/view.php?profile=\$1\&page=\$2&%{QUERY_STRING}\n                        RewriteRule ^/mahara/group/([a-z0-9-]+)/?\$ /mahara/group/view.php?homepage=\$1\&%{QUERY_STRING}\n                        RewriteRule ^/mahara/group/([a-z0-9-]+)/([a-z0-9-]+)/?\$ /mahara/view/view.php?homepage=\$1\&page=\$2\&%{QUERY_STRING}\n                </IfModule>\n</VirtualHost>*g" /etc/apache2/sites-available/000-default.conf
+ service apache2 stop
 fi
 
 ## Language pack
