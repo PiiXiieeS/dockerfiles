@@ -11,32 +11,57 @@ RUN ln -sf /bin/true /sbin/initctl
 # Let the conatiner know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
-RUN apt-get -y upgrade
-
 # Basic Requirements
-RUN apt-get -y install mysql-server mysql-client pwgen python-setuptools curl git unzip
+RUN apt-get update; apt-get -y install \
+	pwgen \
+	python-setuptools \
+	curl \
+	wget \
+	git \
+	unzip \
+	vim \
+	supervisor
+
+# MariaDB                                                                                                                                                                                                                                    
+RUN apt-get update; apt-get -y install \                                                                                                                                                                                                     
+        python-software-properties; \                                                                                                                                                                                                        
+        apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db; \                                                                                                                                                       
+        add-apt-repository 'deb http://mirror.netcologne.de/mariadb/repo/10.1/debian wheezy main'; \                                                                                                                                         
+        apt-get update; \
+	apt-get -y install \                                                                                                                                                                                                 
+        mariadb-server \                                                                                                                                                                                                                     
+        mariadb-client                                                                                                                                                                                                                       
+ADD scripts/mariadb.sh /tmp/mariadb.sh                                                                                                                                                                                                       
+RUN chmod +x /tmp/mariadb.sh; /tmp/mariadb.sh; rm /tmp/mariadb.sh
 
 # Moodle Requirements
-RUN apt-get -y install apache2 php5 php5-gd libapache2-mod-php5 postfix wget supervisor php5-pgsql vim curl libcurl3 libcurl3-dev php5-curl php5-xmlrpc php5-intl php5-mysql
-RUN cd /tmp; wget http://coredump.id.au/blog/wp-content/php5-zendopcache_7.0.3-5_amd64.deb; dpkg -i php5-zendopcache_7.0.3-5_amd64.deb; rm php5-zendopcache_7.0.3-5_amd64.deb
+RUN apt-get update; apt-get -y install \
+	apache2 \
+	php5 \
+	php5-gd \
+	libapache2-mod-php5 \
+	postfix \
+	php5-pgsql \
+	libcurl3 \
+	libcurl3-dev \
+	php5-curl \
+	php5-xmlrpc \
+	php5-intl \
+	php5-mysql \
+	memcached \
+	php-pear \
+	php5-memcache \
+    	php5-memcached \
+	php5-xcache; \
+	cd /tmp; \
+	wget http://coredump.id.au/blog/wp-content/php5-zendopcache_7.0.3-5_amd64.deb; \
+	dpkg -i php5-zendopcache_7.0.3-5_amd64.deb; \
+	rm php5-zendopcache_7.0.3-5_amd64.deb
 
 # SSH
-RUN apt-get -y install openssh-server
-RUN mkdir -p /var/run/sshd
-
-# MariaDB
 RUN apt-get -y install \
-        python-software-properties && \
-        apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db && \
-        add-apt-repository 'deb http://mirror.netcologne.de/mariadb/repo/10.1/debian wheezy main'
-RUN apt-get update && apt-get -y install \
-        mariadb-server \
-        mariadb-client
-ADD scripts/mariadb.sh /tmp/mariadb.sh
-RUN chmod +x /tmp/mariadb.sh
-RUN /tmp/mariadb.sh
-RUN rm /tmp/mariadb.sh
+	openssh-server; \
+	mkdir -p /var/run/sshd
 
 RUN easy_install supervisor
 ADD scripts/start.sh /start.sh
@@ -44,11 +69,12 @@ ADD scripts/foreground.sh /etc/apache2/foreground.sh
 ADD conf/supervisord.conf /etc/supervisord.conf
 
 ADD http://downloads.sourceforge.net/project/moodle/Moodle/stable27/moodle-latest-27.tgz /var/www/moodle-latest-27.tgz
-RUN cd /var/www; tar zxvf moodle-latest-27.tgz
-RUN chown -R www-data:www-data /var/www/moodle
-RUN mkdir /var/moodledata
-RUN chown -R www-data:www-data /var/moodledata; chmod 777 /var/moodledata
-RUN chmod 755 /start.sh /etc/apache2/foreground.sh
+RUN cd /var/www; tar zxvf moodle-latest-27.tgz; \
+	chown -R www-data:www-data /var/www/moodle; \
+	mkdir /var/moodledata; \
+	chown -R www-data:www-data /var/moodledata; \
+	chmod 777 /var/moodledata; \
+	chmod 755 /start.sh /etc/apache2/foreground.sh
 
 EXPOSE 22 80
 CMD ["/bin/bash", "/start.sh"]
