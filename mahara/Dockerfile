@@ -43,7 +43,7 @@ RUN sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php5/apache
 RUN sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php5/apache2/php.ini
 
 ## Mahara
-RUN cd /tmp && wget https://launchpad.net/mahara/1.10/1.10rc1/+download/mahara-1.10rc1.tar.gz && tar -xf mahara-* 
+RUN cd /tmp && wget https://launchpad.net/mahara/1.10/1.10.0/+download/mahara-1.10.0.tar.gz && tar -xf mahara-* 
 RUN cp -ax /tmp/mahara-*/htdocs /var/www/html/mahara
 RUN chown -R www-data:www-data /var/www/html/mahara
 RUN rm -r /tmp/mahara*
