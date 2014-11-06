@@ -22,16 +22,16 @@ RUN apt-get update; apt-get -y install \
 	vim \
 	supervisor
 
-# MariaDB                                                                                                                                                                                                                                    
-RUN apt-get update; apt-get -y install \                                                                                                                                                                                                     
-        python-software-properties; \                                                                                                                                                                                                        
-        apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db; \                                                                                                                                                       
-        add-apt-repository 'deb http://mirror.netcologne.de/mariadb/repo/10.1/debian wheezy main'; \                                                                                                                                         
+# MariaDB
+RUN apt-get update; apt-get -y install \
+        python-software-properties; \
+        apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db; \
+        add-apt-repository 'deb http://mirror.netcologne.de/mariadb/repo/10.1/debian wheezy main'; \
         apt-get update; \
-	apt-get -y install \                                                                                                                                                                                                 
-        mariadb-server \                                                                                                                                                                                                                     
-        mariadb-client                                                                                                                                                                                                                       
-ADD scripts/mariadb.sh /tmp/mariadb.sh                                                                                                                                                                                                       
+	apt-get -y install \
+        mariadb-server \
+        mariadb-client
+ADD scripts/mariadb.sh /tmp/mariadb.sh
 RUN chmod +x /tmp/mariadb.sh; /tmp/mariadb.sh; rm /tmp/mariadb.sh
 
 # Moodle Requirements
@@ -58,6 +58,18 @@ RUN apt-get update; apt-get -y install \
 	dpkg -i php5-zendopcache_7.0.3-5_amd64.deb; \
 	rm php5-zendopcache_7.0.3-5_amd64.deb
 
+# Moodle
+ADD http://downloads.sourceforge.net/project/moodle/Moodle/stable27/moodle-latest-27.tgz /var/www/moodle-latest-27.tgz
+RUN cd /var/www; tar zxvf moodle-latest-27.tgz; \
+        chown -R www-data:www-data /var/www/moodle; \
+        mkdir /var/moodledata; \
+        chown -R www-data:www-data /var/moodledata; \
+        chmod 777 /var/moodledata;
+
+# Moodle plugins
+ADD scripts/moodle-plugins.sh /moodle-plugins.sh
+RUN chmod 755 /moodle-plugins.sh; /bin/bash /moodle-plugins.sh;rm /moodle-plugins.sh
+
 # SSH
 RUN apt-get -y install \
 	openssh-server; \
@@ -67,14 +79,7 @@ RUN easy_install supervisor
 ADD scripts/start.sh /start.sh
 ADD scripts/foreground.sh /etc/apache2/foreground.sh
 ADD conf/supervisord.conf /etc/supervisord.conf
-
-ADD http://downloads.sourceforge.net/project/moodle/Moodle/stable27/moodle-latest-27.tgz /var/www/moodle-latest-27.tgz
-RUN cd /var/www; tar zxvf moodle-latest-27.tgz; \
-	chown -R www-data:www-data /var/www/moodle; \
-	mkdir /var/moodledata; \
-	chown -R www-data:www-data /var/moodledata; \
-	chmod 777 /var/moodledata; \
-	chmod 755 /start.sh /etc/apache2/foreground.sh
+RUN chmod 755 /start.sh /etc/apache2/foreground.sh
 
 EXPOSE 22 80
 CMD ["/bin/bash", "/start.sh"]
