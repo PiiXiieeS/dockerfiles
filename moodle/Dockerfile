@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
 RUN apt-get -y upgrade
- 
+
 # Basic Requirements
 RUN apt-get -y install mysql-server mysql-client pwgen python-setuptools curl git unzip
 
@@ -25,8 +25,18 @@ RUN cd /tmp; wget http://coredump.id.au/blog/wp-content/php5-zendopcache_7.0.3-5
 RUN apt-get -y install openssh-server
 RUN mkdir -p /var/run/sshd
 
-# mysql config
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
+# MariaDB
+RUN apt-get -y install \
+        python-software-properties && \
+        apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db && \
+        add-apt-repository 'deb http://mirror.netcologne.de/mariadb/repo/10.1/debian wheezy main'
+RUN apt-get update && apt-get -y install \
+        mariadb-server \
+        mariadb-client
+ADD scripts/mariadb.sh /tmp/mariadb.sh
+RUN chmod +x /tmp/mariadb.sh
+RUN /tmp/mariadb.sh
+RUN rm /tmp/mariadb.sh
 
 RUN easy_install supervisor
 ADD scripts/start.sh /start.sh
