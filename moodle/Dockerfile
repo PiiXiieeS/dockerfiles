@@ -70,6 +70,11 @@ RUN cd /var/www; tar zxvf moodle-latest-27.tgz; \
 ADD scripts/moodle-plugins.sh /moodle-plugins.sh
 RUN chmod 755 /moodle-plugins.sh; /bin/bash /moodle-plugins.sh;rm /moodle-plugins.sh
 
+# Anonymize last byte of IPs in Apache Logfiles
+ADD scripts/aplog-anon /usr/local/bin/aplog-anon
+RUN chmod +x /usr/local/bin/aplog-anon
+ADD conf/apache-default.conf /etc/apache2/sites-available/default
+
 # SSH
 RUN apt-get -y install \
 	openssh-server; \
