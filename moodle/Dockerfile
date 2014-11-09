@@ -20,7 +20,8 @@ RUN apt-get update; apt-get -y install \
 	git \
 	unzip \
 	vim \
-	supervisor
+	supervisor \
+	locales
 
 # MariaDB
 RUN apt-get update; apt-get -y install \
@@ -67,6 +68,9 @@ RUN cd /var/www; tar zxvf moodle-latest-27.tgz; \
         chown -R www-data:www-data /var/moodledata; \
         chmod 777 /var/moodledata;
 RUN echo "* * * * * www-data php /var/www//moodle/admin/cli/cron.php >/dev/null" >> /etc/crontab
+
+# Moosh by Tomasz Muras                                                                                             
+RUN apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu precise main'; apt-get update; apt-get install moosh
 
 # Moodle plugins
 ADD scripts/moodle-plugins.sh /moodle-plugins.sh

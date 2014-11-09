@@ -1,9 +1,8 @@
-#!/bin/bash                                                                                                                                                                                                                                  
+#!/bin/bash
 
 MOODLEROOT=/var/www/moodle
 
 mkdir /tmp/moodle-plugins && cd /tmp/moodle-plugins
-
 
 ## Themes
 
