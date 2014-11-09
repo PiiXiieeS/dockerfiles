@@ -52,7 +52,8 @@ RUN apt-get update; apt-get -y install \
 	php-pear \
 	php5-memcache \
     	php5-memcached \
-	php5-xcache; \
+	php5-xcache \
+	ghostscript; \
 	cd /tmp; \
 	wget http://coredump.id.au/blog/wp-content/php5-zendopcache_7.0.3-5_amd64.deb; \
 	dpkg -i php5-zendopcache_7.0.3-5_amd64.deb; \
