@@ -7,15 +7,11 @@ if [ ! -f /var/www/moodle/config.php ]; then
   MOODLE_DB="moodle"
   MYSQL_PASSWORD=`pwgen -c -n -1 12`
   MOODLE_PASSWORD=`pwgen -c -n -1 12`
-  SSH_PASSWORD=`pwgen -c -n -1 12`
   #This is so the passwords show up in logs. 
   echo mysql root password: $MYSQL_PASSWORD
   echo moodle password: $MOODLE_PASSWORD
-  echo ssh root password: $SSH_PASSWORD
-  echo root:$SSH_PASSWORD | chpasswd
   echo $MYSQL_PASSWORD > /mysql-root-pw.txt
   echo $MOODLE_PASSWORD > /moodle-db-pw.txt
-  echo $SSH_PASSWORD > /ssh-pw.txt
 
   cp -ax /var/www/moodle/config-dist.php /var/www/moodle/config.php
   sed -i "s*pgsql*mysqli*g" /var/www/moodle/config.php
@@ -23,9 +19,6 @@ if [ ! -f /var/www/moodle/config.php ]; then
   sed -i "s*password*$MOODLE_PASSWORD*g" /var/www/moodle/config.php
   sed -i "s*example.com*$VIRTUAL_HOST*g" /var/www/moodle/config.php
   sed -i "s*\/home\/example\/moodledata*\/var\/moodledata*g" /var/www/moodle/config.php
-
-  sed -i 's/PermitRootLogin without-password/PermitRootLogin Yes/' /etc/ssh/sshd_config
-
   chown www-data:www-data /var/www/html/moodle/config.php
 
   mysqladmin -u root password $MYSQL_PASSWORD
