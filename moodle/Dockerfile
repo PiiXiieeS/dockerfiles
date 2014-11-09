@@ -65,6 +65,7 @@ RUN cd /var/www; tar zxvf moodle-latest-27.tgz; \
         mkdir /var/moodledata; \
         chown -R www-data:www-data /var/moodledata; \
         chmod 777 /var/moodledata;
+RUN echo "* * * * * www-data php /var/www//moodle/admin/cli/cron.php >/dev/null" >> /etc/crontab
 
 # Moodle plugins
 ADD scripts/moodle-plugins.sh /moodle-plugins.sh
