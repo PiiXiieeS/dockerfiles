@@ -65,7 +65,7 @@ RUN apt-get update \
 	php5-mysql \
 	memcached \
 	php-pear \
-	php5-memcached \
+	php5-memcache \
 	php5-xcache \
 	ghostscript
 
