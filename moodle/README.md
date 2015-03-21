@@ -5,7 +5,7 @@ A Dockerfile that installs Moodle, Apache, PHP, MariaDB and SSH
 
 ## Usage
 
-Go to folder wither dockerfile and build container:
+Go to folder with the dockerfile and build container:
 
 ```                                                                                                                                                                                           
 docker build -t moodle .                                                                                                                        
