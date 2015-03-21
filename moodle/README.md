@@ -8,7 +8,7 @@ A Dockerfile that installs Moodle, Apache, PHP, MariaDB and SSH
 Go to folder with the dockerfile and build container:
 
 ```                                                                                                                                                                                           
-docker build -t moodle .                                                                                                                        
+docker build -t moodle .
 ```
 
 To spawn a new instance of Moodle:
