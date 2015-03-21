@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MOODLEROOT=/var/www/moodle
+MOODLEROOT=/var/www/html/moodle
 
 mkdir /tmp/moodle-plugins && cd /tmp/moodle-plugins
 
@@ -18,6 +18,11 @@ tar -xf master && rm master
 mv moodlehq-moodle-theme_anomaly* $MOODLEROOT/theme/anomaly
 chown -R www-data:www-data $MOODLEROOT/theme/anomaly
 
+# Theme BCU by Mike Grant, Jez H Jez H
+wget https://moodle.org/plugins/download.php/8050/theme_bcu_moodle28_2015022500.zip
+unzip theme_bcu_moodle28_2015022500.zip
+mv bcu $MOODLEROOT/theme/bcu
+chown -R www-data:www-data $MOODLEROOT/theme/bcu
 
 ## General plugins (Local)
 

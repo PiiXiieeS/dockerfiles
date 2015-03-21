@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ ! -f /var/www/moodle/config.php ]; then
+if [ ! -f /var/www/html/moodle/config.php ]; then
   #mysql has to be started this way as it doesn't work to call from /etc/init.d
   /usr/bin/mysqld_safe & 
   sleep 10s
@@ -13,13 +13,16 @@ if [ ! -f /var/www/moodle/config.php ]; then
   echo $MYSQL_PASSWORD > /mysql-root-pw.txt
   echo $MOODLE_PASSWORD > /moodle-db-pw.txt
 
-  cp -ax /var/www/moodle/config-dist.php /var/www/moodle/config.php
-  sed -i "s*pgsql*mysqli*g" /var/www/moodle/config.php
-  sed -i "s*username*moodle*g" /var/www/moodle/config.php
-  sed -i "s*password*$MOODLE_PASSWORD*g" /var/www/moodle/config.php
-  sed -i "s*example.com*$VIRTUAL_HOST*g" /var/www/moodle/config.php
-  sed -i "s*\/home\/example\/moodledata*\/var\/moodledata*g" /var/www/moodle/config.php
+  cp -ax /var/www/html/moodle/config-dist.php /var/www/html/moodle/config.php
+  sed -i "s*pgsql*mysqli*g" /var/www/html/moodle/config.php
+  sed -i "s*username*moodle*g" /var/www/html/moodle/config.php
+  sed -i "s*password*$MOODLE_PASSWORD*g" /var/www/html/moodle/config.php
+  sed -i "s*example.com*$VIRTUAL_HOST*g" /var/www/html/moodle/config.php
+  sed -i "s*\/home\/example\/moodledata*\/var\/moodledata*g" /var/www/html/moodle/config.php
   chown www-data:www-data /var/www/html/moodle/config.php
+
+  rm -rf /var/moodledata/*                                                                                                                                                   
+  chown -R www-data:www-data /var/moodledata
 
   mysqladmin -u root password $MYSQL_PASSWORD
   mysql -uroot -p$MYSQL_PASSWORD -e "SET GLOBAL binlog_format = 'MIXED';" 

@@ -5,7 +5,7 @@ sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my
 sed -ri 's|# * InnoDB|ignore_builtin_innodb\nplugin-load=ha_innodb.so\n# * InnoDB|g' /etc/mysql/my.cnf
 sed -i -e 's|\[mysqld\]|\[mysqld\ ]\n binlog_format=MIXED \n|g' /etc/mysql/my.cnf
 
-apt-get updat
+apt-get update
 apt-get install -y expect
 
 mysqld_safe &
