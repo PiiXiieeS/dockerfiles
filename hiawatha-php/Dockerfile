@@ -85,9 +85,8 @@ RUN sed -i "s*zlib.output_compression = Off*zlib.output_compression = On*g" /etc
  && sed -i "s*zlib.output_compression_level = 1*zlib.output_compression_level = 6*g" /etc/php5/fpm/php.ini
 RUN echo "\n\n[www] \nuser = www-data \ngroup = www-data \nlisten.mode = 0666 \nlisten = /var/run/php5-fpm.sock \npm = static \npm.max_children = 100 \nchdir = / \n\n" >> /etc/php5/fpm/php-fpm.conf
 ADD conf/hiawatha.conf /etc/hiawatha/hiawatha.conf
-RUN sed -i "s*DOMAIN*${DOMAIN}*g" /etc/hiawatha/hiawatha.conf
 RUN sed -i ':a;N;$!ba;s/\n/WILDCARD/g' /var/www/hiawatha/index.html \
- && sed -i "s*</div>WILDCARD</body*<h2>Viewing your PHP Settings</h2><p>You can now access phpinfo page under <a href='http://0.0.0.0/phpinfo/'>/phpinfo</a>.</p></div>WILDCARD</body*g" /var/www/hiawatha/index.html \
+ && sed -i "s*</div>WILDCARD</body*<h2>Viewing your PHP Settings</h2><p>You can now access phpinfo page under <a href='http://DOMAIN/phpinfo/'>/phpinfo</a>.</p></div>WILDCARD</body*g" /var/www/hiawatha/index.html \
  && sed -i "s*WILDCARD*\n*g" /var/www/hiawatha/index.html 
 
 # Clean up APT when done.

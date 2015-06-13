@@ -34,7 +34,6 @@ RUN cd /tmp \
  && dpkg -i *.deb \
  && rm *.deb
 ADD conf/hiawatha.conf /etc/hiawatha/hiawatha.conf
-RUN sed -i "s*DOMAIN*${VIRTUAL_HOST}*g" /etc/hiawatha/hiawatha.conf
 
 # Clean up APT when done.
 RUN apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
