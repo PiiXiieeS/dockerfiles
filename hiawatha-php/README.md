@@ -1,7 +1,7 @@
 docker-hiawatha
 =============
 
-A Dockerfile that installs Hiawatha with PHP
+A Dockerfile that installs Hiawatha with PHP-FPM
 
 ## Installation
 
