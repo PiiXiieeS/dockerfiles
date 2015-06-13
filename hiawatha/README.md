@@ -1,4 +1,4 @@
-docker-mahara
+docker-hiawatha
 =============
 
 A Dockerfile that installs Hiawatha
