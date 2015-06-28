@@ -1,25 +1,56 @@
-FROM ubuntu:14.04
-MAINTAINER Christian-Maximilian Steier 
+FROM eboraas/debootstrap:minbase-jessie
+MAINTAINER Christian-Maxilian Steier
+ENV MAHARA_VERSION 15.04
+ENV MAHARA_RELEASE 1
+ENV ELASTICSEARCH_VERSION 1.6.0
+#ENV VIRTUAL_HOST domain.org
+
+ADD http://http.debian.net/debian/project/trace/ftp-master.debian.org /etc/trace_ftp-master.debian.org
+ADD http://security.debian.org/project/trace/security-master.debian.org /etc/trace_security-master.debian.org
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -sf /bin/true /sbin/initctl
-
 # Let the conatiner know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
-RUN apt-get -y upgrade
-
 # Set timezone
-RUN locale-gen de_DE.UTF-8
-RUN echo "Europe/Berlin" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata
+RUN echo "Europe/Berlin" > /etc/timezone \ 
+ && dpkg-reconfigure -f noninteractive tzdata
  
 # Basic Requirements
-RUN apt-get -y install pwgen python-setuptools curl git unzip
+RUN apt-get update \ 
+ && apt-get -y install \ 
+	pwgen \
+	python-setuptools \
+	curl \
+	wget \
+	git \
+	unzip \
+	software-properties-common
 
 # Mahara Requirements
-RUN apt-get -y install apache2 cron file libjs-jquery perl php5 php-file php-htmlpurifier php-pear php5-cli php5-curl php5-gd php5-mysql php5-imagick php-xml-parser php5-intl php-services-json tinymce ttf-bitstream-vera ttf-freefont
+RUN apt-get -y install \
+	apache2 \
+	cron \
+	file \
+	libjs-jquery \
+	perl \
+	php5 \
+	php-file \
+	php-htmlpurifier \
+	php-pear \
+	php5-cli \
+	php5-curl \
+	php5-gd \
+	php5-mysql \
+	php5-imagick \
+	php-xml-parser \
+	php5-intl \
+	php-services-json \
+	tinymce \
+	ttf-bitstream-vera \
+	ttf-freefont
 
 # SSH
 RUN apt-get -y install openssh-server
@@ -43,7 +74,10 @@ RUN sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php5/apache
 RUN sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php5/apache2/php.ini
 
 ## Mahara
-RUN cd /tmp && wget https://launchpad.net/mahara/1.10/1.10.0/+download/mahara-1.10.0.tar.gz && tar -xf mahara-* 
+RUN cd /tmp \
+ && wget https://launchpad.net/mahara/${MAHARA_VERSION}/${MAHARA_VERSION}.${MAHARA_RELEASE}/+download/mahara-${MAHARA_VERSION}.${MAHARA_RELEASE}.tar.gz \
+ && tar -xf mahara-* \
+ && rm *.tar.gz 
 RUN cp -ax /tmp/mahara-*/htdocs /var/www/html/mahara
 RUN chown -R www-data:www-data /var/www/html/mahara
 RUN rm -r /tmp/mahara*
@@ -53,6 +87,7 @@ RUN touch /var/log/mahara_cron.log
 RUN chown -R www-data:www-data /var/log/mahara_cron.log
 RUN echo "* * * * * www-data php /var/www/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
+RUN sed -i "s*5.0.25*05.0.25*g" /var/www/html/mahara/init.php
 
 ## Mahara plugins
 ADD scripts/mahara-plugins.sh /tmp/mahara-plugins.sh
@@ -60,9 +95,35 @@ RUN chmod +x /tmp/mahara-plugins.sh
 RUN /tmp/mahara-plugins.sh
 RUN rm /tmp/mahara-plugins.sh
 
+## Java
+RUN \
+ echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
+ && echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list \
+ && echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list \
+ && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
+RUN apt-get update \
+ && apt-get install -y oracle-java8-installer
+# Define working directory.
+WORKDIR /data
+# Define commonly used JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
+# Elasticsearch
+RUN cd / \
+ && wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.zip \
+ && unzip elasticsearch-$ELASTICSEARCH_VERSION.zip \
+ && rm -f elasticsearch-$ELASTICSEARCH_VERSION.zip \
+ && mv elasticsearch-$ELASTICSEARCH_VERSION /elasticsearch
+# Define mountable directories.
+VOLUME ["/data"]
+# Mount elasticsearch.yml config
+ADD conf/elasticsearch.yml /elasticsearch/config/elasticsearch.yml
+# Define working directory.
+WORKDIR /data
+
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-EXPOSE 22 3306 80
+EXPOSE 22 3306 80 9200 9300
 CMD ["/bin/bash", "/start.sh"]
 
