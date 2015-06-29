@@ -26,8 +26,7 @@ RUN apt-get update \
 	curl \
 	wget \
 	git \
-	unzip \
-	software-properties-common
+	unzip
 
 # Mahara Requirements
 RUN apt-get -y install \
@@ -48,6 +47,9 @@ RUN apt-get -y install \
 	php-xml-parser \
 	php5-intl \
 	php-services-json \
+	php5-memcache \
+	php5-memcached \
+	php5-xmlrpc
 	tinymce \
 	ttf-bitstream-vera \
 	ttf-freefont
