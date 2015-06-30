@@ -17,6 +17,10 @@ ENV DEBIAN_FRONTEND noninteractive
 # Set timezone
 RUN echo "Europe/Berlin" > /etc/timezone \ 
  && dpkg-reconfigure -f noninteractive tzdata
+
+# Missing keys
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9D6D8F6BC857C906 \
+ && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010
  
 # Basic Requirements
 RUN apt-get update \ 
@@ -46,13 +50,16 @@ RUN apt-get -y install \
 	php5-imagick \
 	php-xml-parser \
 	php5-intl \
+	php5-xcache \
 	php-services-json \
-	php5-memcache \
-	php5-memcached \
-	php5-xmlrpc
 	tinymce \
 	ttf-bitstream-vera \
 	ttf-freefont
+
+ 
+# Set timezone in cli and apache config
+RUN sed -i 's/\;date\.timezone\ \=/date\.timezone\ \=\ Europe\/Berlin/g' /etc/php5/cli/php.ini \
+&& sed -i 's/\;date\.timezone\ \=/date\.timezone\ \=\ Europe\/Berlin/g' /etc/php5/apache2/php.ini
 
 # SSH
 RUN apt-get -y install openssh-server
@@ -67,6 +74,7 @@ RUN rm /tmp/mariadb.sh
 
 RUN easy_install supervisor
 ADD scripts/start.sh /start.sh
+RUN sed -i "s*MAHARA_VERSION*${MAHARA_VERSION}*g" /start.sh
 ADD scripts/foreground.sh /etc/apache2/foreground.sh
 ADD conf/supervisord.conf /etc/supervisord.conf
 

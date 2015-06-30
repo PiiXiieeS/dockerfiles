@@ -45,12 +45,19 @@ if [ -f /etc/apache2/sites-available/000-default.conf ]; then
  service apache2 stop
 fi
 
+## Redirection to Mahara
+if [ -f /etc/apache2/sites-available/000-default.conf ]; then
+sed -i "s*DocumentRoot /var/www/html*DocumentRoot /var/www/html \n                        DirectoryIndex index.php*g" /etc/apache2/sites-available/000-default.conf
+fi
+echo -e "<?php \nheader('Location: /mahara'); \n?>" >> /var/www/html/index.php
+chown www-data:www-data /var/www/html/index.php
+
 ## Language pack
 
 ## German
 cd /tmp/
-if curl --output /dev/null --silent --head --fail "http://langpacks.mahara.org/de-1.10_STABLE.tar.gz"; then
-        wget http://langpacks.mahara.org/de-1.10_STABLE.tar.gz
+if curl --output /dev/null --silent --head --fail "http://langpacks.mahara.org/de-MAHARA_VERSION_STABLE.tar.gz"; then
+        wget http://langpacks.mahara.org/de-MAHARA_VERSION_STABLE.tar.gz
 else
         wget http://langpacks.mahara.org/de-master.tar.gz
 fi
