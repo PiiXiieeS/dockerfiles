@@ -97,6 +97,7 @@ RUN chown -R www-data:www-data /var/maharadata; chmod 777 /var/maharadata
 RUN touch /var/log/mahara_cron.log
 RUN chown -R www-data:www-data /var/log/mahara_cron.log
 RUN echo "* * * * * www-data php /var/www/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
+RUN sed -i "s*session    required     pam_loginuid.so*#session    required     pam_loginuid.so*g" /etc/pam.d/cron
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
 RUN sed -i "s*5.0.25*05.0.25*g" /var/www/html/mahara/init.php
 
