@@ -52,6 +52,7 @@ RUN apt-get -y install \
 	php5-intl \
 	php5-xcache \
 	php-services-json \
+	php5-adodb \
 	tinymce \
 	ttf-bitstream-vera \
 	ttf-freefont
