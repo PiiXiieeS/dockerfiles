@@ -27,7 +27,7 @@ RUN apt-get install  -y \
  php5-cgi \
  php5 \
  php5-cli \ 
- php5-mysql \
+ php5-mysqlnd \
  php5-curl \
  php5-gd \
  php5-intl \ 
