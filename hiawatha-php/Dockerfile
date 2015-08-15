@@ -1,6 +1,6 @@
 FROM eboraas/debootstrap:minbase-jessie
 MAINTAINER Christian-Maxilian Steier
-ENV HIAWATHA_VERSION 9.13
+ENV HIAWATHA_VERSION 9.14
 #ENV VIRTUAL_HOST domain.org
 
 ADD http://http.debian.net/debian/project/trace/ftp-master.debian.org /etc/trace_ftp-master.debian.org
@@ -23,7 +23,6 @@ RUN apt-get install  -y \
  supervisor \ 
  wget \
  logrotate \
- unzip \
  php5-cgi \
  php5 \
  php5-cli \ 
