@@ -3,10 +3,6 @@ MAINTAINER Christian-Maxilian Steier
 ENV HIAWATHA_VERSION 9.14
 
 RUN rm -f /etc/service/sshd/down
-
-# Regenerate SSH host keys. baseimage-docker does not contain any, so you
-# have to do that yourself. You may also comment out this instruction; the
-# init system will auto-generate one during boot.
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 RUN apt-get update && \
@@ -66,8 +62,6 @@ RUN sed -i "s/user =.*/user = root/" /etc/php5/fpm/pool.d/www.conf && \
 	sed -i "s/;listen\.group.*/listen.group = root/" /etc/php5/fpm/pool.d/www.conf && \
 	sed -i "s/;listen\.mode.*/listen.mode = 0666/" /etc/php5/fpm/pool.d/www.conf && \
 	sed -i "s/listen =.*/listen = 0.0.0.0:9000/" /etc/php5/fpm/pool.d/www.conf
-#RUN sed -i "s/;date.timezone.*/date.timezone = Europe\/Berlin/" /etc/php5/fpm/php.ini
-
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php5/fpm/php.ini
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php5/cli/php.ini
 
@@ -88,10 +82,10 @@ RUN mkdir           /etc/service/hiawatha
 ADD service/hiawatha.sh /etc/service/hiawatha/run
 RUN chmod +x        /etc/service/hiawatha/run
 RUN touch /firstrun
-ADD scripts /scripts
+ADD scripts/firstrun.sh /etc/my_init.d/firstrun.sh
+RUN chmod +x /etc/my_init.d/firstrun.sh
 
 # Clean up APT when done.
 RUN apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 80
-CMD ["/sbin/my_init"] 
