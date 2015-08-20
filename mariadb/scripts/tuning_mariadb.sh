@@ -1,16 +1,13 @@
 #!/bin/bash
 set -e
   echo "Tuning MariaDB"
-
-sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
-sed -ri 's|# * InnoDB|ignore_builtin_innodb\nplugin-load=ha_innodb.so\n# * InnoDB|g' /etc/mysql/my.cnf
-sed -i -e 's|\[mysqld\]|\[mysqld\ ]\n binlog_format=MIXED \n|g' /etc/mysql/my.cnf
-sed -i -e 's/^datadir\s*=.*/datadir = \/data/' /etc/mysql/my.cnf
+  sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
+  sed -ri 's|# * InnoDB|ignore_builtin_innodb\nplugin-load=ha_innodb.so\n# * InnoDB|g' /etc/mysql/my.cnf
+  echo -e 'skip-host-cache\nskip-name-resolve\nbinlog_format=MIXED' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/my.cnf
 
   mysqld_safe --skip-syslog &
-  sleep 5s
   MYSQL_SECURE=$(expect -c "
-  set timeout 10
+  set timeout 2
   spawn mysql_secure_installation
   expect \"Enter current password for root (enter for none):\"
   send \"\r\"

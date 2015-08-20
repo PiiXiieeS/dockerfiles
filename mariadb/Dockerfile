@@ -23,7 +23,7 @@ RUN chmod +x /scripts/tuning_mariadb.sh
 RUN /scripts/tuning_mariadb.sh
 
 # Expose our data, log, and configuration directories.
-VOLUME ["/data", "/var/log/mysql", "/etc/mysql"]
+VOLUME ["/var/log/mysql", "/etc/mysql"]
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init", "--", "/scripts/start.sh"]

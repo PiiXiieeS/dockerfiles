@@ -7,18 +7,8 @@ pre_start_action() {
   # Echo out info to later obtain by running `docker logs container_name`
   echo "MARIADB_USER=$USER"
   echo "MARIADB_PASS=$PASS"
-  echo "MARIADB_DATA_DIR=$DATA_DIR"
-
-  # test if DATA_DIR has content
-  if [[ ! "$(ls -A $DATA_DIR)" ]]; then
-      echo "Initializing MariaDB at $DATA_DIR"
-      # Copy the data that we generated within the container to the empty DATA_DIR.
-      cp -R /var/lib/mysql/* $DATA_DIR
-  fi
-
-  # Ensure mysql owns the DATA_DIR
-  chown -R mysql $DATA_DIR
-  chown root $DATA_DIR/debian*.flag
+  export USER=$USER
+  export PASS=$PASS
 }
 
 post_start_action() {

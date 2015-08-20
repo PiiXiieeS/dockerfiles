@@ -28,11 +28,10 @@ mariadb`.
 
 ``` shell
 $ mkdir -p /tmp/mariadb
-$ docker run -d -name="mariadb" \
+$ docker run -d --name mariadb \
              -p 127.0.0.1:3306:3306 \
-             -v /tmp/mariadb:/data \
-             -e USER="super" \
-             -e PASS="$(pwgen -s -1 16)" \
+             -e USER="dbadmin" \
+             -e PASS="PASSWORD" \
              maxder/mariadb
 ```
 
@@ -40,7 +39,7 @@ $ docker run -d -name="mariadb" \
 
 To connect to the MariaDB server, you will need to make sure you have a client.
 You can install the `mysql-client` on your host machine by running the
-following (Ubuntu 12.04LTS):
+following (Debain or Ubuntu):
 
 ``` shell
 $ sudo apt-get install mysql-client
@@ -52,19 +51,17 @@ password for the superuser.  To view the login in run `docker logs
 
 ``` shell
 $ docker logs mariadb
-MARIADB_USER=super
-MARIADB_PASS=FzNQiroBkTHLX7y4
-MARIADB_DATA_DIR=/data
+MARIADB_USER=dbadmin
+MARIADB_PASS=PASSWORD
 Starting MariaDB...
 140103 20:33:49 mysqld_safe Logging to '/data/mysql.log'.
-140103 20:33:49 mysqld_safe Starting mysqld daemon with databases from /data
 ```
 
 Then you can connect to the MariaDB server from the host with the following
 command:
 
 ``` shell
-$ mysql -u super --password=FzNQiroBkTHLX7y4 --protocol=tcp
+$ mysql -u dbadmin --password=PASSWORD --protocol=tcp
 ```
 
 ## Linking with the Database Container
@@ -76,7 +73,7 @@ a separate container.
 To demonstrate this, we can spin up a new container like so:
 
 ``` shell
-$ docker run -t -i -link mariadb:db ubuntu bash
+$ docker run -t -i -link mariadb:db debian bash
 ```
 
 This assumes you're already running the database container with the name
