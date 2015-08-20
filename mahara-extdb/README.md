@@ -8,7 +8,7 @@ Optimized for playing together with [maxder/mariadb](https://hub.docker.com/r/ma
 
 ```
 git clone https://github.com/christiansteier/dockerfiles.git
-cd ../mahara
+cd dockerfiles/mahara-extdb
 docker build -t mahara .
 ```
 
