@@ -7,8 +7,12 @@ Optimized for playing together with 'maxder/mariadb'
 ## Installation
 
 ```
-git clone https://github.com/christiansteier/docker-mahara.git
-cd docker-mahara
+git clone https://github.com/christiansteier/dockerfiles.git
+
+cd mariadb
+docker build -t mariadb .
+
+cd ../mahara
 docker build -t mahara .
 ```
 
@@ -17,7 +21,8 @@ docker build -t mahara .
 To spawn a new instance of Mahara:
 
 ```
-docker run --name maharax -e MAHARA_WWWROOT=http://domain.org/mahara/ -e MAHARA_EMAIL=contact@domain.org -d -t -p 80  mahara
+docker run -d --name mariadb -e USER=dbadmin -e PASS=PASSWORD -p 127.0.0.1:3306:3306 mariadb
+docker run -d --name mahara -e MAHARA_WWWROOT=http://domain.org/mahara/ -e MAHARA_EMAIL=contact@domain.org --link mariadb:db -p 80  mahara
 ```
 
 You can visit the following URL in a browser to get started:
