@@ -25,4 +25,4 @@ wait_for_mysql_and_run_post_start_action &
 
 # Start MariaDB
 echo "Starting MariaDB..."
-exec mysqld_safe --skip-syslog
+exec /sbin/setuser mysql /usr/bin/mysqld_safe --skip-syslog
