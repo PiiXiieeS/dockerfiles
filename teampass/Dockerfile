@@ -14,6 +14,8 @@ RUN apt-get update && \
     libapache2-mod-php5 \
     php5-mysqlnd \
     php5-mcrypt \
+    php5-memcache \
+    memcached \
     wget \
     git
 
@@ -31,6 +33,11 @@ RUN echo /var/run/apache2.pid > /etc/container_environment/APACHE_PID_FILE
 ADD service/apache.sh /etc/service/apache/run
 RUN chmod +x /etc/service/apache/run
 
+# Adding additional memcached daemon
+RUN mkdir /etc/service/memcached
+ADD service/memcached.sh /etc/service/memcached/run
+RUN chmod +x /etc/service/memcached/run
+
 # Install TeamPass
 RUN git clone https://github.com/nilsteampassnet/TeamPass.git ${PATH_TEAMPASS}
 RUN cd ${PATH_TEAMPASS} && git checkout $TP_VERSION
@@ -42,4 +49,3 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 80
-#CMD ["/sbin/my_init"]
