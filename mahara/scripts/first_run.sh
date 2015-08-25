@@ -1,7 +1,5 @@
 
-#DBUSER=${DBUSER:-dbadmin}
-#DBPASS=${DBPASS:-$(pwgen -s -1 16)}
-#DBHOST=${DBHOST:-localhost}
+
 MAHARA_WWWROOT=${MAHARA_WWWROOT:-/mahara}
 MAHARA_EMAIL=${MAHARA_EMAIL:-contact@domain.org}
 MAHARA_DB=${MAHARA_DB:-mahara}
