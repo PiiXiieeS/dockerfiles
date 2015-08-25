@@ -8,6 +8,10 @@ ENV ELASTICSEARCH_VERSION 1.6.0
 RUN rm -f /etc/service/sshd/down
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
+ADD scripts/first_run.sh /etc/my_init.d/firstrun.sh
+RUN chmod +x /etc/my_init.d/firstrun.sh
+RUN touch /firstrun
+
 # Basic Requirements
 RUN apt-get update \ 
  && apt-get -y install \ 
@@ -17,7 +21,8 @@ RUN apt-get update \
 	wget \
 	git \
 	unzip \
-	mariadb-client
+	inotify-tools \
+	expect
 
 # Mahara Requirements
 RUN apt-get -y install \
@@ -40,15 +45,11 @@ RUN apt-get -y install \
 	php-services-json \
 	php5-adodb \
 	php5-ldap \
+	php5-memcache \
+	memcached \
 	tinymce \
 	ttf-bitstream-vera \
 	ttf-freefont
-
-RUN echo "deb http://repo.suhosin.org/ debian-jessie main" >> /etc/apt/sources.list \
- && wget https://sektioneins.de/files/repository.asc \
- && apt-key add repository.asc
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y php5-suhosin-extension
 
 # Enable PHP 
 RUN a2enmod php5
@@ -70,6 +71,11 @@ RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 500M/g" /etc
 RUN sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 500M/g" /etc/php5/apache2/php.ini
 RUN sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php5/apache2/php.ini
 
+# Adding additional memcached daemon
+RUN mkdir /etc/service/memcached
+ADD service/memcached.sh /etc/service/memcached/run
+RUN chmod +x /etc/service/memcached/run
+
 ## Mahara
 RUN cd /tmp \
  && wget https://launchpad.net/mahara/${MAHARA_VERSION}/${MAHARA_VERSION}.${MAHARA_RELEASE}/+download/mahara-${MAHARA_VERSION}.${MAHARA_RELEASE}.tar.gz \
@@ -79,32 +85,12 @@ RUN cp -ax /tmp/mahara-*/htdocs /var/www/html/mahara
 RUN chown -R www-data:www-data /var/www/html/mahara
 RUN rm -r /tmp/mahara*
 RUN mkdir /var/maharadata
-RUN chown -R www-data:www-data /var/maharadata; chmod 777 /var/maharadata
+RUN chown -R www-data:www-data /var/maharadata
+RUN chmod 777 /var/maharadata
 RUN touch /var/log/mahara_cron.log
 RUN chown -R www-data:www-data /var/log/mahara_cron.log
 RUN echo "* * * * * www-data php /var/www/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
 RUN sed -i "s*5.0.25*05.0.25*g" /var/www/html/mahara/init.php
-ADD scripts/firstrun.sh /etc/my_init.d/firstrun.sh
-RUN chmod +x /etc/my_init.d/firstrun.sh
-
-## Mahara plugins
-ADD scripts/mahara-plugins.sh /tmp/mahara-plugins.sh
-RUN chmod +x /tmp/mahara-plugins.sh
-RUN /tmp/mahara-plugins.sh
-RUN rm /tmp/mahara-plugins.sh
-
-## Java
-RUN \
- echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
- && echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list \
- && echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list \
- && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-RUN apt-get update \
- && apt-get install -y oracle-java8-installer
-# Define working directory.
-WORKDIR /data
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 # Elasticsearch
 RUN cd / \
@@ -124,5 +110,3 @@ RUN chmod +x /etc/service/elasticsearch/run
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-EXPOSE 80 9200 9300
