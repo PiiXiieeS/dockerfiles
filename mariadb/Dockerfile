@@ -21,6 +21,7 @@ RUN chmod +x /scripts/start.sh
 RUN touch /firstrun
 RUN chmod +x /scripts/tuning_mariadb.sh
 RUN /scripts/tuning_mariadb.sh
+RUN rm -r /etc/service/cron
 
 # Expose our data, log, and configuration directories.
 VOLUME ["/var/log/mysql", "/etc/mysql"]

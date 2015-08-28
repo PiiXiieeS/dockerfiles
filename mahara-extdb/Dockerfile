@@ -21,8 +21,7 @@ RUN apt-get update \
 	wget \
 	git \
 	unzip \
-	inotify-tools \
-	expect
+	inotify-tools
 
 # Mahara Requirements
 RUN apt-get -y install \
@@ -34,6 +33,7 @@ RUN apt-get -y install \
 	php-file \
 	php-htmlpurifier \
 	php-pear \
+	php5-xmlrpc \
 	php5-cli \
 	php5-curl \
 	php5-gd \
@@ -49,7 +49,8 @@ RUN apt-get -y install \
 	memcached \
 	tinymce \
 	ttf-bitstream-vera \
-	ttf-freefont
+	ttf-freefont \
+	mariadb-client
 
 # Enable PHP 
 RUN a2enmod php5
@@ -92,6 +93,17 @@ RUN chown -R www-data:www-data /var/log/mahara_cron.log
 RUN echo "* * * * * www-data php /var/www/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
 RUN sed -i "s*5.0.25*05.0.25*g" /var/www/html/mahara/init.php
 
+# Java 8
+RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
+RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
+RUN apt-get update
+# auto accept oracle jdk license
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+RUN apt-get install -y oracle-java8-installer ca-certificates
+# Define commonly used JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
 # Elasticsearch
 RUN cd / \
  && wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.zip \
@@ -110,3 +122,8 @@ RUN chmod +x /etc/service/elasticsearch/run
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Define mountable directories.
+VOLUME ["/var/www/html/mahara", "/var/maharadata"]
+
+EXPOSE 80
