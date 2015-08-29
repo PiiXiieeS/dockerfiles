@@ -1,10 +1,10 @@
-ownCloud on Debian
+ownCloud on Debian for external Database
 
 # Quickstart #
 
 ```
 docker run -d --name=mariadb -p 127.0.0.1:3306:3306 maxder/mariadb
-docker run -d --name=owncloud --link=mariadb:db -v /var/owncloud/data:/data maxder/owncloud
+docker run -d --name=owncloud -p 80:80 --link=mariadb:db -v /var/owncloud/data:/data maxder/owncloud
 ```
 
 # Usage #
