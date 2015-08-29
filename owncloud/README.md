@@ -1,10 +1,17 @@
 ownCloud on Debian
 
+# Quickstart #
+
+```
+docker run -d --name=mariadb -p 127.0.0.1:3306:3306 maxder/mariadb
+docker run -d --name=owncloud --link=mariadb:db -v /var/owncloud/data:/data maxder/owncloud
+```
+
 # Usage #
 
 1. Run 
 
-`docker run -d -m 1g -p 127.0.0.1:9000:80 --name="owncloud" -v /var/owncloud/data:/var/www/owncloud/data -v /var/owncloud/config:/var/www/owncloud/config maxder/owncloud`
+`docker run -d -m 1g -p 9000:80 --name=owncloud -e OC_DB=owncloud -e OC_PASS=password -e DBHOST=db -e DBPASS=password -e OCADMIN=ocadmin -e OCPASS=ocadmin -v /var/owncloud/data:/data -v --link mariadb:db maxder/owncloud`
 
 2. Setup a reverse proxy to it
 
@@ -31,4 +38,5 @@ server {
 		proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
 		add_header Strict-Transport-Security max-age=31536000;
 	}
-}```
+}
+```
