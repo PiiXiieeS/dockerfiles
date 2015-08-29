@@ -53,7 +53,7 @@ RUN echo 'apc.enable_cli = 1' >> /etc/php5/cli/php.ini
 RUN curl -k https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 | tar jx -C /var/www/
 RUN mkdir /data
 RUN chown -R www-data:www-data /var/www/owncloud
-RUN echo "*/15  *  *  *  * php -f /var/www/owncloud/cron.php" >> /etc/cronttab
+RUN echo "*/15  *  *  *  * php -f /var/www/owncloud/cron.php" >> /etc/crontab
 ADD conf/autoconfig.php /autoconfig.php
 RUN chown -R www-data:www-data /data 
 
