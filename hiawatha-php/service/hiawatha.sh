@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-service hiawatha start
+exec hiawatha -d
 

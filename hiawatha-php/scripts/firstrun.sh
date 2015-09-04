@@ -1,6 +1,9 @@
 #!/bin/bash
+set -e
 
 DOMAIN=${DOMAIN:-domain.org}
+
+if [ -f /firstrun ]; then
 
   echo "DOMAIN=$DOMAIN"
   if [ -z "$DOMAIN" ]; then
@@ -8,4 +11,9 @@ DOMAIN=${DOMAIN:-domain.org}
   else
 	sed -i "s*DOMAIN*$DOMAIN*g" /etc/hiawatha/hiawatha.conf
   fi
+
   rm /firstrun
+
+fi
+
+exit 0
