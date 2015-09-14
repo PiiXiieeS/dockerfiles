@@ -6,10 +6,6 @@ text editor. The Dockerfile for this image has been inspired by the
 [johbo's etherpad-lite](https://registry.hub.docker.com/u/johbo/etherpad-lite/)
 image.
 
-This image uses an mariadb container for the backend for the pads. It is based
-on debian jessie instead of the official node docker image, since the latest
-stable version of etherpad-lite does not support npm 2.
-
 ## Quickstart
 
 First you need a running mariadb container:
