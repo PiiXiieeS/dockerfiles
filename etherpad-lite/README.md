@@ -37,12 +37,9 @@ This image supports the following environment variables:
 and the /admin/ interface is accessible via it.
 * `ETHERPAD_ADMIN_USER`: If the admin password is set, this defaults to "admin".
 Otherwise the user can set it to another username.
-
 * `ETHERPAD_DB_USER`: By default Etherpad Lite will attempt to connect as root
 to the mysql container. This allows to change this.
-* `ETHERPAD_DB_PASSWORD`: The password for the mysql user. If the root user is
-used, then the password will default to the mysql container's
-`MYSQL_ROOT_PASSWORD`.
+* `ETHERPAD_DB_PASS`: The password for the mysql user.
 * `ETHERPAD_DB_NAME`: The mysql database to use. Defaults to *etherpad*. If the
 database is not available, it will be created when the container is launched.
 
