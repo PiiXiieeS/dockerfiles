@@ -33,6 +33,10 @@ post_start_action() {
       CREATE DATABASE IF NOT EXISTS $MOODLE_DB CHARACTER SET utf8;
       GRANT ALL PRIVILEGES ON $MOODLE_DB.* TO $MOODLE_DB IDENTIFIED BY '$MOODLE_PASS';
       FLUSH PRIVILEGES;
+      use $MOODLE_DB;
+      SET SESSION sql_mode=STRICT_ALL_TABLES;                                               
+      SET GLOBAL innodb_file_per_table=1;                                                   
+      SET GLOBAL innodb_file_format=Barracuda; 
 EOF
 
   rm /firstrun
