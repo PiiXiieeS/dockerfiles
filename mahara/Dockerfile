@@ -56,11 +56,13 @@ RUN apt-get -y install \
 RUN a2enmod php5
 
 # Manually set the apache environment variables in order to get apache to work immediately. 
-RUN echo www-data > /etc/container_environment/APACHE_RUN_USER
-RUN echo www-data > /etc/container_environment/APACHE_RUN_GROUP
-RUN echo /var/log/apache2 > /etc/container_environment/APACHE_LOG_DIR
-RUN echo /var/lock/apache2 > /etc/container_environment/APACHE_LOCK_DIR
-RUN echo /var/run/apache2.pid > /etc/container_environment/APACHE_PID_FILE
+RUN echo www-data > /etc/container_environment/APACHE_RUN_USER \
+ && echo www-data > /etc/container_environment/APACHE_RUN_GROUP \
+ && echo /var/log/apache2 > /etc/container_environment/APACHE_LOG_DIR \
+ && echo /var/lock/apache2 > /etc/container_environment/APACHE_LOCK_DIR \ &&
+ && echo /var/run/apache2.pid > /etc/container_environment/APACHE_PID_FILE \
+ && echo "ServerName localhost" | tee /etc/apache2/conf-available/fqdn.conf \
+ && a2enconf fqdn
 
 # Add apache to runit 
 RUN mkdir /etc/service/apache
