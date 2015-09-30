@@ -1,7 +1,7 @@
 FROM maxder/debianbase
 MAINTAINER Christian-Maximilian Steier
 ENV OWNCLOUD_VERSION 8.1
-ENV OWNCLOUD_RELEASE 1
+ENV OWNCLOUD_RELEASE 3
 
 RUN rm -f /etc/service/sshd/down
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
