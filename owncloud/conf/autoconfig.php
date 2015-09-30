@@ -9,5 +9,6 @@ $AUTOCONFIG = array(
   "directory"     => "/data",
   "adminlogin"    => "OCADMIN",
   "adminpass"     => "OCADMIN",
+  "passwordsalt"  => "OCSALT",
 );
 
