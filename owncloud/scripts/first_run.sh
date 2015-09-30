@@ -8,6 +8,7 @@ DBADMIN=${DBADMIN:-$DB_ENV_USER}
 DBPASS=${DBPASS:-$DB_ENV_PASS}
 OCADMIN=${OCADMIN:-ocadmin}
 OCPASS=${OCADMIN:-ocadmin}
+OCSALT==${OCSALT:-$(pwgen -s -1 16)}
 
 if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" /var/www/owncloud/config/config.php
@@ -22,7 +23,8 @@ if [ -f /firstrun ]; then
   sed -i "s*DBNAME*$OC_DB*g"  /var/www/owncloud/config/autoconfig.php
   sed -i "s*OCADMIN*$OCADMIN*g"  /var/www/owncloud/config/autoconfig.php
   sed -i "s*OCPASS*$OCPASS*g"  /var/www/owncloud/config/autoconfig.php
-
+  sed -i "s*OCSALT*$OCSALT*g"  /var/www/owncloud/config/autoconfig.php
+  
   echo "Create database user $OC_DB and database $OC_DB"
   mysql -u $DBADMIN --password=$DBPASS -h $DBHOST <<-EOF
       CREATE DATABASE IF NOT EXISTS $OC_DB CHARACTER SET utf8;
