@@ -59,7 +59,7 @@ RUN a2enmod php5
 RUN echo www-data > /etc/container_environment/APACHE_RUN_USER \
  && echo www-data > /etc/container_environment/APACHE_RUN_GROUP \
  && echo /var/log/apache2 > /etc/container_environment/APACHE_LOG_DIR \
- && echo /var/lock/apache2 > /etc/container_environment/APACHE_LOCK_DIR \ &&
+ && echo /var/lock/apache2 > /etc/container_environment/APACHE_LOCK_DIR \
  && echo /var/run/apache2.pid > /etc/container_environment/APACHE_PID_FILE \
  && echo "ServerName localhost" | tee /etc/apache2/conf-available/fqdn.conf \
  && a2enconf fqdn
