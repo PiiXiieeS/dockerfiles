@@ -7,7 +7,7 @@ By design, it will only run the **vsftpd** executable, exposing the FTP standard
 
 You can execute it with something like:
 
-    docker run -d -P --name vsftpd --volumes-from YOUR-WEB-SERVER maxder/vsftpd
+    docker run -d -P --name vsftpd -e "DOCKER_HOST=$(/sbin/ip route|awk '/default/ { print $3 }')" -p 21:21 -p 10100:10100 -p 10101:10101 --volumes-from YOUR-WEB-SERVER maxder/vsftpd
 
 To to add any user, you may want to run another (temporary) container that imports its volumes. Run it with:
 
