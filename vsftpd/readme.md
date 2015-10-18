@@ -11,7 +11,9 @@ You can execute it with something like:
 
 To to add any user, you may want to run another (temporary) container that imports its volumes. Run it with:
 
-    docker run -i -t --name config.vsftpd --volumes-from vsftpd odiobill/vsftpd bash
+    docker run -i -t --name config.vsftpd --volumes-from vsftpd maxder/vsftpd bash
 
-Then you can use the *useradd* system command to define them and having the same accounts also on the main **vsftpd** container. For example
+Then you can use the *useradd* system command to define them and having the same accounts also on the main **vsftpd** container. For example:
+
+    adduser USERNAME --home /var/www/html/ --ingroup www-data --shell /bin/false
 
