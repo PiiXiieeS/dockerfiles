@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# MAINTAINER Christian-Maximilian
+
+IMAGE_NAME="sp:vsftpd"
+CONTAINER_NAME="sp-ftp"
+PORT="21:21 -p 10100:10100 -p 10101:10101"
+
+build() {
+ docker build --rm -t ${IMAGE_NAME} .
+}
+
+run() {
+ docker run -d --name $CONTAINER_NAME --hostname $CONTAINER_NAME -e "DOCKER_HOST=$(/sbin/ip route|awk '/default/ { print $3 }')" -p $PORT --volumes-from sp-www ${IMAGE_NAME}
+}
+
+stop() {
+  docker stop $CONTAINER_NAME
+}
+
+start() {
+  docker start $CONTAINER_NAME
+}
+
+logs() {
+  docker logs $CONTAINER_NAME
+}
+
+config() {
+  docker run --rm -i -t --name config.$CONTAINER_NAME --volumes-from $CONTAINER_NAME ${IMAGE_NAME} bash
+}
+
+remove() {
+  docker stop $CONTAINER_NAME
+  docker rm $CONTAINER_NAME
+}
+
+log() {
+  echo -e "$BLUE > $1 $NORMAL"
+}
+
+error() {
+  echo ""
+  echo -e "$RED >>> FEHLER - $1$NORMAL"
+}
+
+# Output colors
+NORMAL="\\033[0;39m"
+RED="\\033[1;31m"
+BLUE="\\033[1;34m"
+
+$*
+
