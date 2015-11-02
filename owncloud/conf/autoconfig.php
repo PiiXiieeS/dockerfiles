@@ -8,7 +8,7 @@ $AUTOCONFIG = array(
   "dbtableprefix" => "",
   "directory"     => "/data",
   "adminlogin"    => "OCADMIN",
-  "adminpass"     => "OCADMIN",
+  "adminpass"     => "OCPASS",
   "passwordsalt"  => "OCSALT",
 );
 
