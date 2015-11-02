@@ -7,8 +7,8 @@ DBHOST=${DBHOST:-$DB_PORT_3306_TCP_ADDR}
 DBADMIN=${DBADMIN:-$DB_ENV_USER}
 DBPASS=${DBPASS:-$DB_ENV_PASS}
 OCADMIN=${OCADMIN:-ocadmin}
-OCPASS=${OCADMIN:-ocadmin}
-OCSALT==${OCSALT:-$(pwgen -s -1 16)}
+OCPASS=${OCPASS:-ocadmin}
+OCSALT=${OCSALT:-$(pwgen -s -1 16)}
 
 if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" /var/www/owncloud/config/config.php
