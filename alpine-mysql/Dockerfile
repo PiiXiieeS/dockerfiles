@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:edge
+FROM maxder/PLACEHOLDER-base:edge
 MAINTAINER Christian-Maxilian Steier
 # Based on kost/docker-alpine/alpine-mariadb
 
