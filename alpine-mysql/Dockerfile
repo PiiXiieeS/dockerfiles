@@ -1,4 +1,4 @@
-FROM maxder/rpi-alpine-base:edge
+FROM maxder/PLACEHOLDER-base:edge
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk --update add mysql mysql-client pwgen \
