@@ -1,0 +1,66 @@
+#!/bin/sh
+
+DBUSER=${DBUSER:-dbadmin}
+DBPASS=${DBPASS:-$(pwgen -s -1 16)}
+
+pre_start_action() {
+
+  # Echo out info to later obtain by running `docker logs container_name`
+  echo "MARIADB_USER=$DBUSER"
+  echo "MARIADB_PASS=$DBPASS"
+  export DBUSER=$DBUSER
+  export DBPASS=$DBPASS
+
+  chown -R mysql:mysql /var/lib/mysql
+  mysql_install_db --user=mysql --rpm > /dev/null
+
+  echo "Tuning MariaDB"
+  sed -ri 's|# * InnoDB|ignore_builtin_innodb\nplugin-load=ha_innodb.so\n# * InnoDB|g' /etc/mysql/my.cnf
+  echo -e 'skip-host-cache\nskip-name-resolve\n' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/my.cnf
+
+ if [ ! -d "/run/mysqld" ]; then
+		mkdir -p /run/mysqld
+		chown -R mysql:mysql /run/mysqld
+ fi
+
+}
+
+post_start_action() {
+
+  # Create the superuser.
+  mysql -u root <<-EOF
+      DELETE FROM mysql.user WHERE user = '$DBUSER';
+      FLUSH PRIVILEGES;
+      CREATE USER '$DBUSER'@'127.0.0.1' IDENTIFIED BY '$DBPASS';
+      GRANT ALL PRIVILEGES ON *.* TO '$DBUSER'@'127.0.0.1' WITH GRANT OPTION;
+      CREATE USER '$DBUSER'@'%' IDENTIFIED BY '$DBPASS';
+      GRANT ALL PRIVILEGES ON *.* TO '$DBUSER'@'%' WITH GRANT OPTION;
+EOF
+
+  rm /firstrun
+
+  echo " "
+  echo "---"
+  echo "Connecting to the Database:"
+  echo "mysql -u $DBUSER --password=$DBPASS --protocol=tcp"
+  echo "---"
+  echo " "
+}
+
+wait_for_mysql_and_run_post_start_action() {
+  # Wait for mysql to finish starting up first.
+  #while [[ ! -e /run/mysqld/mysqld.sock ]] ; do
+  #    inotifywait -q -e create /run/mysqld/ >> /dev/null
+  #done
+  sleep 5s
+  post_start_action
+}
+
+if [ -f /firstrun ]; then
+
+  pre_start_action
+  wait_for_mysql_and_run_post_start_action &
+
+fi
+
+exec /usr/bin/mysqld_safe
