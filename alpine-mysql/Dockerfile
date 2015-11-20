@@ -1,6 +1,5 @@
 FROM maxder/rpi-alpine-base:edge
 MAINTAINER Christian-Maxilian Steier
-# Based on kost/docker-alpine/alpine-mariadb
 
 RUN apk --update add mysql mysql-client pwgen \
  && rm -f /var/cache/apk/*
