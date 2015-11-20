@@ -24,7 +24,7 @@ build() {
 }
 
 run() {
-  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:3306:3306 $IMAGENAME
+  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="$RANDOM" $IMAGENAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 }
 
