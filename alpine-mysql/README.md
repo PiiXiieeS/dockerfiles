@@ -12,8 +12,8 @@ cd dockerfiles/alpine-mysql && ./do build && ./do run
 ``` shell
 $ docker run -d --name mysql \
              -p 127.0.0.1:3306:3306 \
-             -e USER="dbadmin" \
-             -e PASS="PASSWORD" \
+             -e DBUSER="dbadmin" \
+             -e DBPASS="PASSWORD" \
               maxder/alpine-mysql:edge
 ```
 
@@ -72,11 +72,11 @@ commands:
 
 ``` shell
 $ apt-get install -y mysql-client
-$ mysql -u "$DB_ENV_USER" --password="$DB_ENV_PASS" -h "$DB_PORT_3306_TCP_ADDR" -P "$DB_PORT_3306_TCP_PORT"
+$ mysql -u "$DB_ENV_DBUSER" --password="$DB_ENV_DBPASS" -h "$DB_PORT_3306_TCP_ADDR" -P "$DB_PORT_3306_TCP_PORT"
 ```
 
-If you ran the *mariadb* container with the flags `-e USER=<user>` and `-e
-PASS=<pass>`, then the linked container should have these variables available
+If you ran the *mariadb* container with the flags `-e DBUSER=<user>` and `-e
+DBPASS=<pass>`, then the linked container should have these variables available
 in its environment.  Since we aliased the database container with the name
 *db*, the environment variables from the database container are copied into the
 linked container with the prefix `DB_ENV_`.
