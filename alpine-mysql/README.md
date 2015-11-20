@@ -1,4 +1,4 @@
-# maxder/alpine-mysql (x86_64 and amrhf)
+#Docker Alpine MySQL (x86_64 and amrhf)
 
 MariaDB/MySQL based on Alpine
 
