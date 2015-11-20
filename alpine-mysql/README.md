@@ -1,6 +1,6 @@
-# maxder/alpine-mysql
+# maxder/alpine-mysql (x86_64 and amrhf)
 
-Multiple purpose MariaDB/MySQL based on Alpine
+MariaDB/MySQL based on Alpine
 
 ## Quickstart
 ```
