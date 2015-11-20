@@ -2,8 +2,6 @@
 
 Multiple purpose MariaDB/MySQL based on Alpine
 
-Image is based on the [gliderlabs/alpine](https://registry.hub.docker.com/u/gliderlabs/alpine/) base image
-
 ## Quickstart
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
