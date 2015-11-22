@@ -5,7 +5,7 @@ MariaDB/MySQL based on Alpine
 ## Quickstart
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-dockerfiles/alpine-mysql/do.sh build && dockerfiles/alpine-mysql/do.sh/do.sh run
+dockerfiles/alpine-mysql/do build && dockerfiles/alpine-mysql/do.sh/do run
 ````
 ## Docker image usage
 
