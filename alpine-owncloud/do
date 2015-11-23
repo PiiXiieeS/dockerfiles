@@ -9,10 +9,10 @@ NAMESPACE="maxder"
 
 if [ $(uname -m) == "armv6l" ]; then
 	DISTRO="rpi-alpine"
-	COUNT=1
+	COUNT="1"
 else
 	DISTRO="alpine"
-	COUNT=2
+	COUNT="2"
 fi
 sed -i "s*PLACEHOLDER*${DISTRO}*g" $DIR/Dockerfile
 sed -i "s*COUNT**${COUNT}*g" $DIR/conf/nginx.conf
