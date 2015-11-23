@@ -2,7 +2,7 @@
 Collection of Dockerfiles like Moodle, ownCloud, Mahara, ...
 
 ## Find
-Docker files bases on [Alpine] (https://github.com/christiansteier/dockerfiles/tree/alpine) and [Debian] (https://github.com/christiansteier/dockerfiles/tree/debian) 
+Docker files based on [Alpine] (https://github.com/christiansteier/dockerfiles/tree/alpine) and [Debian] (https://github.com/christiansteier/dockerfiles/tree/debian) 
 
 ## Use
 Alpine
