@@ -67,9 +67,9 @@ RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc
 RUN echo 'always_populate_raw_post_data = -1' >> /etc/php/php.ini
 
 VOLUME ["/data"]
+ENV ocpath /usr/share/nginx/html/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
 RUN tar xfvj /tmp/oc.tar.bz2 -C /usr/share/nginx/html/ \
-export ocpath=/usr/share/nginx/html/owncloud
  && find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640 \
  && find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750 \
  && chown -R root:www-data ${ocpath}/ \
@@ -78,11 +78,8 @@ export ocpath=/usr/share/nginx/html/owncloud
  && chown -R nginx:www-data ${ocpath}/data/ \
  && chown -R nginx:www-data ${ocpath}/themes/ \
  && chown root:www-data ${ocpath}/.htaccess \
- && mkdir /data \
  && chown -R nginx:www-data /data \
- && chown root:www-data ${ocpath}/data/.htaccess \
  && chmod 0644 ${ocpath}/.htaccess \
- && chmod 0644 ${ocpath}/data/.htaccess \
  && echo "*/15  *  *  *  * php -f /usr/share/nginx/html/owncloud/cron.php" >> /etc/crontab
 ADD conf/autoconfig.php /autoconfig.php
 
