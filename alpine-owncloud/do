@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------
 # [Christian-Maximilian Steier]
-# Build a small AlpineLinux Docker image based with NGINX        
+# Build a small AlpineLinux Docker image based with ownCloud        
 # ------------------------------------------------------------------
 
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -9,12 +9,15 @@ NAMESPACE="maxder"
 
 if [ $(uname -m) == "armv6l" ]; then
 	DISTRO="rpi-alpine"
+	COUNT=1
 else
 	DISTRO="alpine"
+	COUNT=2
 fi
 sed -i "s*PLACEHOLDER*${DISTRO}*g" $DIR/Dockerfile
+sed -i "s*COUNT**${COUNT}*g" $DIR/conf/nginx.conf
 
-CONTAINER_NAME="nginx"
+CONTAINER_NAME="owncloud"
 IMAGENAME="${NAMESPACE}/${DISTRO}-${CONTAINER_NAME}:edge"
 
 build() {
@@ -24,8 +27,13 @@ build() {
 }
 
 run() {
-  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 80:80 $IMAGENAME
+if [ $(docker inspect -f {{.State.Running}} mysql) == "true" ]; then
+  	docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 80:80 --link mysql:db $IMAGENAME
+	docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
+else
+        error "run first ${NAMESPACE}/${DISTRO}-mysql:edge" && exit 100
+fi
 }
 
 
