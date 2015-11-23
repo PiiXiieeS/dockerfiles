@@ -64,15 +64,25 @@ RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc
  && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini
 
 ## Fixes: PHP is configured to populate raw post data. Since PHP 5.6 this will lead to PHP throwing notices for perfectly valid code. #19
-RUN echo 'always_populate_raw_post_data = -1' >> /etc/php/php.ini 
+RUN echo 'always_populate_raw_post_data = -1' >> /etc/php/php.ini
 
-RUN cat /etc/php/php.ini
-
+VOLUME ["/data"]
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
 RUN tar xfvj /tmp/oc.tar.bz2 -C /usr/share/nginx/html/ \
- && chown -R nginx:www-data /usr/share/nginx/html/owncloud \
+export ocpath=/usr/share/nginx/html/owncloud
+ && find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640 \
+ && find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750 \
+ && chown -R root:www-data ${ocpath}/ \
+ && chown -R nginx:www-data ${ocpath}/apps/ \
+ && chown -R nginx:www-data ${ocpath}/config/ \
+ && chown -R nginx:www-data ${ocpath}/data/ \
+ && chown -R nginx:www-data ${ocpath}/themes/ \
+ && chown root:www-data ${ocpath}/.htaccess \
  && mkdir /data \
  && chown -R nginx:www-data /data \
+ && chown root:www-data ${ocpath}/data/.htaccess \
+ && chmod 0644 ${ocpath}/.htaccess \
+ && chmod 0644 ${ocpath}/data/.htaccess \
  && echo "*/15  *  *  *  * php -f /usr/share/nginx/html/owncloud/cron.php" >> /etc/crontab
 ADD conf/autoconfig.php /autoconfig.php
 
