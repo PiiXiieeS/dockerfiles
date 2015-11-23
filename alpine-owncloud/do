@@ -15,7 +15,7 @@ else
 	COUNT="2"
 fi
 sed -i "s*PLACEHOLDER*${DISTRO}*g" $DIR/Dockerfile
-sed -i "s*COUNT**${COUNT}*g" $DIR/conf/nginx.conf
+sed -i "s*COUNT*${COUNT}*g" $DIR/conf/nginx.conf
 
 CONTAINER_NAME="owncloud"
 IMAGENAME="${NAMESPACE}/${DISTRO}-${CONTAINER_NAME}:edge"
