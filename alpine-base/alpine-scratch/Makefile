@@ -1,5 +1,5 @@
 NAMESPACE := maxder
-IMAGENAME := rpi-alpine-scratch
+IMAGENAME := PLACEHOLDER-scratch
 SHA := $(shell git rev-parse --short HEAD)
 #targz_file := $(shell cat FILEPATH)
 timestamp := $(shell date +"%Y%m%d%H%M")
