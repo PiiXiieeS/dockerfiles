@@ -1,4 +1,4 @@
-FROM maxder/rpi-alpine-mini:edge
+FROM maxder/PLACEHOLDER-mini:edge
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk --update add bash s6 \
