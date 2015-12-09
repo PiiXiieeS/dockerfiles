@@ -1,5 +1,7 @@
 set -e
 
+ chown -R nginx:www-data /var/lib/nginx
+
 OCDIR=/usr/share/nginx/html/owncloud
 OC_DB=${OC_DB:-owncloud}
 OC_PASS=${OC_PASS:-$(pwgen -s -1 16)}
