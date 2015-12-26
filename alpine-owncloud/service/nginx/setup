@@ -1,6 +1,11 @@
 set -e
 
  chown -R nginx:www-data /var/lib/nginx
+ if [ ! -d /var/owncloud/data ]; then
+	mkdir -p /var/owncloud/data
+ fi
+ chown -R nginx:www-data /var/owncloud/data
+ chmod 755 /var/owncloud/data
 
 OCDIR=/usr/share/nginx/html/owncloud
 OC_DB=${OC_DB:-owncloud}
