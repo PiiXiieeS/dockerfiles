@@ -2,7 +2,7 @@ FROM maxder/PLACEHOLDER-base:edge
 MAINTAINER Christian-Maximilian Steier
 
 ENV OWNCLOUD_VERSION 8.2
-ENV OWNCLOUD_RELEASE 1
+ENV OWNCLOUD_RELEASE 2
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --update-cache \
@@ -40,7 +40,6 @@ RUN apk add --update-cache \
     memcached \
     libmemcached \
     imagemagick \
-    samba-client \
     bzip2 \
     graphviz \
     ffmpeg \
@@ -66,7 +65,6 @@ RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc
 ## Fixes: PHP is configured to populate raw post data. Since PHP 5.6 this will lead to PHP throwing notices for perfectly valid code. #19
 RUN echo 'always_populate_raw_post_data = -1' >> /etc/php/php.ini
 
-VOLUME ["/data"]
 ENV ocpath /usr/share/nginx/html/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
 RUN tar xfvj /tmp/oc.tar.bz2 -C /usr/share/nginx/html/ \
@@ -75,10 +73,8 @@ RUN tar xfvj /tmp/oc.tar.bz2 -C /usr/share/nginx/html/ \
  && chown -R root:www-data ${ocpath}/ \
  && chown -R nginx:www-data ${ocpath}/apps/ \
  && chown -R nginx:www-data ${ocpath}/config/ \
- && chown -R nginx:www-data ${ocpath}/data/ \
  && chown -R nginx:www-data ${ocpath}/themes/ \
  && chown root:www-data ${ocpath}/.htaccess \
- && chown -R nginx:www-data /data \
  && chmod 0644 ${ocpath}/.htaccess \
  && echo "*/15  *  *  *  * php -f /usr/share/nginx/html/owncloud/cron.php" >> /etc/crontab
 ADD conf/autoconfig.php /autoconfig.php
@@ -88,5 +84,6 @@ RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /v
 EXPOSE 80 443
 RUN touch /firstrun
 
+VOLUME ["/var/owncloud/data"]
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]
