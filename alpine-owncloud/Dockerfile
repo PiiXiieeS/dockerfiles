@@ -85,6 +85,6 @@ RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /v
 EXPOSE 80 443
 RUN touch /firstrun
 
-VOLUME ["/var/owncloud/data"]
+VOLUME ["/var/owncloud"]
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]
