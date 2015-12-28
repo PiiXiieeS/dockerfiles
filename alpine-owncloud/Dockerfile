@@ -57,8 +57,6 @@ RUN addgroup nginx www-data \
  && sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf \
  && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
  && echo "clear_env = no" >> /etc/php/php-fpm.conf
- && echo "apc.shm_size = 256M" >> /etc/php/php-fpm.conf \
- && echo 'default_charset = "UTF-8"' >> /etc/php/php-fpm.conf
 
 ## PHP config
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc/php/php.ini \
@@ -67,6 +65,11 @@ RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc
 
 ## Fixes: PHP is configured to populate raw post data. Since PHP 5.6 this will lead to PHP throwing notices for perfectly valid code. #19
 RUN echo 'always_populate_raw_post_data = -1' >> /etc/php/php.ini
+
+RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
+ && echo "apc.ttl=7200" >> /etc/php/conf.d/apcu.ini \
+ && echo "apc.user_ttl=7200" >> /etc/php/conf.d/apcu.ini \
+ && echo "apc.gc_ttl=3600" >> /etc/php/conf.d/apcu.ini
 
 ENV ocpath /usr/share/nginx/html/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
