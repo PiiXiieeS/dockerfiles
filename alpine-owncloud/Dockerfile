@@ -57,6 +57,8 @@ RUN addgroup nginx www-data \
  && sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf \
  && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
  && echo "clear_env = no" >> /etc/php/php-fpm.conf
+ && echo "apc.shm_size = 256M" >> /etc/php/php-fpm.conf \
+ && echo 'default_charset = "UTF-8"' >> /etc/php/php-fpm.conf
 
 ## PHP config
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc/php/php.ini \
