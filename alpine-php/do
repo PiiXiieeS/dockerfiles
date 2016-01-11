@@ -23,23 +23,12 @@ build() {
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 }
 
-remove() {
-  log "Removing previous container $CONTAINER_NAME" && \
-      docker rm -f $CONTAINER_NAME &> /dev/null || true
-}
-
-error() {
-  echo ""
-  echo -e "$RED >>> ERROR - $1$NORMAL"
-}
-
 help() {
   echo "-----------------------------------------------------------------------"
   echo "                      Available commands                              -"
   echo "-----------------------------------------------------------------------"
   echo -e -n "$BLUE"
   echo "   > build - Build the Docker image"
-  echo "   > remove - Remove $CONTAINER_NAME"
   echo "   > help - Display this help"
   echo -e -n "$NORMAL"
   echo "-----------------------------------------------------------------------"
