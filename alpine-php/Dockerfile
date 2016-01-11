@@ -33,5 +33,9 @@ RUN apk -U add --allow-untrusted \
 	php-json@maxder \
 	php-xmlrpc@maxder \
 	php-posix@maxder \
-	php-ftp@maxder
+	php-ftp@maxder \
+	php-zip@maxder
+	
+RUN sed -i "s*include=/etc/php/php-fpm.d*;include=/etc/php/php-fpm.d*g" /etc/php/php-fpm.conf \
+ && echo -e "[www] \n user = nobody \n group = nobody \n listen = 127.0.0.1:9000 \n pm = dynamic \n pm.max_children = 5 \n pm.start_servers = 2 \n pm.min_spare_servers = 1 \n pm.max_spare_servers = 3" >> /etc/php/php-fpm.conf
 
