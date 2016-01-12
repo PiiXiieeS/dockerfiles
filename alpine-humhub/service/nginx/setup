@@ -1,6 +1,5 @@
 set -e
 
-
 HUMHUBDIR=/usr/share/nginx/html/humhub
 HUMHUB_DB=${HUMHUB_DB:-humhub}
 HUMHUB_PASS=${HUMHUB_PASS:-$(pwgen -s -1 16)}
@@ -8,6 +7,7 @@ DBHOST=${DBHOST:-db}
 DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
 DBPASS=${DBPASS:-$DB_ENV_DBPASS}
 
+chmod -R 755 /var/lib/nginx
 chown -R nginx:www-data $HUMHUBDIR
 chmod +x $HUMHUBDIR//protected/yii
 chmod +x $HUMHUBDIR//protected/yii.bat
