@@ -9,8 +9,8 @@ DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
 DBPASS=${DBPASS:-$DB_ENV_DBPASS}
 
 chown -R nginx:www-data $HUMHUBDIR
-chmod +x HUMHUBDIR//protected/yii
-chmod +x HUMHUBDIR//protected/yii.bat
+chmod +x $HUMHUBDIR//protected/yii
+chmod +x $HUMHUBDIR//protected/yii.bat
 
 if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" $OCDIR/config/config.php
