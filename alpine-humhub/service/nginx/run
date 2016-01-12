@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -f ./setup ]
+then
+  source ./setup
+fi
+
+exec nginx -g "daemon off;"
