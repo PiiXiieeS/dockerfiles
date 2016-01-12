@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------
 # [Christian-Maximilian Steier]
-# Build AlpineLinux Docker image with NGINX and ownCloud        
+# Build AlpineLinux Docker image with HumHub       
 # ------------------------------------------------------------------
 
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
