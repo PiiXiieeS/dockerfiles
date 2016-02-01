@@ -20,7 +20,7 @@ $ docker run -d --name mahara \
              -e DBHOST=db \
              -e DBPASS=password \
              -v /var/maharadata:/var/maharadata:rw \
-             --link mariadb:db \
+             --link mariadb:mysql \
               maxder/alpine-mahara:edge
 ```
 
