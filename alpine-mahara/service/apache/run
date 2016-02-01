@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -f ./setup ]
+then
+  source ./setup
+fi
+
+# display logs
+tail -F /var/log/apache2/*log &
+
+httpd -D FOREGROUND
