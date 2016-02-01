@@ -1,83 +1,53 @@
-#Docker Alpine MySQL (x86_64 and amrhf)
+#Docker Alpine Mahara (x86_64)
 
-MariaDB/MySQL based on Alpine
+Mahara based on Alpine
 
 ## Quickstart
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-cd dockerfiles/alpine-mysql && ./do build
+cd dockerfiles/alpine-mahara && ./do build
+docker run -d --name=mysql -p 127.0.0.1:3306:3306 maxder/alpine-mysql:edge
 ./do run
 ````
 ## Docker image usage
 
 ``` shell
-$ docker run -d --name mysql \
-             -p 127.0.0.1:3306:3306 \
-             -e DBUSER="dbadmin" \
-             -e DBPASS="PASSWORD" \
-              maxder/alpine-mysql:edge
+$ docker run -d --name mahara \
+             -p 127.0.0.1:8080:80 \
+             -e MAHARA_WWWROOT=http://example.org \
+             -e MAHARA_PASS="XXXX" \
+             -e MAHARA_DB="mahara" \
+             -e DBHOST=db \
+             -e DBPASS=password \
+             -v /var/maharadata:/var/maharadata:rw \
+             --link mariadb:db \
+              maxder/alpine-mahara:edge
 ```
 
-If you build on a ARM platform like Raspberry PI
+Setup a reverse proxy to it
+
 ```
-docker run [docker-options] maxder/rpi-alpine-mysql:edge
+server {
+	     listen 80;
+	     server_name mahara.example.org;
+	     return 301 https://$host$request_uri;
+}
+
+server {
+	listen 443;
+	server_name mahara.example.org;
+	ssl on;
+        ssl_certificate /etc/ssl/private/example_com.cert;
+        ssl_certificate_key /etc/ssl/private/example_com.key;
+        location / {
+		proxy_pass http://127.0.0.1:8080;
+		proxy_redirect off;
+		proxy_buffering off;
+		proxy_set_header 	Host	$host;
+		proxy_set_header 	X-Real-IP	$remote_addr;
+		proxy_set_header        X-Forwarded-Server $host;
+		proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+		add_header Strict-Transport-Security max-age=31536000;
+	}
+}
 ```
-
-## Connecting to the Database
-
-To connect to the MariaDB server, you will need to make sure you have a client.
-You can install the `mysql-client` on your host machine by running the
-following (Debain or Ubuntu):
-
-``` shell
-$ sudo apt-get install mysql-client
-```
-
-As part of the startup for MariaDB, the container will generate a random
-password for the superuser.  To view the login in run `docker logs
-<container_name>` like so:
-
-``` shell
-$ docker logs mariadb
-MARIADB_USER=dbadmin
-MARIADB_PASS=PASSWORD
-Starting MariaDB...
-140103 20:33:49 mysqld_safe Logging to '/data/mysql.log'.
-```
-
-Then you can connect to the MariaDB server from the host with the following
-command:
-
-``` shell
-$ mysql -u dbadmin --password=PASSWORD --protocol=tcp
-```
-
-## Linking with the Database Container
-
-You can link a container to the database container.  You may want to do this to
-keep web application processes that need to connect to the database in
-a separate container.
-
-To demonstrate this, we can spin up a new container like so:
-
-``` shell
-$ docker run -t -i -link mariadb:db debian bash
-```
-
-This assumes you're already running the database container with the name
-*mariadb*.  The `-link mariadb:db` will give the linked container the alias
-*db* inside of the new container.
-
-From the new container you can connect to the database by running the following
-commands:
-
-``` shell
-$ apt-get install -y mysql-client
-$ mysql -u "$DB_ENV_DBUSER" --password="$DB_ENV_DBPASS" -h "$DB_PORT_3306_TCP_ADDR" -P "$DB_PORT_3306_TCP_PORT"
-```
-
-If you ran the *mariadb* container with the flags `-e DBUSER=<user>` and `-e
-DBPASS=<pass>`, then the linked container should have these variables available
-in its environment.  Since we aliased the database container with the name
-*db*, the environment variables from the database container are copied into the
-linked container with the prefix `DB_ENV_`.
