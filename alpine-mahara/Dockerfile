@@ -38,6 +38,7 @@ RUN apk --update add \
     	php-mysqli \
    	mysql-client \
     	pwgen \
+	curl \
 	apache2 \
 	php-apache2 \
  && rm -f /var/cache/apk/*
@@ -64,6 +65,7 @@ RUN cd /tmp \
  && rm *.tar.gz \
  && mv /tmp/mahara-*/htdocs /var/www/localhost/htdocs/mahara \
  && chown -R apache:apache /var/www/localhost/htdocs/mahara \
+ && chmod 770 -R /var/www/localhost/htdocs/mahara \
  && rm -r /tmp/mahara*
 RUN mkdir /var/maharadata \
  && chown -R apache:apache /var/maharadata \
@@ -76,7 +78,7 @@ RUN sed -i "s*5.0.25*05.0.25*g" /var/www/localhost/htdocs/mahara/init.php
 RUN touch /firstrun
 
 # Define mountable directories.
-VOLUME ["/var/www/localhost/htdocs//mahara", "/var/maharadata"]
+VOLUME ["/var/maharadata"]
 
 EXPOSE 80
 

@@ -24,10 +24,22 @@ build() {
 }
 
 run() {
-  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8086:80 --link=mysql:db $IMAGENAME
+
+# At least three arguments should be present
+if [[ "$#" < 2 ]]; then
+	echo -e "You must specify at least two arguments: first is database user and second database password: \ndo run mahara password"
+	exit 1
+fi
+  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8086:80 -e MAHARA_DB=$1 -e MAHARA_PASS=$2 --link=mysql:db $IMAGENAME
+  docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 }
 
+silent() {
+  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8086:80 -e INSTALL="silent" --link=mysql:db $IMAGENAME
+  docker logs $CONTAINER_NAME
+  [ $? != 0 ] && error "Docker image build failed !" && exit 100
+}
 
 stop() {
   docker stop $CONTAINER_NAME
@@ -57,6 +69,8 @@ help() {
   echo "-----------------------------------------------------------------------"
   echo -e -n "$BLUE"
   echo "   > build - Build the Docker image"
+  echo "   > run - Start first time"
+  echo "   > silen - Start first time and install Mahara silent"
   echo "   > stop - Stop $CONTAINER_NAME"
   echo "   > start - Start $CONTAINER_NAME"
   echo "   > remove - Remove $CONTAINER_NAME"

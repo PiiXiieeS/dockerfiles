@@ -6,6 +6,6 @@ then
 fi
 
 # display logs
-tail -F /var/log/apache2/*log &
+#tail -F /var/log/apache2/*log &
 
-httpd -D FOREGROUND
+exec httpd -D FOREGROUND
