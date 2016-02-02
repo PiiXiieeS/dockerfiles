@@ -9,10 +9,16 @@ NAMESPACE="maxder"
 
 if [ $(uname -m) == "armv6l" ]; then
 	DISTRO="rpi-alpine"
+	COUNT="2"
+	CONNECTIONS="256"
 else
 	DISTRO="alpine"
+	COUNT="4"
+	CONNECTIONS="1024"
 fi
 sed -i "s*PLACEHOLDER*${DISTRO}*g" $DIR/Dockerfile
+sed -i "s*COUNT*${COUNT}*g" $DIR/conf/nginx.conf
+sed -i "s*CONNECTIONS*${CONNECTIONS}*g" $DIR/conf/nginx.conf
 
 CONTAINER_NAME="mahara"
 IMAGENAME="${NAMESPACE}/${DISTRO}-${CONTAINER_NAME}:edge"
@@ -26,17 +32,17 @@ build() {
 run() {
 
 # At least three arguments should be present
-if [[ "$#" < 2 ]]; then
-	echo -e "You must specify at least two arguments: first is database user and second database password: \ndo run mahara password"
+if [[ "$#" < 4 ]]; then
+	echo -e "\nYou must specify at least four arguments: \n * first for database \n * second for database user \n * third for database password \n * and fourth for database container \nFor example: ./do run mahara user password mysql"
 	exit 1
 fi
-  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8086:80 -e MAHARA_DB=$1 -e MAHARA_PASS=$2 --link=mysql:db $IMAGENAME
+  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8280:80 -e MAHARA_DB=$1 -e MAHARA_DB_USER=$2 -e MAHARA_DB_PASS=$3 --link=$4:db $IMAGENAME
   docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 }
 
 silent() {
-  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8086:80 -e INSTALL="silent" --link=mysql:db $IMAGENAME
+  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8080:80 -e INSTALL="silent" --link=mysql:db $IMAGENAME
   docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 }

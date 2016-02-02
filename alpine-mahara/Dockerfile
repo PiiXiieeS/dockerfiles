@@ -39,14 +39,18 @@ RUN apk --update add \
    	mysql-client \
     	pwgen \
 	curl \
-	apache2 \
-	php-apache2 \
- && rm -f /var/cache/apk/*
+	nginx \
+	php-fpm
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
+ADD conf/nginx.conf /etc/nginx/nginx.conf
+ADD conf/apachemod.conf /etc/nginx/apachemod.conf
 
-RUN echo "ServerName localhost" > /etc/apache2/conf.d/fqdn.conf
+RUN addgroup nginx www-data \
+ && sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf \
+ && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
+ && echo "clear_env = no" >> /etc/php/php-fpm.conf
 
 ## PHP config
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc/php/php.ini \
@@ -63,22 +67,24 @@ RUN cd /tmp \
  && wget https://launchpad.net/mahara/${MAHARA_VERSION}/${MAHARA_VERSION}.${MAHARA_RELEASE}/+download/mahara-${MAHARA_VERSION}.${MAHARA_RELEASE}.tar.gz \
  && tar -xvzf mahara-* \
  && rm *.tar.gz \
- && mv /tmp/mahara-*/htdocs /var/www/localhost/htdocs/mahara \
- && chown -R apache:apache /var/www/localhost/htdocs/mahara \
- && chmod 770 -R /var/www/localhost/htdocs/mahara \
+ && mv /tmp/mahara-*/htdocs /usr/share/nginx/html/mahara \
+ && chown -R nginx:www-data /usr/share/nginx/html/mahara \
+ && chmod 770 -R /usr/share/nginx/html/mahara \
  && rm -r /tmp/mahara*
 RUN mkdir /var/maharadata \
- && chown -R apache:apache /var/maharadata \
+ && chown -R nginx:www-data /var/maharadata \
  && chmod 777 /var/maharadata \
  && touch /var/log/mahara_cron.log \
- && chown -R apache:apache /var/log/mahara_cron.log
-RUN echo "* * * * * apache php /var/www/htdocs/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
-RUN sed -i "s*5.0.25*05.0.25*g" /var/www/localhost/htdocs/mahara/init.php
+ && chown -R nginx:www-data /var/log/mahara_cron.log
+RUN echo "* * * * * nginx php /usr/share/nginx/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
+RUN sed -i "s*5.0.25*05.0.25*g" /usr/share/nginx/html/mahara/init.php
+
+RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
 
 RUN touch /firstrun
 
 # Define mountable directories.
-VOLUME ["/var/maharadata"]
+VOLUME ["/usr/share/nginx/html/mahara/config.php" "/var/maharadata"]
 
 EXPOSE 80
 

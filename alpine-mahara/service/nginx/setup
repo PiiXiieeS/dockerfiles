@@ -1,0 +1,99 @@
+
+set -e
+
+ chown -R nginx:www-data /var/lib/nginx
+ if [ ! -d /var/maharadata ]; then
+	mkdir -p /var/maharadata
+ fi
+ chown -R nginx:www-data /var/maharadata
+ chmod 755 /var/maharadata
+
+MAHARA_WWWROOT=${MAHARA_WWWROOT:-/mahara/}
+MAHARA_EMAIL=${MAHARA_EMAIL:-contact@domain.org}
+MAHARA_DB=${MAHARA_DB:-mahara}
+MAHARA_DB_USER=${MAHARA_DB_USER:-mahara}
+MAHARA_DB_PASS=${MAHARA_DB_PASS:-$(pwgen -s -1 16)}
+MAHARA_SALD=${MAHARA_SALD:-$(pwgen -s -1 16)}
+MAHARA_ADMPASS=${MAHARA_ADMPASS:-mahara}
+DBHOST=${DBHOST:-db}
+DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
+DBPASS=${DBPASS:-$DB_ENV_DBPASS}
+INSTALL=${INSTALL:-normal}
+
+
+pre_start_action() {
+
+RESULT=`mysql -u $DBADMIN --password=$DBPASS -h $DBHOST --skip-column-names -e "SHOW DATABASES LIKE '$MAHARA_DB'"`
+if [ "$RESULT" == "$MAHARA_DB" ]; then
+    echo "DB $MAHARA_DB exist"
+    if [ ! -f /usr/share/nginx/html/mahara/config.php ]; then
+  	cp -a /usr/share/nginx/html/mahara/config-dist.php /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|dbtype   = 'postgres'|dbtype   = 'mysql'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|dbname   = ''|dbname   = '$MAHARA_DB'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|dbuser   = ''|dbuser   = '$MAHARA_DB_USER'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|dbpass   = ''|dbpass   = '$MAHARA_DB_PASS'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|dbhost   = 'localhost'|dbhost   = '$DBHOST'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i 's|\/\/ \$cfg->wwwroot|\$cfg->wwwroot|g' /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|wwwroot = 'https:\/\/myhost.com\/mahara\/'|wwwroot = '$MAHARA_WWWROOT'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|dataroot = '\/path\/to\/uploaddir'|dataroot = '\/var\/maharadata'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i 's|\/\/ \$cfg->passwordsaltmain|\$cfg->passwordsaltmain|g' /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|passwordsaltmain = 'some long random string here with lots of characters'|passwordsaltmain = '$MAHARA_SALD'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s|emailcontact = ''|emailcontact = '$MAHARA_EMAIL'|g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s#\/\/ closing php tag intentionally omitted to prevent whitespace issues#\$cfg->cleanurls = true;\n\$cfg->cleanurlinvalidcharacters = '/[^a-zA-Z0-9]+/';\n\$cfg->cleanurlvalidate = '/^[a-z0-9-]*\$/';\n\$cfg->cleanurlusereditable = true;\n\n\$cfg->log_dbg_targets     = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_info_targets    = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_warn_targets    = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_environ_targets = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\n\/\/ closing php tag intentionally omitted to prevent whitespace issues#g" /usr/share/nginx/html/mahara/config.php
+  	chown nginx:www-data /usr/share/nginx/html/mahara/config.php
+	fi
+fi
+
+## Language pack
+# German
+cd /tmp/
+if curl --output /dev/null --silent --head --fail "http://langpacks.mahara.org/de-MAHARA_VERSION_STABLE.tar.gz"; then
+  wget http://langpacks.mahara.org/de-MAHARA_VERSION_STABLE.tar.gz
+else
+ wget http://langpacks.mahara.org/de-master.tar.gz
+fi
+
+if [ ! -d /var/maharadata/langpacks  ]; then
+  mkdir /var/maharadata/langpacks
+fi
+tar -xvzf de-* -C /var/maharadata/langpacks/
+chown -R nginx:www-data /var/maharadata/langpacks/de.utf8
+rm -r /tmp/de*
+echo " " && echo "---" && echo " "
+
+}
+
+post_start_action() {
+
+if [ "$INSTALL" == "silent" ]; then
+    	  echo "Create user and database"
+    	  mysql -u $DBADMIN --password=$DBPASS -h $DBHOST <<-EOF
+    	  CREATE DATABASE IF NOT EXISTS $MAHARA_DB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+    	  GRANT ALL PRIVILEGES ON $MAHARA_DB.* TO '$MAHARA_DB_USER'@'%' IDENTIFIED BY '$MAHARA_DB_PASS';
+    	  FLUSH PRIVILEGES;
+    	  QUIT
+EOF
+    	  sed -i "s|dbuser   = '$MAHARA_DB_USER'|dbuser   = '$DBADMIN'|g" /usr/share/nginx/html/mahara/config.php
+    	  sed -i "s|dbpass   = '$MAHARA_DB_PASS'|dbpass   = '$DBPASS'|g" /usr/share/nginx/html/mahara/config.php
+    	  echo -e "\n---\nInstalling Mahara. Stay tuned!\n"
+    	  su -c "php /usr/share/nginx/html/mahara/admin/cli/install.php --verbose --adminpassword='$MAHARA_ADMPASS' --adminemail=$MAHARA_EMAIL" nginx
+    	  echo -e "\nInstalled with \nadminpassword = $MAHARA_ADMPASS \nadminemail = $MAHARA_EMAIL"
+    	  sed -i "s|dbuser   = '$DBADMIN'|dbuser   = '$MAHARA_DB_USER'|g" /usr/share/nginx/html/mahara/config.php
+    	  sed -i "s|dbpass   = '$DBPASS'|dbpass   = '$MAHARA_DB_PASS'|g" /usr/share/nginx/html/mahara/config.php
+	  echo -e "\nDB = $MAHARA_DB_USER \nDB User = $MAHARA_DB \nDB PASS = $MAHARA_DB_PASS"
+fi
+chown -R nginx:www-data /var/maharadata
+rm /firstrun
+
+echo " "
+echo "---"
+echo " "
+}
+
+if [ -f /firstrun ]; then
+
+  pre_start_action
+  post_start_action
+
+fi
+
