@@ -76,7 +76,8 @@ RUN mkdir /var/maharadata \
  && chmod 777 /var/maharadata \
  && touch /var/log/mahara_cron.log \
  && chown -R nginx:www-data /var/log/mahara_cron.log
-RUN echo "* * * * * nginx php /usr/share/nginx/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" >> /etc/crontab
+RUN echo -e "#!/bin/sh \n\nphp /usr/share/nginx/html/mahara/lib/cron.php >> /var/log/mahara_cron.log 2>&1" > /etc/periodic/15min/mahara \
+ && chmod +x /etc/periodic/15min/mahara 
 RUN sed -i "s*5.0.25*05.0.25*g" /usr/share/nginx/html/mahara/init.php
 
 RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
