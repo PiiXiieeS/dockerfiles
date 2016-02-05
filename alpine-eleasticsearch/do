@@ -14,7 +14,7 @@ else
 fi
 sed -i "s*PLACEHOLDER*${DISTRO}*g" $DIR/Dockerfile
 
-CONTAINER_NAME="eleasticsearch"
+CONTAINER_NAME="elasticsearch"
 IMAGENAME="${NAMESPACE}/${DISTRO}-${CONTAINER_NAME}:edge"
 
 build() {
