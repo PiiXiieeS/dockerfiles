@@ -36,7 +36,7 @@ if [[ "$#" < 4 ]]; then
 	echo -e "\nYou must specify at least four arguments: \n * first for database \n * second for database user \n * third for database password \n * and fourth for database container \nFor example: ./do run mahara user password mysql"
 	exit 1
 fi
-  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8280:80 -e MAHARA_DB=$1 -e MAHARA_DB_USER=$2 -e MAHARA_DB_PASS=$3 --link=$4:db $IMAGENAME
+  docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 127.0.0.1:8080:80 -e MAHARA_DB=$1 -e MAHARA_DB_USER=$2 -e MAHARA_DB_PASS=$3 --link=$4:db $IMAGENAME
   docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 }

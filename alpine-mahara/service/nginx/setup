@@ -18,6 +18,7 @@ MAHARA_ADMPASS=${MAHARA_ADMPASS:-mahara}
 DBHOST=${DBHOST:-db}
 DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
 DBPASS=${DBPASS:-$DB_ENV_DBPASS}
+ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-127.0.0.1}
 INSTALL=${INSTALL:-normal}
 
 
@@ -39,7 +40,7 @@ if [ "$RESULT" == "$MAHARA_DB" ]; then
   	sed -i 's|\/\/ \$cfg->passwordsaltmain|\$cfg->passwordsaltmain|g' /usr/share/nginx/html/mahara/config.php
   	sed -i "s|passwordsaltmain = 'some long random string here with lots of characters'|passwordsaltmain = '$MAHARA_SALD'|g" /usr/share/nginx/html/mahara/config.php
   	sed -i "s|emailcontact = ''|emailcontact = '$MAHARA_EMAIL'|g" /usr/share/nginx/html/mahara/config.php
-  	sed -i "s#\/\/ closing php tag intentionally omitted to prevent whitespace issues#\$cfg->cleanurls = true;\n\$cfg->cleanurlinvalidcharacters = '/[^a-zA-Z0-9]+/';\n\$cfg->cleanurlvalidate = '/^[a-z0-9-]*\$/';\n\$cfg->cleanurlusereditable = true;\n\n\$cfg->log_dbg_targets     = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_info_targets    = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_warn_targets    = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_environ_targets = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\n\/\/ closing php tag intentionally omitted to prevent whitespace issues#g" /usr/share/nginx/html/mahara/config.php
+  	sed -i "s#\/\/ closing php tag intentionally omitted to prevent whitespace issues#\$cfg->cleanurls = true;\n\$cfg->cleanurlinvalidcharacters = '/[^a-zA-Z0-9]+/';\n\$cfg->cleanurlvalidate = '/^[a-z0-9-]*\$/';\n\$cfg->cleanurlusereditable = true;\n\n\$cfg->log_dbg_targets     = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_info_targets    = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_warn_targets    = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\$cfg->log_environ_targets = LOG_TARGET_SCREEN | LOG_TARGET_ERRORLOG;\n\n\$cfg->plugin_search_elasticsearch_host = '$ELASTICSEARCH_HOST';\n\n\/\/ closing php tag intentionally omitted to prevent whitespace issues#g" /usr/share/nginx/html/mahara/config.php
   	chown nginx:www-data /usr/share/nginx/html/mahara/config.php
 	fi
 fi
@@ -80,7 +81,7 @@ EOF
     	  echo -e "\nInstalled with \nadminpassword = $MAHARA_ADMPASS \nadminemail = $MAHARA_EMAIL"
     	  sed -i "s|dbuser   = '$DBADMIN'|dbuser   = '$MAHARA_DB_USER'|g" /usr/share/nginx/html/mahara/config.php
     	  sed -i "s|dbpass   = '$DBPASS'|dbpass   = '$MAHARA_DB_PASS'|g" /usr/share/nginx/html/mahara/config.php
-	  echo -e "\nDB = $MAHARA_DB_USER \nDB User = $MAHARA_DB \nDB PASS = $MAHARA_DB_PASS"
+	  echo -e "\nDB = $MAHARA_DB_USER \nDB User = $MAHARA_DB \nDB PASS = $MAHARA_DB_PASS \nSALD = $MAHARA_SALD"
 fi
 chown -R nginx:www-data /var/maharadata
 rm /firstrun

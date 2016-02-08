@@ -7,8 +7,16 @@ Mahara based on Alpine
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
 cd dockerfiles/alpine-mahara && ./do build
 docker run -d --name=mysql -p 127.0.0.1:3306:3306 maxder/alpine-mysql:edge
-./do run
+./do silent
 ````
+
+## Docker image build
+```
+git clone -b alpine https://github.com/christiansteier/dockerfiles.git
+cd dockerfiles/alpine-mahara
+./do build
+````
+
 ## Docker image usage
 
 ``` shell
@@ -19,12 +27,40 @@ $ docker run -d --name mahara \
              -e MAHARA_DB="mahara" \
              -e DBHOST=db \
              -e DBPASS=password \
+	     -e MAHARA_SALD="XXXX" \
+	     -e ELASTICSEARCH_HOST="es" \
              -v /var/maharadata:/var/maharadata:rw \
-             --link mariadb:mysql \
+             --link mysql:db \
+	     --link elasticsearch:es \ 
               maxder/alpine-mahara:edge
 ```
 
-Setup a reverse proxy to it
+## With Elasticsearch
+
+Run Elasticsearch
+```
+docker run -d --name=elasticsearch -p 127.0.0.1:9200:9200 maxder/alpine-elasticsearch:edge
+````
+
+Start Mahra with linked to Elasticsearch
+``` shell
+$ docker run -d --name mahara \
+             -p 127.0.0.1:8080:80 \
+             -e MAHARA_WWWROOT=http://example.org \
+             -e MAHARA_PASS="XXXX" \
+             -e MAHARA_DB="mahara" \
+             -e DBHOST=db \
+             -e DBPASS=password \
+             -e MAHARA_SALD="XXXX" \
+             -e ELASTICSEARCH_HOST="es" \
+             -v /var/maharadata:/var/maharadata:rw \
+             --link mysql:db \
+             --link elasticsearch:es \
+              maxder/alpine-mahara:edge
+```
+
+
+## Setup a reverse proxy to it
 
 ```
 server {
