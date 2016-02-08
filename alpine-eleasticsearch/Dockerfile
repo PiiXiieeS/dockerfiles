@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:edge
+FROM maxder/PLACEHOLDER-base:edge
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk --update add openjdk7-jre ca-certificates curl \
