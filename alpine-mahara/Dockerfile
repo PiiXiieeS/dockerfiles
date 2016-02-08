@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:edge
+FROM maxder/PLACEHOLDER-base:edge
 MAINTAINER Christian-Maxilian Steier
 
 ENV MAHARA_VERSION 15.10
