@@ -28,10 +28,8 @@ $ docker run -d --name mahara \
              -e DBHOST=db \
              -e DBPASS=password \
 	     -e MAHARA_SALD="XXXX" \
-	     -e ELASTICSEARCH_HOST="es" \
              -v /var/maharadata:/var/maharadata:rw \
              --link mysql:db \
-	     --link elasticsearch:es \ 
               maxder/alpine-mahara:edge
 ```
 
