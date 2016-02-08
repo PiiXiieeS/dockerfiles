@@ -1,3 +1,5 @@
+network.bind_host: 0.0.0.0
+
 path:
   logs: /var/log/elasticsearch
   data: /var/lib/elasticsearch
