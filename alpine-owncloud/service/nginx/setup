@@ -7,7 +7,7 @@ set -e
  chown -R nginx:www-data /var/owncloud/data
  chmod 755 /var/owncloud/data
 
-OCDIR=/usr/share/nginx/html/owncloud
+OCDIR=/usr/share/webapps/owncloud
 OC_DB=${OC_DB:-owncloud}
 OC_PASS=${OC_PASS:-$(pwgen -s -1 16)}
 DBHOST=${DBHOST:-db}

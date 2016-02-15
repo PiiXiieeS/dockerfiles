@@ -5,21 +5,26 @@ ENV OWNCLOUD_VERSION 8.2
 ENV OWNCLOUD_RELEASE 2
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-RUN apk add --update-cache \
+RUN apk -U add \
     nginx \
     file \
     php \
     php-gd \
     php-xml \
     php-cgi \
-    php-pdo_pgsql \
     php-soap \
     php-gettext \
     php-fpm \
+    libcurl \
     php-curl \
+    libcrypto1.0 \
+    libmcrypt \
     php-mcrypt \
     php-json \
+    icu-libs \
+    libintl \
     php-intl \
+    c-client \
     php-imap \
     php-opcache \
     php-apcu \
@@ -37,6 +42,7 @@ RUN apk add --update-cache \
     php-ftp \
     perl-xml-simple \
     perl-xml-writer@testing \
+    libxml2 \
     memcached \
     libmemcached \
     imagemagick \
@@ -44,14 +50,17 @@ RUN apk add --update-cache \
     graphviz \
     ffmpeg \
     php-pdo_mysql \
-    php-mysql \
     php-mysqli \
     mysql-client \
     pwgen
 
 ADD service /etc/service
-RUN chmod +x /etc/service/*/*
+RUN chmod +x /etc/service/*/* \
+ && mkdir /etc/nginx/sites-enabled
 ADD conf/nginx.conf /etc/nginx/nginx.conf
+ADD conf/nginx-php.conf /etc/nginx/php.conf
+ADD conf/nginx-headers.conf /etc/nginx/headers.conf
+ADD conf/nginx-owncloud.conf /etc/nginx/sites-enabled/oc.conf
 
 RUN addgroup nginx www-data \
  && sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf \
@@ -71,9 +80,10 @@ RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.user_ttl=7200" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.gc_ttl=3600" >> /etc/php/conf.d/apcu.ini
 
-ENV ocpath /usr/share/nginx/html/owncloud
+ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
-RUN tar xfvj /tmp/oc.tar.bz2 -C /usr/share/nginx/html/ \
+RUN mkdir -p /usr/share/webapps \
+ && tar xfvj /tmp/oc.tar.bz2 -C /usr/share/webapps/ \
  && find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640 \
  && find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750 \
  && chown -R root:www-data ${ocpath}/ \
@@ -81,8 +91,9 @@ RUN tar xfvj /tmp/oc.tar.bz2 -C /usr/share/nginx/html/ \
  && chown -R nginx:www-data ${ocpath}/config/ \
  && chown -R nginx:www-data ${ocpath}/themes/ \
  && chown root:www-data ${ocpath}/.htaccess \
- && chmod 0644 ${ocpath}/.htaccess \
- && echo "*/15  *  *  *  * php -f /usr/share/nginx/html/owncloud/cron.php" >> /etc/crontab
+ && chmod 0644 ${ocpath}/.htaccess
+RUN echo -e "#!/bin/sh \n\nphp /usr/share/webapps/owncloud/cron.php" > /etc/periodic/15min/owncloud \
+ && chmod +x /etc/periodic/15min/owncloud
 ADD conf/autoconfig.php /autoconfig.php
 
 RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
