@@ -2,7 +2,7 @@ FROM maxder/PLACEHOLDER-base:edge
 MAINTAINER Christian-Maximilian Steier
 
 ENV HUMHUB_VERSION 1.0.0
-ENV BETA_RELEASE 3
+ENV BETA_RELEASE 4
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --update-cache \
