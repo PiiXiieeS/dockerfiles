@@ -10,6 +10,7 @@ RUN apk -U --no-cache --no-progress add \
         php-ctype \
 	php-curl \
 	php-dom \
+	php-exif \
 	php-fpm \
 	php-ftp \
         php-gd \
