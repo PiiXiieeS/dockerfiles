@@ -5,6 +5,7 @@ set -e
 HUMHUBDIR=/usr/share/nginx/html/humhub
 HUMHUB_DB=${HUMHUB_DB:-humhub}
 HUMHUB_PASS=${HUMHUB_PASS:-$(pwgen -s -1 16)}
+HUMHUB_SUBDIR=${HUMHUB_SUBDIR:-humhub}
 DBHOST=${DBHOST:-db}
 DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
 DBPASS=${DBPASS:-$DB_ENV_DBPASS}
@@ -32,7 +33,10 @@ if [ "`mysql -u $DBADMIN -p $DBPASS i-h $DBHOST -se'USE $HUMHUB_DB;' 2>&1`" == "
 EOF
 
   fi
- rm /firstrun
+
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/sites-enabled/humhub.conf 
+
+  rm /firstrun
 
 echo "---"
 echo "Database = $HUMHUB_DB"

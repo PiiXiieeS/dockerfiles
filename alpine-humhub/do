@@ -25,7 +25,7 @@ build() {
 
 run() {
 if [ $(docker inspect -f {{.State.Running}} mysql) == "true" ]; then
-  	docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 8989:80 --link mysql:db $IMAGENAME
+  	docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 80:80 --link mysql:db $IMAGENAME
 	docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 else
