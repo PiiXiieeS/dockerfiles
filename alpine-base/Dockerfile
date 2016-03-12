@@ -1,8 +1,7 @@
 FROM maxder/PLACEHOLDER-mini:edge
 MAINTAINER Christian-Maxilian Steier
 
-RUN apk --update add bash s6
-
+RUN apk --update add bash s6 linux-pam
 ADD service /etc/service
 
 RUN mkdir -p /var/spool/cron/crontabs
