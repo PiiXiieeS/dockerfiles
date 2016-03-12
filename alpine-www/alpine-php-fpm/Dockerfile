@@ -32,6 +32,7 @@ RUN apk -U --no-cache --no-progress add \
 	php-pdo_odbc \
         php-pdo_sqlite \
         php-pdo_mysql \
+        php-pear \
 	php-posix \
 	php-soap \
         php-sqlite3 \
