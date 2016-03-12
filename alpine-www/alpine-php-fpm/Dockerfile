@@ -18,6 +18,7 @@ RUN apk -U --no-cache --no-progress add \
         php-gmp \
 	php-imap \
 	php-iconv \
+	php-intl \
         php-json \
 	php-ldap \
         php-mcrypt \
