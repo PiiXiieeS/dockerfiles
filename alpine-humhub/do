@@ -9,16 +9,10 @@ NAMESPACE="maxder"
 
 if [ $(uname -m) == "armv6l" ]; then
 	DISTRO="rpi-alpine"
-	COUNT="2"
-	CONNECTIONS="256"
 else
 	DISTRO="alpine"
-	COUNT="4"
-	CONNECTIONS="1024"
 fi
 sed -i "s*PLACEHOLDER*${DISTRO}*g" $DIR/Dockerfile
-sed -i "s*COUNT*${COUNT}*g" $DIR/conf/nginx.conf
-sed -i "s*CONNECTIONS*${CONNECTIONS}*g" $DIR/conf/nginx.conf
 
 CONTAINER_NAME="humhub"
 IMAGENAME="${NAMESPACE}/${DISTRO}-${CONTAINER_NAME}:edge"
@@ -31,7 +25,7 @@ build() {
 
 run() {
 if [ $(docker inspect -f {{.State.Running}} mysql) == "true" ]; then
-  	docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 86:80 --link mysql:db $IMAGENAME
+  	docker run -d --hostname $CONTAINER_NAME --name $CONTAINER_NAME -p 8989:80 --link mysql:db $IMAGENAME
 	docker logs $CONTAINER_NAME
   [ $? != 0 ] && error "Docker image build failed !" && exit 100
 else
