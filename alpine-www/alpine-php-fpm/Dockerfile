@@ -61,8 +61,10 @@ RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
-ADD conf/apachemod.conf /etc/nginx/conf.d/apachemod.conf
-ADD conf/fpm.conf /etc/nginx/conf.d/fpm.conf
+
+ADD conf/apachemod.conf /etc/nginx/apachemod.conf
+ADD conf/fpm.conf /etc/nginx/fpm.conf
+RUN sed -i "s*root /usr/share/nginx/html\;*root /usr/share/nginx/html\;\n        include /etc/nginx/fpm.conf\;\n        include /etc/nginx/apachemod.conf\;*g" /etc/nginx/nginx.conf
 
 EXPOSE 9000
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
