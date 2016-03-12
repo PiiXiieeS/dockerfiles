@@ -6,6 +6,7 @@ RUN apk -U --no-cache --no-progress add \
 	php-bcmath \
 	php-bz2 \
         php-cgi \
+        php-cli \
         php-common \
         php-ctype \
 	php-curl \
