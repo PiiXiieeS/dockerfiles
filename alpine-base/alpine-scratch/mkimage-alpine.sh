@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e -x
 
 [ $(id -u) -eq 0 ] || {
@@ -77,11 +77,7 @@ REL=${REL:-edge}
 MIRROR=${MIRROR:-http://nl.alpinelinux.org/alpine}
 SAVE=${SAVE:-0}
 REPO=$MIRROR/$REL/main
-if [ $(uname -m) == "armv6l" ]; then
-        ARCH="armhf"
-else
-        ARCH=$(uname -m)
-fi
+if [ $(uname -m) == "armv6l" ]; then ARCH="armhf" ; else ARCH=$(uname -m) ; fi
 
 tmp && getapk && mkbase && conf && pack
 # && save
