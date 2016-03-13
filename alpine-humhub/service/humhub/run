@@ -30,7 +30,9 @@ EOF
   fi
   mv /usr/share/webapps/humhub /usr/share/webapps/PLACEHOLDER
   mv /usr/share/webapps/PLACEHOLDER $HUMHUBDIR
-  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/conf.d/localhost.conf 
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/conf.d/localhost.conf
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/15min/humhub
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/daily/humhub
 
   rm /firstrun
 
