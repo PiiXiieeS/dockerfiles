@@ -29,9 +29,9 @@ RUN if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ; fi \
  && find ${humhubpath}/ -type f -print0 | xargs -0 chmod 0640 \
  && find ${humhubpath}/ -type d -print0 | xargs -0 chmod 0750 \
  && chown -R root:www-data ${humhubpath}/ \
- && echo -e "#!/bin/sh \n\n/usr/share/webapps/humhub/protected/yii cron/hourly" > /etc/periodic/15min/humhub \
+ && echo -e "#!/bin/sh \n\n/usr/share/webapps/HUMHUB_SUBDIR/protected/yii cron/hourly" > /etc/periodic/15min/humhub \
  && chmod +x /etc/periodic/15min/humhub \
- && echo -e "#!/bin/sh \n\n/usr/share/webapps/humhub/protected/yii cron/daily" > /etc/periodic/daily/humhub \
+ && echo -e "#!/bin/sh \n\n/usr/share/webapps/HUMHUB_SUBDIR/protected/yii cron/daily" > /etc/periodic/daily/humhub \
  && chmod +x /etc/periodic/daily/humhub
 ADD conf/nginx_humhub.conf /etc/nginx/conf.d/localhost.conf 
 
