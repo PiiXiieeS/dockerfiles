@@ -11,6 +11,11 @@ git clone -b alpine https://github.com/christiansteier/dockerfiles.git
 dockerfiles/alpine-base/build
 ```
 
+To build with script on Hypriot (Raspberry Pi) first install build-essential
+```
+apt-get install build-essential
+```
+
 ## Build manuel
 
 Here are steps to rebuild the images on a rpi:
