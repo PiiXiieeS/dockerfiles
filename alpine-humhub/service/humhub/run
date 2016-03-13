@@ -2,18 +2,13 @@
 
 set -e
 
-HUMHUBDIR=/usr/share/nginx/html/humhub
 HUMHUB_DB=${HUMHUB_DB:-humhub}
 HUMHUB_PASS=${HUMHUB_PASS:-$(pwgen -s -1 16)}
 HUMHUB_SUBDIR=${HUMHUB_SUBDIR:-humhub}
+HUMHUBDIR=/usr/share/webapps/$HUMHUB_SUBDIR
 DBHOST=${DBHOST:-db}
 DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
 DBPASS=${DBPASS:-$DB_ENV_DBPASS}
-
-chmod -R 755 /var/lib/nginx
-chown -R nginx:www-data $HUMHUBDIR
-chmod +x $HUMHUBDIR//protected/yii
-chmod +x $HUMHUBDIR//protected/yii.bat
 
 if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" $OCDIR/config/config.php
@@ -33,8 +28,9 @@ if [ "`mysql -u $DBADMIN -p $DBPASS i-h $DBHOST -se'USE $HUMHUB_DB;' 2>&1`" == "
 EOF
 
   fi
-
-  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/sites-enabled/humhub.conf 
+  mv /usr/share/webapps/humhub /usr/share/webapps/PLACEHOLDER
+  mv /usr/share/webapps/PLACEHOLDER $HUMHUBDIR
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/conf.d/localhost.conf 
 
   rm /firstrun
 
@@ -45,3 +41,8 @@ echo "DB host = $DBHOST"
 echo "---"
 
 fi
+
+chmod -R 755 /var/lib/nginx
+chown -R nginx:www-data $HUMHUBDIR
+chmod +x $HUMHUBDIR//protected/yii
+chmod +x $HUMHUBDIR//protected/yii.bat
