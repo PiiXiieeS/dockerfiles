@@ -28,7 +28,11 @@ RUN if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ; fi \
  && mv /usr/share/webapps/humhub-${HUMHUB_VERSION}-beta.${BETA_RELEASE} ${humhubpath} \
  && find ${humhubpath}/ -type f -print0 | xargs -0 chmod 0640 \
  && find ${humhubpath}/ -type d -print0 | xargs -0 chmod 0750 \
- && chown -R root:www-data ${humhubpath}/
+ && chown -R root:www-data ${humhubpath}/ \
+ && echo -e "#!/bin/sh \n\n/usr/share/webapps/PLACEHOLDER/protected/yii cron/hourly" > /etc/periodic/15min/humhub \
+ && chmod +x /etc/periodic/15min/humhub \
+ && echo -e "#!/bin/sh \n\n/usr/share/webapps/PLACEHOLDER/protected/yii cron/daily" > /etc/periodic/daily/humhub \
+ && chmod +x /etc/periodic/daily/humhub
 ADD conf/nginx_humhub.conf /etc/nginx/conf.d/localhost.conf 
 
 RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
