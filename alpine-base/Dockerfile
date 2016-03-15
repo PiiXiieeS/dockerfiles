@@ -1,4 +1,4 @@
-FROM maxder/alpine-mini:armhf
+FROM maxder/alpine-mini:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk --update add bash s6 linux-pam
