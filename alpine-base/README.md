@@ -24,7 +24,7 @@ FROM maxder/alpine-base:x86_64
 RUN ...
 ```
 
-On arm server like raspberry:
+On arm server like rpi:
 ```dockerfile
 FROM maxder/alpine-base:armhf
 RUN ...
