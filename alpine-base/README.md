@@ -8,12 +8,26 @@ Use 'build' script:
 
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-dockerfiles/alpine-base/make
+cd dockerfiles/alpine-base && make
 ```
 
-To build with script on Hypriot (Raspberry Pi) first install build-essential
+To build on Hypriot (Raspberry Pi) first install build-essential
 ```
 apt-get install build-essential
+```
+
+## Use
+
+On X86_64 server:
+```
+FROM maxder/alpine-base:x86_64
+RUN ...
+```
+
+On arm server like raspberry:
+```
+FROM maxder/alpine-base:armhf
+RUN ...
 ```
 
 ## Build manuel
