@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all build push
 
 NAMESPACE=maxder
 IMAGENAME=alpine
@@ -42,3 +42,6 @@ clean_build:
 	docker rmi -f maxder/alpine-builder:ARCHTAG
 	docker rmi -f maxder/alpine-mini:ARCHTAG
 	docker rmi -f maxder/alpine:ARCHTAG
+
+push:
+	docker push ${NAMESPACE}/${IMAGENAME}:ARCHTAG
