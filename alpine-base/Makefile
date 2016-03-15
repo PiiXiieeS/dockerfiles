@@ -32,13 +32,9 @@ mini:
 	cd ./gliderlabs-docker-alpine* && docker run --name alpine-build-ARCHTAG ${NAMESPACE}/${IMAGENAME}-builder:ARCHTAG -s -c -t UTC -r edge -m http://alpine.gliderlabs.com/alpine > versions/gliderlabs-edge/rootfs.tar.gz
 	cd ./gliderlabs-docker-alpine* && docker  build --rm -t ${NAMESPACE}/${IMAGENAME}-mini:ARCHTAG versions/gliderlabs-edge
 
-build:
-	scratch
-	builder
-	library
-	mini
+build:  scratch builder library mini
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-base:ARCHTAG .
-	clean_build
+	make clean_build
 
 clean_build:
 	rm -r ./gliderlabs-docker-alpine*
