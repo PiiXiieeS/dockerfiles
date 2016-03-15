@@ -16,7 +16,7 @@ To build on Hypriot (Raspberry Pi) first install build-essential
 apt-get install build-essential
 ```
 
-## Use
+## Useage
 
 On X86_64 server:
 ```
