@@ -18,7 +18,7 @@ apt-get install build-essential
 
 ## Usage
 
-On X86_64 server:
+On 64-bit server:
 ```dockerfile
 FROM maxder/alpine-base:x86_64
 RUN ...
