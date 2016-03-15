@@ -44,4 +44,4 @@ clean_build:
 	docker rmi -f maxder/alpine:ARCHTAG
 
 push:
-	docker push ${NAMESPACE}/${IMAGENAME}:ARCHTAG
+	docker push ${NAMESPACE}/${IMAGENAME}-base:ARCHTAG
