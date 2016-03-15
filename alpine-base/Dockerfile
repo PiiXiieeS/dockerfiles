@@ -1,4 +1,4 @@
-FROM maxder/PLACEHOLDER-mini:edge
+FROM maxder/alpine-mini:armhf
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk --update add bash s6 linux-pam

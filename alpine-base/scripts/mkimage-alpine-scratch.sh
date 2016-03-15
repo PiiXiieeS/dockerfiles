@@ -39,18 +39,9 @@ conf() {
 
 pack() {
   local id
-  id=$(tar --numeric-owner -C $ROOTFS -c . | docker import - $DOCKERTAG:$REL)
-
-  docker tag -f $id $DOCKERTAG
-  #alpine:latest
-  #docker images
-  #docker run -i -t $DOCKERTAG:$REL printf $DOCKERTAG':%s with id=%s created!\n' $REL $id
-}
-
-save() {
-  [ $SAVE -eq 1 ] || return
-
-  tar --numeric-owner -C $ROOTFS -c . | xz > rootfs.tar.xz
+  id=$(tar --numeric-owner -C $ROOTFS -c . | docker import - $DOCKER:$REL)
+  docker tag $id $DOCKER:armhf
+  docker rmi -f $DOCKER:${REL}
 }
 
 :<<COM
@@ -72,12 +63,9 @@ while getopts "hr:m:s" opt; do
 done
 COM
 
-DOCKERTAG=${IMAGENAME:-alpine}
+DOCKER=${IMAGENAME:-alpine}
 REL=${REL:-edge}
 MIRROR=${MIRROR:-http://nl.alpinelinux.org/alpine}
-SAVE=${SAVE:-0}
 REPO=$MIRROR/$REL/main
 if [ $(uname -m) == "armv6l" ]; then ARCH="armhf" ; else ARCH=$(uname -m) ; fi
-
 tmp && getapk && mkbase && conf && pack
-# && save
