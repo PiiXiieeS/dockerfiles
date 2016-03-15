@@ -8,7 +8,7 @@ Use 'build' script:
 
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-dockerfiles/alpine-base/build
+dockerfiles/alpine-base/make
 ```
 
 To build with script on Hypriot (Raspberry Pi) first install build-essential
