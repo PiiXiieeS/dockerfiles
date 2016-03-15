@@ -3,11 +3,12 @@
 NAMESPACE=maxder
 IMAGENAME=alpine
 
-all: tag scratch builder library mini build clean_build
+all: tag
 
 tag:
 	./scripts/architecture.sh
-
+	make build
+	
 scratch:
 	IMAGENAME=$(NAMESPACE)/$(IMAGENAME)-scratch REL=$(VERSION) ./scripts/mkimage-alpine-scratch.sh
 
@@ -32,7 +33,9 @@ mini:
 	cd ./gliderlabs-docker-alpine* && docker  build --rm -t ${NAMESPACE}/${IMAGENAME}-mini:ARCHTAG versions/gliderlabs-edge
 
 build:
+	scratch builder library mini
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-base:ARCHTAG .
+	clean_build
 
 clean_build:
 	rm -r ./gliderlabs-docker-alpine*
