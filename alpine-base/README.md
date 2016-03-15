@@ -18,13 +18,13 @@ apt-get install build-essential
 
 ## Usage
 
-On 64-bit server:
+On x86 64-bit server:
 ```dockerfile
 FROM maxder/alpine-base:x86_64
 RUN ...
 ```
 
-On arm server like rpi:
+On ARM server like rpi:
 ```dockerfile
 FROM maxder/alpine-base:armhf
 RUN ...
