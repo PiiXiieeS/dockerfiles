@@ -33,7 +33,10 @@ mini:
 	cd ./gliderlabs-docker-alpine* && docker  build --rm -t ${NAMESPACE}/${IMAGENAME}-mini:ARCHTAG versions/gliderlabs-edge
 
 build:
-	scratch builder library mini
+	scratch
+	builder
+	library
+	mini
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-base:ARCHTAG .
 	clean_build
 
