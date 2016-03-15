@@ -11,7 +11,7 @@ git clone -b alpine https://github.com/christiansteier/dockerfiles.git
 cd dockerfiles/alpine-base && make
 ```
 
-To build on debian based sytem you need build-essential
+To build on debian based system you need build-essential
 ```
 apt-get install build-essential
 ```
