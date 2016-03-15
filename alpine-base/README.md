@@ -1,10 +1,10 @@
 # Alpine Docker image (x86_64 and amrhf)
 
-Build a small AlpineLinux Docker image based on [gliderlabs](http://gliderlabs.viewdocs.io/docker-alpine) with bash, cron and s6 installed
+Build a small AlpineLinux Docker image based on [gliderlabs](http://gliderlabs.viewdocs.io/docker-alpine) with bash, cron and s6 installed. 
 
 ## Automagical
 
-Use 'build' script:
+Use make:
 
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
