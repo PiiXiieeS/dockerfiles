@@ -38,5 +38,5 @@ clean_build:
 	rm -r ./gliderlabs-docker-alpine*
 	docker rmi -f maxder/alpine-scratch:ARCHTAG
 	docker rmi -f maxder/alpine-builder:ARCHTAG
-	docker rmi -f maxder/alpine-min:ARCHTAG
+	docker rmi -f maxder/alpine-mini:ARCHTAG
 	docker rmi -f maxder/alpine:ARCHTAG
