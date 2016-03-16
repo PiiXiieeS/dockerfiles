@@ -1,4 +1,4 @@
-FROM maxder/alpine-nginx:x86_64
+FROM maxder/alpine-nginx:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk -U --no-cache --no-progress add \
