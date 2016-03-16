@@ -1,4 +1,4 @@
-FROM maxder/PLACEHOLDER-nginx:edge
+FROM maxder/alpine-nginx:x86_64
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk -U --no-cache --no-progress add \
