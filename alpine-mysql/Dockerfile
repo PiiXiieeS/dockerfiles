@@ -1,17 +1,19 @@
-FROM maxder/PLACEHOLDER-base:edge
+FROM maxder/alpine-base:armhf
 MAINTAINER Christian-Maxilian Steier
 
-RUN apk --update add mysql mysql-client pwgen \
- && rm -f /var/cache/apk/*
+RUN apk -U --no-cache --no-progress add \
+	mysql \
+	mysql-client \
+	pwgen
 
 ADD service /etc/service
 RUN rm -r /etc/service/cron \
- && chmod +x /etc/service/mysql/*
+ && chmod +x /etc/service/*/*
+
+RUN touch /firstrun
+RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
 
 EXPOSE 3306
-RUN touch /firstrun
-
 VOLUME ["/var/lib/mysql"]
-
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]
