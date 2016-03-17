@@ -15,6 +15,7 @@ pre_start_action() {
   mysql_install_db --user=mysql --rpm > /dev/null
 
   echo "Tuning MariaDB"
+  sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
   sed -ri 's|# * InnoDB|ignore_builtin_innodb\nplugin-load=ha_innodb.so\n# * InnoDB|g' /etc/mysql/my.cnf
   echo -e 'skip-host-cache\nskip-name-resolve\n' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/my.cnf
 
