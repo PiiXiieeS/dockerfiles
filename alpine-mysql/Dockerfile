@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:armhf
+FROM maxder/alpine-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk -U --no-progress add \
