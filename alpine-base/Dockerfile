@@ -1,7 +1,11 @@
 FROM maxder/alpine-mini:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-RUN apk --update add bash s6 linux-pam
+ENV RELEASE v3.3
+RUN echo "http://dl-4.alpinelinux.org/alpine/$RELEASE/main/" > /etc/apk/repositories    \
+ && echo "http://dl-4.alpinelinux.org/alpine/$RELEASE/community/" >> /etc/apk/repositories \
+ && apk -U --no-progress upgrade
+RUN apk -U --no-progress add bash s6 linux-pam
 ADD service /etc/service
 
 RUN mkdir -p /var/spool/cron/crontabs
