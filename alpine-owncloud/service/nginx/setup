@@ -22,7 +22,7 @@ if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 fi
 
 if [ -f /firstrun ]; then
-if [ "`mysql -u $DBADMIN -p $DBPASS i-h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
+if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
         echo "$OC_DB exist"
         echo "So I expect a config.php under $OCDIR"
   else
@@ -37,7 +37,7 @@ if [ "`mysql -u $DBADMIN -p $DBPASS i-h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ];
         sed -i "s*OCPASS*$OCPASS*g"  $OCDIR/config/autoconfig.php
         sed -i "s*OCSALT*$OCSALT*g"  $OCDIR/config/autoconfig.php
 
-        mysql -u $DBADMIN --password=$DBPASS -h $DBHOST <<-EOF
+        mysql -u$DBADMIN -p$DBPASS -h $DBHOST <<-EOF
         CREATE DATABASE IF NOT EXISTS $OC_DB CHARACTER SET utf8;
         GRANT ALL PRIVILEGES ON $OC_DB.* TO '$OC_DB'@'%' IDENTIFIED BY '$OC_PASS';
         FLUSH PRIVILEGES;

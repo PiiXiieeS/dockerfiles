@@ -1,45 +1,14 @@
-FROM maxder/PLACEHOLDER-base:edge
+FROM maxder/alpine-php-fpm:ARCHTAG
 MAINTAINER Christian-Maximilian Steier
 
-ENV OWNCLOUD_VERSION 8.2
-ENV OWNCLOUD_RELEASE 2
+ENV OWNCLOUD_VERSION 9.0
+ENV OWNCLOUD_RELEASE 0
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk -U add \
-    nginx \
     file \
-    php \
-    php-gd \
-    php-xml \
-    php-cgi \
-    php-soap \
-    php-gettext \
-    php-fpm \
-    libcurl \
-    php-curl \
     libcrypto1.0 \
-    libmcrypt \
-    php-mcrypt \
-    php-json \
-    icu-libs \
     libintl \
-    php-intl \
-    c-client \
-    php-imap \
-    php-opcache \
-    php-apcu \
-    php-pear \
-    php-xmlrpc \
-    php-cli \
-    php-pdo \
-    php-zip \
-    php-dom \
-    php-ctype \
-    php-zlib \
-    php-iconv \
-    php-posix \
-    php-openssl \
-    php-ftp \
     perl-xml-simple \
     perl-xml-writer@testing \
     libxml2 \
@@ -49,36 +18,12 @@ RUN apk -U add \
     bzip2 \
     graphviz \
     ffmpeg \
-    php-pdo_mysql \
-    php-mysqli \
     mysql-client \
     pwgen
 
 ADD service /etc/service
-RUN chmod +x /etc/service/*/* \
- && mkdir /etc/nginx/sites-enabled
-ADD conf/nginx.conf /etc/nginx/nginx.conf
-ADD conf/nginx-php.conf /etc/nginx/php.conf
-ADD conf/nginx-headers.conf /etc/nginx/headers.conf
-ADD conf/nginx-owncloud.conf /etc/nginx/sites-enabled/oc.conf
-
-RUN addgroup nginx www-data \
- && sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf \
- && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
- && echo "clear_env = no" >> /etc/php/php-fpm.conf
-
-## PHP config
-RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc/php/php.ini \
- && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 512M/g" /etc/php/php.ini \
- && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini
-
-## Fixes: PHP is configured to populate raw post data. Since PHP 5.6 this will lead to PHP throwing notices for perfectly valid code. #19
-RUN echo 'always_populate_raw_post_data = -1' >> /etc/php/php.ini
-
-RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
- && echo "apc.ttl=7200" >> /etc/php/conf.d/apcu.ini \
- && echo "apc.user_ttl=7200" >> /etc/php/conf.d/apcu.ini \
- && echo "apc.gc_ttl=3600" >> /etc/php/conf.d/apcu.ini
+RUN chmod +x /etc/service/*/*
+ADD conf/nginx-owncloud.conf /etc/nginx/conf.d/localhost.conf
 
 ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
