@@ -10,6 +10,7 @@ ADD service /etc/service
 RUN chmod +x /etc/service/*/*
 
 ADD conf/nginx.conf /etc/nginx/nginx.conf
+ADD conf/nginx-headers.conf /etc/nginx/headers.conf
 ADD conf/nginx_localhost.conf /etc/nginx/conf.d/localhost.conf
 RUN if [ ! -d "/etc/nginx/sites-enabled" ]; then mkdir /etc/nginx/sites-enabled ;fi \
  && echo "charset utf-8;" > /etc/nginx/conf.d/charset.conf \
