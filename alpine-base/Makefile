@@ -38,7 +38,7 @@ build:  scratch builder library mini
 
 clean_build:
 	rm -r ./gliderlabs-docker-alpine*
-	dcoker rm -f alpine-build-ARCHTAG
+	docker rm -f alpine-build-ARCHTAG
 	docker rmi -f maxder/alpine-scratch:ARCHTAG
 	docker rmi -f maxder/alpine-builder:ARCHTAG
 	docker rmi -f maxder/alpine-mini:ARCHTAG
