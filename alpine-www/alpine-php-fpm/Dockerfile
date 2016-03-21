@@ -64,7 +64,7 @@ ADD service /etc/service
 RUN chmod +x /etc/service/*/*
 
 ADD conf/fpm.conf /etc/nginx/fpm.conf
-RUN sed -i "s*root /usr/share/nginx/html\;*root /usr/share/nginx/html\;\n        include /etc/nginx/fpm.conf\;\n        include /etc/nginx/apachemod.conf\;*g" /etc/nginx/conf.d/localhost.conf
+RUN sed -i "s*root /usr/share/nginx/html\;*root /usr/share/nginx/html\;\n        include /etc/nginx/fpm.conf\;\n*g" /etc/nginx/conf.d/localhost.conf
 
 EXPOSE 9000
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
