@@ -25,7 +25,6 @@ if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; th
         echo "$OC_DB exist"
         echo "So I expect a config.php under $OCDIR"
   else
-        echo "Create database user $OC_DB and database $OC_DB"
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
         chown -R nginx:www-data  $OCDIR/config/autoconfig.php
         sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
