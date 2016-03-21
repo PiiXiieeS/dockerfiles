@@ -9,7 +9,6 @@ set -e
 
 OCDIR=/usr/share/webapps/owncloud
 OC_DB=${OC_DB:-owncloud}
-OC_PASS=${OC_PASS:-$(pwgen -s -1 16)}
 DBHOST=${DBHOST:-db}
 DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
 DBPASS=${DBPASS:-$DB_ENV_DBPASS}
@@ -29,23 +28,18 @@ if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; th
         echo "Create database user $OC_DB and database $OC_DB"
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
         chown -R nginx:www-data  $OCDIR/config/autoconfig.php
-        sed -i "s*DBUSER*$OC_DB*g"  $OCDIR/config/autoconfig.php
-        sed -i "s*DBPASS*$OC_PASS*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*DBPASS*$DBPASS*g"  $OCDIR/config/autoconfig.php
         sed -i "s*DBHOST*$DBHOST*g"  $OCDIR/config/autoconfig.php
         sed -i "s*DBNAME*$OC_DB*g"  $OCDIR/config/autoconfig.php
         sed -i "s*OCADMIN*$OCADMIN*g"  $OCDIR/config/autoconfig.php
         sed -i "s*OCPASS*$OCPASS*g"  $OCDIR/config/autoconfig.php
         sed -i "s*OCSALT*$OCSALT*g"  $OCDIR/config/autoconfig.php
 
-        mysql -u$DBADMIN -p$DBPASS -h $DBHOST <<-EOF
-        CREATE DATABASE IF NOT EXISTS $OC_DB CHARACTER SET utf8;
-        GRANT ALL PRIVILEGES ON $OC_DB.* TO '$OC_DB'@'%' IDENTIFIED BY '$OC_PASS';
-        GRANT SELECT ON mysql.user TO '$OC_DB'@'%' IDENTIFIED BY '$OC_PASS';
-        FLUSH PRIVILEGES;
-EOF
-
         echo -e  "<?php \n\$CONFIG = array (\n  'memcache.local' => '\\OC\\Memcache\\APCu',\n);" > $OCDIR/config/config.php
         chown nginx:www-data $OCDIR/config/config.php
+        
+        echo "\n[i] Set automatic configuration:\nOC admin: $OCADMIN\nOC Pass: $OCADMIN\n Salt: $OCSALT\n---\n"
 
   fi
  rm /firstrun
