@@ -38,7 +38,7 @@ if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; th
         echo -e  "<?php \n\$CONFIG = array (\n  'memcache.local' => '\\OC\\Memcache\\APCu',\n);" > $OCDIR/config/config.php
         chown nginx:www-data $OCDIR/config/config.php
         
-        echo -e "\n[i] Set automatic configuration:\nOC admin: $OCADMIN\nOC pass: $OCPASS\n Salt: $OCSALT\n---\n"
+        echo -e "\n[i] Set automatic configuration:\n OC admin: $OCADMIN\n OC pass: $OCPASS\n Salt: $OCSALT\n---\n"
 
   fi
  rm /firstrun
