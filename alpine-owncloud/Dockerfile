@@ -19,7 +19,8 @@ RUN apk -U add \
     graphviz \
     ffmpeg \
     mysql-client \
-    pwgen
+    pwgen \
+    sudo
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
@@ -37,7 +38,7 @@ RUN mkdir -p /usr/share/webapps \
  && chown -R nginx:www-data ${ocpath}/themes/ \
  && chown root:www-data ${ocpath}/.htaccess \
  && chmod 0644 ${ocpath}/.htaccess
-RUN echo -e "#!/bin/sh \n\nphp /usr/share/webapps/owncloud/cron.php" > /etc/periodic/15min/owncloud \
+RUN echo -e "#!/bin/sh \n\nsudo -u nginx php /usr/share/webapps/owncloud/cron.php" > /etc/periodic/15min/owncloud \
  && chmod +x /etc/periodic/15min/owncloud
 ADD conf/autoconfig.php /autoconfig.php
 
