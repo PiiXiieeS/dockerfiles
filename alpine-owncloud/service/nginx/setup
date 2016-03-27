@@ -1,12 +1,5 @@
 set -e
 
- chown -R nginx:www-data /var/lib/nginx
- if [ ! -d /var/owncloud/data ]; then
-	mkdir -p /var/owncloud/data
- fi
- chown -R nginx:www-data /var/owncloud/data
- chmod 755 /var/owncloud/data
-
 OCDIR=/usr/share/webapps/owncloud
 OC_DB=${OC_DB:-owncloud}
 DBHOST=${DBHOST:-db}
@@ -24,7 +17,7 @@ if [ -f /firstrun ]; then
 if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
         echo "$OC_DB exist"
         echo "So I expect a config.php under $OCDIR"
-  else
+else
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
         chown -R nginx:www-data  $OCDIR/config/autoconfig.php
         sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
@@ -40,7 +33,13 @@ if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; th
         
         echo -e "\n[i] Set automatic configuration:\n OC admin: $OCADMIN\n OC pass: $OCPASS\n Salt: $OCSALT\n---\n"
 
-  fi
+fi
+ chown -R nginx:www-data /var/lib/nginx
+ if [ ! -d /var/owncloud/data ]; then
+	mkdir -p /var/owncloud/data
+ fi
+ chown -R nginx:www-data /var/owncloud/data
+ chmod 755 /var/owncloud/data
+ chown -R nginx:www-data $OCDIR/config
  rm /firstrun
-
 fi
