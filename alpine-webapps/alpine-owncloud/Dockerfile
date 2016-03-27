@@ -11,6 +11,7 @@ RUN apk -U add \
     libintl \
     perl-xml-simple \
     perl-xml-writer@testing \
+    phpredis@testing \
     libxml2 \
     memcached \
     libmemcached \
@@ -24,6 +25,9 @@ RUN apk -U add \
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
+
+RUN touch /etc/php/conf.d/redis.ini \
+ && echo extension=redis.so > /etc/php/conf.d/redis.ini
 ADD conf/nginx-owncloud.conf /etc/nginx/conf.d/localhost.conf
 
 ENV ocpath /usr/share/webapps/owncloud
