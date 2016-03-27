@@ -37,7 +37,6 @@ RUN apk -U --no-cache --no-progress add \
         php-pear \
         php-phar \
 	php-posix \
-	phpredis \
 	php-soap \
         php-sqlite3 \
 	php-xml \
