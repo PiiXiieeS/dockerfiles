@@ -14,7 +14,7 @@ build:
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:
-	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db --link redis-server:redis -e OCADMIN=ocadmin -e OCPASS=ocadmin -p 80:80 -v /srv/docker/owncloud:/var/owncloud -v /srv/docker/owncloud/config:/usr/share/webapps/owncloud/config ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db --link redis-server:redis -e OCADMIN=ocadmin -e OCPASS=ocadmin -p 80:80 -v /srv/docker/owncloud/data:/var/owncloud/data -v /srv/docker/owncloud/config:/usr/share/webapps/owncloud/config ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${NAME} 
