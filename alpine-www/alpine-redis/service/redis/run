@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -f ./setup ]
+then
+  source ./setup
+fi
+
+exec s6-setuidgid redis redis-server
