@@ -1,4 +1,4 @@
-.PHONY: all build run push
+.PHONY: all build run remove push
 
 NAME=redis
 NAMESPACE=maxder
@@ -17,7 +17,7 @@ run:
 	docker run -d --hostname ${NAME} --name ${NAME}-server -p 6379:6379 -v /srv/docker/redis:/var/lib/redis ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
-	docker rm -f ${IMAGENAME}-${NAME} 
+	docker rm -f ${NAME}-server 
 
 push:
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
