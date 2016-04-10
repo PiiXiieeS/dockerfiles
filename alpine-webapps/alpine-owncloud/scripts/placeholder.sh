@@ -1,1 +1,1 @@
-../../alpine-www/alpine-nginx/scripts/placeholder.sh
+../../../alpine-www/alpine-nginx/scripts/placeholder.sh
