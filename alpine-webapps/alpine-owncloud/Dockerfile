@@ -2,7 +2,7 @@ FROM maxder/alpine-php-fpm:ARCHTAG
 MAINTAINER Christian-Maximilian Steier
 
 ENV OWNCLOUD_VERSION 9.0
-ENV OWNCLOUD_RELEASE 0
+ENV OWNCLOUD_RELEASE 1
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk -U add \
