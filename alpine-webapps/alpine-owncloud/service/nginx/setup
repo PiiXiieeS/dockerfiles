@@ -44,3 +44,5 @@ fi
  rm /firstrun
 
 fi
+
+chmod -R 755 /var/lib/nginx
