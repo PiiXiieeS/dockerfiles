@@ -24,6 +24,7 @@ RUN apk -U --no-cache --no-progress add \
 	php-ldap \
         php-mcrypt \
         php-memcache \
+        php-memcached \
 	php-mssql \
 	php-mysqli \
 	php-opcache \
