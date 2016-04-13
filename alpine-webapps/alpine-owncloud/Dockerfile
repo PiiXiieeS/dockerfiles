@@ -13,6 +13,7 @@ RUN apk -U add \
     perl-xml-writer@testing \
     phpredis@testing \
     libxml2 \
+    php-memcached@testing \
     memcached \
     libmemcached \
     imagemagick \
