@@ -10,9 +10,9 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/rep
  && apk -U --no-progress upgrade
 RUN apk --no-cache --no-progress add redis \
  && sed 's/^daemonize yes/daemonize no/' -i /etc/redis.conf \
- && sed 's/^bind 127.0.0.1/bind 0.0.0.0/' -i /etc/redis.conf \
+ && sed 's/^# bind 127.0.0.1/bind 0.0.0.0/' -i /etc/redis.conf \
  && sed 's/^# unixsocket /unixsocket /' -i /etc/redis.conf \
- && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis.conf \
+ && sed 's/^# unixsocketperm 700/unixsocketperm 777/' -i /etc/redis.conf \
  && sed '/^logfile/d' -i /etc/redis.conf
 RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
 
