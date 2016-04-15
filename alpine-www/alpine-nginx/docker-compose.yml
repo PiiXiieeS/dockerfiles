@@ -1,5 +1,5 @@
 nginx:
   restart: always
-  image: maxder/alpine-nginx:ARCHTAG
+  image: maxder/alpine-nginx:x86_64
   ports:
     - "80:80"

@@ -14,7 +14,7 @@ build:
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:
-	docker run -d --hostname ${IMAGENAME}-${NAME} --name ${IMAGENAME}-${NAME} -p 80:80 ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run -d --hostname ${IMAGENAME}-${NAME} --name ${IMAGENAME}-${NAME} -p 80:80 -v /srv/docker/nginx/sites-enabled:/etc/nginx/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${IMAGENAME}-${NAME} 

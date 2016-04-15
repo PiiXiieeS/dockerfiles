@@ -11,11 +11,13 @@ RUN chmod +x /etc/service/*/*
 
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/nginx-headers.conf /etc/nginx/headers.conf
-ADD conf/nginx_localhost.conf /etc/nginx/conf.d/localhost.conf
+ADD conf/nginx_localhost.conf /etc/nginx/sites-available/localhost.conf
 RUN if [ ! -d "/etc/nginx/sites-enabled" ]; then mkdir /etc/nginx/sites-enabled ;fi \
+ && ln -s /etc/nginx/sites-available/localhost.conf  /etc/nginx/sites-enabled/ \
  && echo "charset utf-8;" > /etc/nginx/conf.d/charset.conf \
- && echo "client_max_body_size 1G;" > /etc/nginx/conf.d/uploads.conf
+ && echo "client_max_body_size 2G;" > /etc/nginx/conf.d/uploads.conf
 
 EXPOSE 80 443
+RUN touch /firstrun
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]

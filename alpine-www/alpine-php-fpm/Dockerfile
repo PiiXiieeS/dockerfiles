@@ -51,8 +51,8 @@ RUN addgroup nginx www-data \
  && echo "clear_env = no" >> /etc/php/php-fpm.conf
 
 ## PHP config
-RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 512M/g" /etc/php/php.ini \
- && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 512M/g" /etc/php/php.ini \
+RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/php.ini \
+ && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini \
  && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini
 
 RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
@@ -64,8 +64,8 @@ ADD service /etc/service
 RUN chmod +x /etc/service/*/*
 
 ADD conf/fpm.conf /etc/nginx/fpm.conf
-RUN sed -i "s*root /usr/share/nginx/html\;*root /usr/share/nginx/html\;\n        include /etc/nginx/fpm.conf\;\n*g" /etc/nginx/conf.d/localhost.conf
+RUN sed -i "s*root /usr/share/nginx/html\;*root /usr/share/nginx/html\;\n        include /etc/nginx/fpm.conf\;\n*g" /etc/nginx/sites-available/localhost.conf
 
-EXPOSE 9000
+#EXPOSE 9000
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]

@@ -5,4 +5,10 @@ then
   source ./setup
 fi
 
+if [ -f /firstrun ]; then
+  cp -a /etc/nginx/sites-available/localhost.conf /etc/nginx/sites-enabled/example
+  sed -i '1s/^/#Add .conf as suffix to activate this file and restart NGINX container.\n/' /etc/nginx/sites-enabled/example
+  rm /firstrun 
+fi
+
 exec nginx -g "daemon off;"
