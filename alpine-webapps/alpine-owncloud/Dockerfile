@@ -29,7 +29,7 @@ RUN chmod +x /etc/service/*/*
 
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini
-ADD conf/nginx-owncloud.conf /etc/nginx/conf.d/localhost.conf
+ADD conf/nginx-owncloud.conf /etc/nginx/sites-available/localhost.conf
 
 ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
