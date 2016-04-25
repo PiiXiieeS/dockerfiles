@@ -67,5 +67,6 @@ DOCKER=${IMAGENAME:-alpine}
 REL=${REL:-edge}
 MIRROR=${MIRROR:-http://nl.alpinelinux.org/alpine}
 REPO=$MIRROR/$REL/main
-if [ $(uname -m) == "armv6l" ]; then ARCH="ARCHTAG" ; else ARCH=$(uname -m) ; fi
+if [ $(uname -m) == "armv6l" ]; then ARCH="ARCHTAG" ; elif [ $(uname -m) == "armv7l" ]; then ARCH="ARCHTAG" ; else ARCH=$(uname -m) ; fi
+
 tmp && getapk && mkbase && conf && pack
