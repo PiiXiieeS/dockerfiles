@@ -17,6 +17,8 @@ if [ -f /firstrun ]; then
 if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
         echo "$OC_DB exist"
         echo "So I expect a config.php under $OCDIR"
+elif [ -f $OCDIR/config/config.php ]; then
+        echo "I expect a config.php under $OCDIR"
 else
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
         chown -R nginx:www-data  $OCDIR/config/autoconfig.php
