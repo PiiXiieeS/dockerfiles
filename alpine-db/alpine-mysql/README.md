@@ -1,4 +1,4 @@
-#Docker Alpine MySQL (x86_64 and amrhf)
+#Docker Alpine MySQL (x86_64 and armhf)
 
 MariaDB/MySQL based on Alpine
 
@@ -19,14 +19,14 @@ $ docker run -d --name mysql \
 
 If you build on a ARM platform like Raspberry PI
 ```
-docker run [docker-options] maxder/rpi-alpine-mysql:armhf
+docker run [docker-options] maxder/alpine-mysql:armhf
 ```
 
 ## Connecting to the Database
 
 To connect to the MariaDB server, you will need to make sure you have a client.
 You can install the `mysql-client` on your host machine by running the
-following (Debain or Ubuntu):
+following (Debian or Ubuntu):
 
 ``` shell
 $ sudo apt-get install mysql-client
@@ -37,7 +37,7 @@ password for the superuser.  To view the login in run `docker logs
 <container_name>` like so:
 
 ``` shell
-$ docker logs mariadb
+$ docker logs mysql
 MARIADB_USER=dbadmin
 MARIADB_PASS=PASSWORD
 Starting MariaDB...
@@ -60,7 +60,7 @@ a separate container.
 To demonstrate this, we can spin up a new container like so:
 
 ``` shell
-$ docker run -t -i -link mariadb:db debian bash
+$ docker run -t -i -link mysql:db debian bash
 ```
 
 This assumes you're already running the database container with the name
