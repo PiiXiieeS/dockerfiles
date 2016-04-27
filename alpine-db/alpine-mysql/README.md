@@ -5,7 +5,7 @@ MariaDB/MySQL based on Alpine
 ## Quickstart
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-cd dockerfiles/alpine-mysql && make && make run
+cd dockerfiles/alpine-db/alpine-mysql && make && make run
 ````
 ## Docker image usage
 
@@ -14,7 +14,7 @@ $ docker run -d --name mysql \
              -p 127.0.0.1:3306:3306 \
              -e DBUSER="dbadmin" \
              -e DBPASS="PASSWORD" \
-              maxder/alpine-mysql:edge
+              maxder/alpine-mysql:x86_64 (or armhf)
 ```
 
 If you build on a ARM platform like Raspberry PI
