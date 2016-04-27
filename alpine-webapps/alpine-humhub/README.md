@@ -12,7 +12,8 @@ make && make run
 
 1. Run 
 
-  `docker run -d -m 1g -p 127.0.0.1:8080:80 --name=humhub \
+  ```
+  docker run -d -m 1g -p 127.0.0.1:8080:80 --name=humhub \
               -e HUMHUB_DB=mysql_database \
               -e HUMHUB_PASS=mysql_password \
               -e HUMHUB_SUBDIR=name_for_url_subdir \
@@ -20,7 +21,8 @@ make && make run
               -e DBPASS=mysql_admin_password \
               -e DBADMIN=mysql_admin \
               --link mysql:db \
-              maxder/alpine-humhub:x86_64`
+              maxder/alpine-humhub:x86_64
+  ```
 
   If you build on a ARM platform like Raspberry PI
   ```
