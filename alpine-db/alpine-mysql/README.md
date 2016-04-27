@@ -14,12 +14,12 @@ $ docker run -d --name mysql \
              -p 127.0.0.1:3306:3306 \
              -e DBUSER="dbadmin" \
              -e DBPASS="PASSWORD" \
-              maxder/alpine-mysql:x86_64 (or armhf)
+              maxder/alpine-mysql:x86_64
 ```
 
 If you build on a ARM platform like Raspberry PI
 ```
-docker run [docker-options] maxder/rpi-alpine-mysql:edge
+docker run [docker-options] maxder/rpi-alpine-mysql:armhf
 ```
 
 ## Connecting to the Database
