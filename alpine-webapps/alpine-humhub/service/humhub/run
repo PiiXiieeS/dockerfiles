@@ -15,24 +15,26 @@ if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 fi
 
 if [ -f /firstrun ]; then
+
+  mv /usr/share/webapps/humhub /usr/share/webapps/PLACEHOLDER
+  mv /usr/share/webapps/PLACEHOLDER $HUMHUBDIR
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/sites-enabled/localhost.conf
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/15min/humhub
+  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/daily/humhub
+
 if [ "`mysql -u $DBADMIN -p $DBPASS i-h $DBHOST -se'USE $HUMHUB_DB;' 2>&1`" == "" ]; then
         echo "$HUMHUB_DB exist"
         echo "So I expect a config.php under $HUMHUBDIR"
   else
         echo "Create database user $HUMHUB_DB and database $HUMHUB_DB"
 
-        mysql -u $DBADMIN --password=$DBPASS -h $DBHOST <<-EOF
+        mysql -u${DBADMIN} -p${DBPASS} -h $DBHOST <<-EOF
         CREATE DATABASE IF NOT EXISTS $HUMHUB_DB CHARACTER SET utf8 COLLATE utf8_general_ci;
         GRANT ALL PRIVILEGES ON $HUMHUB_DB.* TO '$HUMHUB_DB'@'%' IDENTIFIED BY '$HUMHUB_PASS';
         FLUSH PRIVILEGES;
 EOF
 
   fi
-  mv /usr/share/webapps/humhub /usr/share/webapps/PLACEHOLDER
-  mv /usr/share/webapps/PLACEHOLDER $HUMHUBDIR
-  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/nginx/conf.d/localhost.conf
-  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/15min/humhub
-  sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/daily/humhub
 
   rm /firstrun
 

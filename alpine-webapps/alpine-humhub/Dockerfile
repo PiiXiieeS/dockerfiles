@@ -1,4 +1,4 @@
-FROM maxder/PLACEHOLDER-php-fpm:edge
+FROM maxder/alpine-php-fpm:x86_64
 MAINTAINER Christian-Maximilian Steier
 
 ENV HUMHUB_VERSION 1.0.0
