@@ -1,4 +1,4 @@
-FROM maxder/alpine-php-fpm:x86_64
+FROM maxder/alpine-php-fpm:ARCHTAG
 MAINTAINER Christian-Maximilian Steier
 
 ENV HUMHUB_VERSION 1.0.0
