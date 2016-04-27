@@ -5,4 +5,4 @@ then
   source ./setup
 fi
 
-exec s6-setuidgid redis redis-server
+exec redis-server /etc/redis.conf

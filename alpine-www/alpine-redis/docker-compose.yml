@@ -1,5 +1,5 @@
 redis-server:
-  image: maxder/alpine-redis:ARCHTAG
+  image: maxder/alpine-redis:armhf
   ports:
     - "6379:6379"
   volumes:
