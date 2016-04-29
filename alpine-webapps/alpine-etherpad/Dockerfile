@@ -8,8 +8,7 @@ RUN apk -U add \
 	zlib \
 	libuv \
 	mysql-client \
-	pwgen \
-	sudo
+	pwgen
 
 
 ENV pkgver=0.12.9
