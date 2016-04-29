@@ -22,7 +22,7 @@ if [ -f /firstrun ]; then
   sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/15min/humhub
   sed -i "s*HUMHUB_SUBDIR*$HUMHUB_SUBDIR*g" /etc/periodic/daily/humhub
 
-if [ "`mysql -u $DBADMIN -p $DBPASS i-h $DBHOST -se'USE $HUMHUB_DB;' 2>&1`" == "" ]; then
+if [ "`mysql -u${DBADMIN} -p${DBPASS} -h $DBHOST -se'USE $HUMHUB_DB;' 2>&1`" == "" ]; then
         echo "$HUMHUB_DB exist"
         echo "So I expect a config.php under $HUMHUBDIR"
   else
