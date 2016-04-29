@@ -8,12 +8,11 @@ all: tag
 
 tag:
 	./scripts/architecture.sh
-	${MAKE} build
 	
-build:  
+build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
-run:
+run:	tag
 	docker run -d --hostname ${NAME} --name ${NAME} -e INSTALL=silent --link mysql:db -p 80:80 -v /srv/docker/${NAME}/data:/var/${NAME}/data ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
