@@ -11,13 +11,13 @@ tag:
 	${MAKE} build
 	
 build:  
-	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:x86_64 .
+	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:
-	docker run -d --hostname ${NAME} --name ${NAME} -e INSTALL=silent --link mysql:db -p 8989:80 -v /srv/docker/${NAME}/data:/var/${NAME}/data ${NAMESPACE}/${IMAGENAME}-${NAME}:x86_64
+	docker run -d --hostname ${NAME} --name ${NAME} -e INSTALL=silent --link mysql:db -p 8989:80 -v /srv/docker/${NAME}/data:/var/${NAME}/data ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${NAME} 
 
 push:
-	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:x86_64
+	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG

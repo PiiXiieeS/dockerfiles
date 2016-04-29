@@ -1,20 +1,21 @@
 #Docker Alpine Mahara (x86_64)
 
-Mahara based on Alpine
+Mahara based on Alpine Linux
 
 ## Quickstart
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-cd dockerfiles/alpine-mahara && ./do build
-docker run -d --name=mysql -p 127.0.0.1:3306:3306 maxder/alpine-mysql:edge
-./do silent
+cd dockerfiles/alpine-webapps/alpine-mahara
+make
+docker run -d --name=mysql maxder/alpine-mysql
+make run
 ````
 
 ## Docker image build
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-cd dockerfiles/alpine-mahara
-./do build
+cd dockerfiles/alpine-webapps/alpine-mahara
+make build
 ````
 
 ## Docker image usage
@@ -28,16 +29,16 @@ $ docker run -d --name mahara \
              -e DBHOST=db \
              -e DBPASS=password \
 	     -e MAHARA_SALD="XXXX" \
-             -v /var/maharadata:/var/maharadata:rw \
+             -v /srv/docker/mahara/data:/var/mahara/data \
              --link mysql:db \
-              maxder/alpine-mahara:edge
+              maxder/alpine-mahara
 ```
 
 ## With Elasticsearch
 
 Run Elasticsearch
 ```
-docker run -d --name=elasticsearch -p 127.0.0.1:9200:9200 maxder/alpine-elasticsearch:edge
+docker run -d --name=elasticsearch maxder/alpine-elasticsearch
 ````
 
 Start Mahra with linked to Elasticsearch
@@ -51,10 +52,10 @@ $ docker run -d --name mahara \
              -e DBPASS=password \
              -e MAHARA_SALD="XXXX" \
              -e ELASTICSEARCH_HOST="es" \
-             -v /var/maharadata:/var/maharadata:rw \
+             -v /srv/docker/mahara/data:/var/mahara/data \
              --link mysql:db \
              --link elasticsearch:es \
-              maxder/alpine-mahara:edge
+              maxder/alpine-mahara
 ```
 
 
