@@ -15,7 +15,7 @@ build:
 
 run:
 	rand=$$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="$$rand" ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="$$rand" -v /srv/docker/mysql:/var/lib/mysql ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${NAME}
