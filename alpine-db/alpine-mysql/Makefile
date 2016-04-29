@@ -14,7 +14,7 @@ build:
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:
-	rand=$$RANDOM && \
+	rand=$$(date +%s | sha256sum | base64 | head -c 32 ; echo)
 	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="$$rand" ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
