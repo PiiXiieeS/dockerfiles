@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 if [ -f /firstrun ]; then
@@ -14,6 +14,7 @@ if [ -f /firstrun ]; then
   DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
   DBPASS=${DBPASS:-$DB_ENV_DBPASS}
   DBHOST=${DBHOST:-$DB_PORT_3306_TCP_ADDR}
+  eppath=/opt/etherpad-lite
 
   if [ -z "$DB_PORT_3306_TCP_ADDR" ]; then
 	echo >&2 'error: missing MYSQL_PORT_3306_TCP environment variable'
@@ -32,11 +33,15 @@ if [ -f /firstrun ]; then
 
   mysql -u $DBADMIN --password=$DBPASS -h $DBHOST <<-EOF
       CREATE DATABASE IF NOT EXISTS ${ETHERPAD_DB_NAME} CHARACTER SET utf8;
-      GRANT ALL PRIVILEGES ON ${ETHERPAD_DB_NAME}.* TO $ETHERPAD_DB_USER IDENTIFIED BY '$ETHERPAD_DB_PASS';
+      GRANT ALL PRIVILEGES ON ${ETHERPAD_DB_NAME}.* TO '$ETHERPAD_DB_USER'@'%' IDENTIFIED BY '$ETHERPAD_DB_PASS';
       FLUSH PRIVILEGES;
 EOF
 
   fi
+
+
+  if [ ! -f $eppath/settings.json ]; then
+	cp $eppath/settings.json.template $eppath/settings.json
 
 cat << EOF > /opt/etherpad-lite/settings.json
 {
@@ -65,13 +70,9 @@ cat << EOF >> /opt/etherpad-lite/settings.json
 }
 EOF
 
-echo " "
-echo "---"
-echo "APIKEY: $(cat /opt/etherpad-lite/APIKEY.txt)"
-echo "ADMIN: $ETHERPAD_ADMIN_USER"
-echo "ADMIN PASS: $ETHERPAD_ADMIN_PASS"
-echo "---"
-echo " "
+  fi
+
+echo -e "\n\n[i] Set automatic configuration:\n  APIKEY: $(cat /opt/etherpad-lite/APIKEY.txt)\n  ADMIN: $ETHERPAD_ADMIN_USER\n  PASS: $ETHERPAD_ADMIN_PASS\n---\n"
 
 rm /firstrun
 
