@@ -2,7 +2,7 @@
 
 Build a small AlpineLinux Docker image based on [gliderlabs](http://gliderlabs.viewdocs.io/docker-alpine) with bash, cron and s6 installed. 
 
-## Automagical
+## Build automagical
 
 Use make:
 
