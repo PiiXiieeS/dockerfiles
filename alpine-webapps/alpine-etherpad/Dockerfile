@@ -35,6 +35,7 @@ Run cd /tmp \
  && make install \
  && paxmark -m /usr/bin/node \
  && cp -pr /usr/lib/node_modules/npm/man /usr/share
+ && apk del alpine-sdk
 
 RUN npm -g install npm \
  && npm cache clean
