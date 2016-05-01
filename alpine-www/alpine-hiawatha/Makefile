@@ -4,7 +4,7 @@ NAME=hiawatha
 NAMESPACE=maxder
 IMAGENAME=alpine
 
-all: tag
+all: build
 
 tag:
 	./scripts/architecture.sh
