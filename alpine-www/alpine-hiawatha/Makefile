@@ -13,9 +13,9 @@ build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:	tag
-	docker run -d --hostname ${NAME} --name ${NAME} -p 80:80 -v /srv/docker/hiawatha/sites-enabled:/etc/hiawatha/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run -d --hostname ${NAME} --name ${NAME} -p 80:80 -v /srv/docker/${NAME}/sites-enabled:/etc/${NAME}/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
-remove: tag
+remove:
 	docker rm -f ${NAME} 
 
 push:	tag
