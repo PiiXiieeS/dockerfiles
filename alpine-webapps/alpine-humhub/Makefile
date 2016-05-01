@@ -8,16 +8,15 @@ all: tag
 
 tag:
 	./scripts/architecture.sh
-	make build
         
-build:
+build:	tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
-run:
+run:	tag
 	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db -p 8080:80 ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${NAME} 
 
-push:
+push:	tag
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
