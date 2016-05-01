@@ -18,5 +18,5 @@ run:	tag
 remove: 
 	docker rm -f ${NAME} 
 
-push:
+push:	tag
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
