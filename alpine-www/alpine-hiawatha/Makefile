@@ -8,9 +8,8 @@ all: tag
 
 tag:
 	./scripts/architecture.sh
-	make build
 	
-build:  
+build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:
