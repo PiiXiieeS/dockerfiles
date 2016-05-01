@@ -4,21 +4,19 @@ NAME=mysql
 NAMESPACE=maxder
 IMAGENAME=alpine
 
-all: tag
+all: build
 
 tag:
 	./scripts/architecture.sh
-	$(MAKE) build
 	
-build:  
+build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
-run:
-	rand=$$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="$$rand" -v /srv/docker/mysql:/var/lib/mysql ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+run:	tag
+	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="dbadminpass" -v /srv/docker/mysql:/var/lib/mysql ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${NAME}
 
-push:
+push:	tag
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
