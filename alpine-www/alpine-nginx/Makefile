@@ -8,15 +8,14 @@ all: tag
 
 tag:
 	./scripts/architecture.sh
-	make build
 	
-build:  
+build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
-run:
+run:	tag
 	docker run -d --hostname ${IMAGENAME}-${NAME} --name ${IMAGENAME}-${NAME} -p 80:80 -v /srv/docker/nginx/sites-enabled:/etc/nginx/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
-remove:
+remove: tag
 	docker rm -f ${IMAGENAME}-${NAME} 
 
 push:
