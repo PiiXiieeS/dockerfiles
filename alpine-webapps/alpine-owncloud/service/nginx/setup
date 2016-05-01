@@ -30,7 +30,7 @@ else
         sed -i "s*OCPASS*$OCPASS*g"  $OCDIR/config/autoconfig.php
         sed -i "s*OCSALT*$OCSALT*g"  $OCDIR/config/autoconfig.php
 
-        echo -e  "<?php \n\$CONFIG = array (\n  'memcache.local' => '\OC\Memcache\APCu',\n'memcache.locking' => '\OC\Memcache\Redis',\n'redis' =>array (\n    'host' => 'redis',\n    'port' => 6379,\n  ),\n" > $OCDIR/config/config.php
+        echo -e  "<?php \n\$CONFIG = array (\n  'memcache.local' => '\\OC\\Memcache\\APCu',\n'memcache.locking' => '\\OC\\Memcache\\Redis',\n'redis' =>array (\n    'host' => 'redis',\n    'port' => 6379,\n  ),\n" > $OCDIR/config/config.php
         chown nginx:www-data $OCDIR/config/config.php
         
         echo -e "\n[i] Set automatic configuration:\n OC admin: $OCADMIN\n OC pass: $OCPASS\n Salt: $OCSALT\n---\n"
