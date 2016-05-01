@@ -8,16 +8,15 @@ all: tag
 
 tag:
 	./scripts/architecture.sh
-	make build
 	
-build:  
+build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
-run:
-	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db -e OCADMIN=ocadmin -e OCPASS=ocadmin -p 80:80 -v /srv/docker/owncloud/data:/var/owncloud/data -v /srv/docker/owncloud/config:/usr/share/webapps/owncloud/config ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+run:	tag
+	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db -e OCADMIN=ocadmin -e OCPASS=ocadmin -p 80:80 -v /srv/docker/${NAME}/data:/var/${NAME}/data -v /srv/docker/${NAME}/config:/usr/share/webapps/${NAME}/config ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
 remove:
 	docker rm -f ${NAME} 
 
-push:
+push:	tag
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
