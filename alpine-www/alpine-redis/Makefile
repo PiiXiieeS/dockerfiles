@@ -8,16 +8,15 @@ all: tag
 
 tag:
 	./scripts/architecture.sh
-	make build
 	
-build:  
+build:  tag
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:armhf .
 
-run:
+run:	tag
 	docker run -d --hostname ${NAME} --name ${NAME}-server -p 6379:6379 -v /srv/docker/redis:/var/lib/redis ${NAMESPACE}/${IMAGENAME}-${NAME}:armhf
 
-remove:
+remove: tag
 	docker rm -f ${NAME}-server 
 
-push:
+push:	tag
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:armhf
