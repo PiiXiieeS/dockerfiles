@@ -5,10 +5,4 @@ then
   source ./setup
 fi
 
-#if [ -f /firstrun ]; then
-#  cp -a /etc/hiawatha/sites-available/localhost.conf /etc/hiawatha/sites-enabled/example
-#  sed -i '1s/^/#Add .conf as suffix to activate this file and restart HIAWATHA container.\n/' /etc/hiawatha/sites-enabled/example
-#  rm /firstrun
-#fi
-
 exec hiawatha -d
