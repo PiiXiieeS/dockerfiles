@@ -1,4 +1,4 @@
-FROM maxder/alpine-hiawatha:armhf
+FROM maxder/alpine-hiawatha:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk -U --no-progress add \
