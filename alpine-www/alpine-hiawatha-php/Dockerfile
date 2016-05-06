@@ -1,4 +1,4 @@
-FROM maxder/alpine-hiawatha:ARCHTAG
+FROM maxder/alpine-hiawatha:armhf
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk -U --no-progress add \
@@ -48,7 +48,8 @@ RUN apk -U --no-progress add \
 ## PHP config
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/php.ini \
  && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini \
- && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini
+ && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini \
+ && sed -i "s*\;env\[PATH\]*env\[PATH\]*g" /etc/php/php-fpm.conf 
 
 RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.ttl=7200" >> /etc/php/conf.d/apcu.ini \
@@ -58,16 +59,16 @@ RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
 
-RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g" /etc/hiawatha/hiawatha.conf \
- && sed -i "s*\# DEFAULT WEBSITE*FastCGIserver \{\n        FastCGIid = PHP5\n        ConnectTo = 127.0.0.1:9000\n        Extension = php\n        SessionTimeout = 600\n\}\n\n\# DEFAULT WEBSITE*g" /etc/hiawatha/hiawatha.conf \
+RUN sed -i "s*\# DEFAULT WEBSITE*FastCGIserver \{\n        FastCGIid = PHP5\n        ConnectTo = 127.0.0.1:9000\n        Extension = php\n        SessionTimeout = 600\n\}\n\n\# DEFAULT WEBSITE*g" /etc/hiawatha/hiawatha.conf \
  && sed -i "s*\#CGIhandler = /usr/bin/php-cgi:php*CGIhandler = /usr/bin/php-cgi:php*g" /etc/hiawatha/hiawatha.conf \
  && sed -i "s*/var/log/hiawatha/error.log*/var/log/hiawatha/error.log \nExecuteCGI = yes\n*g" /etc/hiawatha/hiawatha.conf \
  && sed -i "s#/var/log/hiawatha/error.log#/var/log/hiawatha/error.log\n\#ReverseProxy ^/.* http://www.example.com:80/#g" /etc/hiawatha/hiawatha.conf \
  && if [ ! -d "/etc/hiawatha/sites-available" ]; then mkdir /etc/hiawatha/sites-available ;fi \
  && echo -e "VirtualHost {\n        Hostname = localhost\n        WebsiteRoot = /usr/share/webapps\n	StartFile = index.php\n        UseFastCGI = PHP5\n}" > /etc/hiawatha/sites-available/localhost.conf \
  && if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi \
- && echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php
+ && chown hiawatha:www-data /usr/share/webapps
 RUN touch /firstrun
 
+EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]

@@ -10,13 +10,13 @@ tag:
 	./scripts/architecture.sh
 	
 build:  tag
-	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
+	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:armhf .
 
 run:	tag
-	docker run -d --hostname ${NAME} --name ${NAME} -p 80:80 -v /srv/docker/${NAME}/sites-enabled:/etc/${NAME}/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run -d --hostname ${NAME} --name ${NAME} -p 80:80 -v /srv/docker/${NAME}/sites-enabled:/etc/${NAME}/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:armhf
 
 remove:
 	docker rm -f ${NAME} 
 
 push:	tag
-	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:armhf
