@@ -1,15 +1,12 @@
-FROM maxder/alpine-base:armhf
+FROM maxder/alpine-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 ENV VERSION 10.2
 
 RUN apk -U add alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community/  --allow-untrusted
 ADD https://www.hiawatha-webserver.org/files/hiawatha-${VERSION}.tar.gz /tmp/hiawatha.tar.gz
-RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/
-#Don't remove X-Headers CGI output
-RUN cd /tmp/hiawatha-* \
- && sed '1057d,1058d,1059d' src/target.c
-RUN cd /tmp/hiawatha-* \
+RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
+ && cd /tmp/hiawatha-* \
  && cmake . -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_BINDIR=/usr/bin \
     -DCMAKE_INSTALL_SBINDIR=/usr/sbin \
@@ -26,8 +23,8 @@ RUN cd /tmp/hiawatha-* \
  && make install \
  && apk del alpine-sdk cmake \
  && install -Dm644 /tmp/hiawatha-*/logrotate.d/hiawatha /etc/logrotate.d/hiawatha
-RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g" /etc/hiawatha/hiawatha.conf \
- && sed -i "s*\#ServerId = www-data*ServerId = hiawatha*g" /etc/hiawatha/hiawatha.conf \
+RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g;s*\#ServerId = www-data*ServerId = hiawatha*g" /etc/hiawatha/hiawatha.conf \
+ && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = ssl/hiawatha.pem\n       TimeForRequest = 300\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf \
  && addgroup -Sg 82 www-data \
  && adduser -S -D -H -h /var/lib/hiawatha -s /sbin/nologin -G www-data -g www-data hiawatha 
 

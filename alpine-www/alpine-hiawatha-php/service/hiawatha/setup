@@ -1,7 +1,0 @@
-set -e
-
-if [ -f /firstrun ]; then
-  [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/sites-available/localhost.conf /etc/hiawatha/sites-enabled/example.conf
-  [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php 
-  rm /firstrun
-fi

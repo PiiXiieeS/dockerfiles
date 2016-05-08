@@ -1,4 +1,4 @@
-FROM maxder/alpine-hiawatha:armhf
+FROM maxder/alpine-hiawatha:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN apk -U --no-progress add \
@@ -64,7 +64,7 @@ RUN sed -i "s*\# DEFAULT WEBSITE*FastCGIserver \{\n        FastCGIid = PHP5\n   
  && sed -i "s*/var/log/hiawatha/error.log*/var/log/hiawatha/error.log \nExecuteCGI = yes\n*g" /etc/hiawatha/hiawatha.conf \
  && sed -i "s#/var/log/hiawatha/error.log#/var/log/hiawatha/error.log\n\#ReverseProxy ^/.* http://www.example.com:80/#g" /etc/hiawatha/hiawatha.conf \
  && if [ ! -d "/etc/hiawatha/sites-available" ]; then mkdir /etc/hiawatha/sites-available ;fi \
- && echo -e "VirtualHost {\n        Hostname = localhost\n        WebsiteRoot = /usr/share/webapps\n	StartFile = index.php\n        UseFastCGI = PHP5\n}" > /etc/hiawatha/sites-available/localhost.conf \
+ && echo -e "VirtualHost {\n        Hostname = localhost\n        WebsiteRoot = /usr/share/webapps\n        #TLScertFile = ssl/localhost.localdomain.pem\n	StartFile = index.php\n        UseFastCGI = PHP5\n        PreventSQLi = yes\n        PreventXSS = yes\n#       RequireSSL = yes\n}" > /etc/hiawatha/sites-available/localhost.conf \
  && if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi \
  && chown hiawatha:www-data /usr/share/webapps
 RUN touch /firstrun
