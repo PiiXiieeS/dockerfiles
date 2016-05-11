@@ -4,7 +4,3 @@ if [ -f ./setup ]
 then
   source ./setup
 fi
-
-exec /usr/bin/memcached  -u memcached
-
-
