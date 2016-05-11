@@ -12,9 +12,6 @@ else
 	apk -U add openssl
  	openssl genrsa -out /etc/nginx/tls/nginx.pem 4096
  	openssl req -new -x509 -days 3650 -key /etc/nginx/tls/nginx.pem -out /etc/nginx/tls/nginx.crt -subj "/C=US/CN=0.0.0.0"
-	echo "" >> /etc/nginx/tls/nginx.pem
-	cat /etc/nginx/tls/nginx.crt >> /etc/nginx/tls/nginx.pem
-	echo "" >> /etc/nginx/tls/nginx.pem
 	apk del openssl
 	rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
 fi
