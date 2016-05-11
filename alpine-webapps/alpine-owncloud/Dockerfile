@@ -1,4 +1,4 @@
-FROM maxder/alpine-php-fpm:ARCHTAG
+FROM maxder/alpine-nginx-php:ARCHTAG
 MAINTAINER Christian-Maximilian Steier
 
 ENV OWNCLOUD_VERSION 9.0
@@ -29,7 +29,7 @@ RUN chmod +x /etc/service/*/*
 
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini
-ADD conf/nginx-owncloud.conf /etc/nginx/sites-available/localhost.conf
+ADD conf/nginx-owncloud.conf /etc/nginx/sites-available/localhost.site
 
 ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
