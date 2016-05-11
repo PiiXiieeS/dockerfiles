@@ -11,9 +11,9 @@ RUN chmod +x /etc/service/*/*
 
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/nginx-headers.conf /etc/nginx/headers.conf
-ADD conf/nginx_localhost.conf /etc/nginx/sites-available/localhost.conf
+ADD conf/nginx_localhost.conf /etc/nginx/sites-available/localhost.site
 RUN if [ ! -d "/etc/nginx/sites-enabled" ]; then mkdir /etc/nginx/sites-enabled ;fi \
- && ln -s /etc/nginx/sites-available/localhost.conf  /etc/nginx/sites-enabled/ \
+ && ln -s /etc/nginx/sites-available/localhost.site  /etc/nginx/sites-enabled/ \
  && echo "charset utf-8;" > /etc/nginx/conf.d/charset.conf \
  && echo "client_max_body_size 2G;" > /etc/nginx/conf.d/uploads.conf
 
