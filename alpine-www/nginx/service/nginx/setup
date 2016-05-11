@@ -2,11 +2,13 @@ set -e
 
 
 if [ ! -d /etc/nginx/tls ]; then
-	mkdir  /etc/nginx/tls/
+	mkdir  /etc/nginx/tls
 fi
 
-if [ "$(ls -A /etc/nginx/tls)" ]; then
-	echo -e "\n[i] No certificate found in /tls.\n Create one with OpenSSL.\n"
+if find "/etc/nginx/tls" -mindepth 1 -print | grep -q .; then
+	echo "/tls not empty"
+else
+	echo -e "\n[i] No certificate found in /tls.\n Create one with OpenSSL.\n" 
 	apk -U add openssl
  	openssl genrsa -out /etc/nginx/tls/nginx.pem 4096
  	openssl req -new -x509 -days 3650 -key /etc/nginx/tls/nginx.pem -out /etc/nginx/tls/nginx.crt -subj "/C=US/CN=0.0.0.0"
@@ -14,7 +16,7 @@ if [ "$(ls -A /etc/nginx/tls)" ]; then
 	cat /etc/nginx/tls/nginx.crt >> /etc/nginx/tls/nginx.pem
 	echo "" >> /etc/nginx/tls/nginx.pem
 	apk del openssl
-	rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/* 
+	rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
 fi
 
 chown -R nginx:www-data /var/lib/nginx
