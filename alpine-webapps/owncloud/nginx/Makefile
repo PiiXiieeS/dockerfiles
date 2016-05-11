@@ -10,7 +10,7 @@ tag:
 	./scripts/architecture.sh
 	
 build:  tag
-	docker build --rm -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
+	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 
 run:	tag
 	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db -e OCADMIN=ocadmin -e OCPASS=ocadmin -p 80:80 -v /srv/docker/${NAME}/data:/var/${NAME}/data -v /srv/docker/${NAME}/config:/usr/share/webapps/${NAME}/config ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
@@ -18,5 +18,5 @@ run:	tag
 remove:
 	docker rm -f ${NAME} 
 
-push:	tag
+push:	
 	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
