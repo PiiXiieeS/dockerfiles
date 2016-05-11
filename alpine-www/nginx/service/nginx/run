@@ -6,8 +6,8 @@ then
 fi
 
 if [ -f /firstrun ]; then
-  cp -a /etc/nginx/sites-available/localhost.conf /etc/nginx/sites-enabled/example
-  sed -i '1s/^/#Add .conf as suffix to activate this file and restart NGINX container.\n/' /etc/nginx/sites-enabled/example
+  cp -a /etc/nginx/sites-available/localhost.site /etc/nginx/sites-enabled/example
+  sed -i '1s/^/#Add .site as suffix to activate this file and restart NGINX container.\n/' /etc/nginx/sites-enabled/example
   rm /firstrun 
 fi
 
