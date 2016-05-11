@@ -1,0 +1,50 @@
+set -e
+
+OCDIR=/usr/share/webapps/owncloud
+OC_DB=${OC_DB:-owncloud}
+DBHOST=${DBHOST:-db}
+DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
+DBPASS=${DBPASS:-$DB_ENV_DBPASS}
+OCADMIN=${OCADMIN:-ocadmin}
+OCPASS=${OCPASS:-ocadmin}
+OCSALT=${OCSALT:-$(pwgen -s -1 16)}
+
+if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
+	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" $OCDIR/config/config.php
+fi
+
+if [ -f /firstrun ]; then
+if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
+        echo "$OC_DB exist"
+        echo "So I expect a config.php under $OCDIR"
+elif [ -f $OCDIR/config/config.php ]; then
+        echo "config.php is expecting under $OCDIR"
+else
+        mv /autoconfig.php  $OCDIR/config/autoconfig.php
+        chown -R nginx:www-data  $OCDIR/config/autoconfig.php
+        sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*DBPASS*$DBPASS*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*DBHOST*$DBHOST*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*DBNAME*$OC_DB*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*OCADMIN*$OCADMIN*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*OCPASS*$OCPASS*g"  $OCDIR/config/autoconfig.php
+        sed -i "s*OCSALT*$OCSALT*g"  $OCDIR/config/autoconfig.php
+
+        echo -e  "<?php \n\$CONFIG = array (\n  'memcache.local' => '\\OC\\Memcache\\APCu',\n'memcache.locking' => '\\OC\\Memcache\\Redis',\n'redis' =>array (\n    'host' => 'redis',\n    'port' => 6379,\n  ),\n);\n" > $OCDIR/config/config.php
+        chown nginx:www-data $OCDIR/config/config.php
+        
+        echo -e "\n[i] Set automatic configuration:\n OC admin: $OCADMIN\n OC pass: $OCPASS\n Salt: $OCSALT\n---\n"
+
+fi
+ chown -R nginx:www-data /var/lib/nginx
+ if [ ! -d /var/owncloud/data ]; then
+	mkdir -p /var/owncloud/data
+ fi
+ chown -R nginx:www-data /var/owncloud/data
+ chmod 755 /var/owncloud/data
+ chown -R nginx:www-data $OCDIR/config
+ rm /firstrun
+
+fi
+
+chmod -R 755 /var/lib/nginx
