@@ -17,13 +17,8 @@ RUN if [ ! -d "/etc/nginx/sites-enabled" ]; then mkdir /etc/nginx/sites-enabled 
  && echo "client_max_body_size 2G;" > /etc/nginx/conf.d/uploads.conf
 
 # Cleanup and security fixes
-RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/* /etc/fstab \
- && rm -fr /etc/init.d /lib/rc /etc/conf.d /etc/inittab /etc/runlevels /etc/rc.conf \
- && rm -fr /etc/sysctl* /etc/modprobe.d /etc/modules /etc/mdev.conf /etc/acpi \
- && find $sysdirs -xdev -type l -exec test ! -e {} \; -delete \
- && sed -i -r '/^(www-data|nginx|root)/!d' /etc/group \
- && sed -i -r '/^(nginx|root)/!d' /etc/passwd \
- && sed -i -r 's#^(.*):[^:]*$#\1:/sbin/nologin#' /etc/passwd
+COPY scripts/cleanup.sh /tmp/cleanup.sh
+RUN /tmp/cleanup.sh
 
 EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
