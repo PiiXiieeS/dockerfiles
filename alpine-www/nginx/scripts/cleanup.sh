@@ -17,8 +17,6 @@ find $sysdirs -xdev -type f -a -perm +4000 -delete
 find $sysdirs -xdev \( \
   -name hexdump -o \
   -name chgrp -o \
-  -name chmod -o \
-  -name chown -o \
   -name ln -o \
   -name od -o \
   -name strings -o \
