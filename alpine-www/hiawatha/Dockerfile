@@ -34,7 +34,9 @@ RUN chmod +x /etc/service/*/*
 RUN if [ ! -d "/etc/hiawatha/sites-enabled" ]; then mkdir /etc/hiawatha/sites-enabled ;fi \
  && echo "Include /etc/hiawatha/sites-enabled/" >> /etc/hiawatha/hiawatha.conf
 
-RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
+# Cleanup and security fixes
+COPY scripts/cleanup.sh /tmp/cleanup.sh
+RUN /tmp/cleanup.sh
 
 EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
