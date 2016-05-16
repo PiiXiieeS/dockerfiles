@@ -1,4 +1,5 @@
 nginx:
+  container_name: nginx
   restart: always
   image: maxder/alpine-nginx:armhf
   ports:
@@ -7,3 +8,4 @@ nginx:
   volumes:
     - /srv/docker/nginx/tls:/etc/nginx/tls
     - /srv/docker/nginx/sites-enabled:/etc/nginx/sites-enabled
+
