@@ -16,7 +16,7 @@ else
 	rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
 fi
 
-if find "/etc/nginx/sites-enabled" -mindepth 1 -print | grep -q .; then
+if find "/etc/nginx/sites-enabled" -mindepth 1 -name "*.site" -print | grep -q .; then
         echo -e "[i] Site for nginx found.\n"
 else
 	cp -a /etc/nginx/localhost.site /etc/nginx/sites-enabled/example.site
