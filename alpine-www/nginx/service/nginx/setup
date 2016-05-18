@@ -8,12 +8,9 @@ fi
 if find "/etc/nginx/tls" -mindepth 1 -print | grep -q .; then
 	echo -e "\n[i] /tls not empty"
 else
-	echo -e "\n[i] No certificate found in /tls.\n Create one with OpenSSL." 
-	apk -U add openssl
- 	openssl genrsa -out /etc/nginx/tls/nginx.pem 4096
- 	openssl req -new -x509 -days 3650 -key /etc/nginx/tls/nginx.pem -out /etc/nginx/tls/nginx.crt -subj "/C=US/CN=0.0.0.0"
-	apk del openssl
-	rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
+	echo -e "\n[i] No certificate found in /tls.\n Use nginx.pem."
+	cp -a /etc/nginx/nginx.pem /etc/nginx/tls/nginx.pem
+	cp -a /etc/nginx/nginx.crt /etc/nginx/tls/nginx.crt
 fi
 
 if find "/etc/nginx/sites-enabled" -mindepth 1 -name "*.site" -print | grep -q .; then
