@@ -43,7 +43,8 @@ RUN openssl genrsa -out /etc/hiawatha/hiawatha.pem 4096 \
 
 # Cleanup and security fixes
 COPY scripts/cleanup.sh /tmp/cleanup.sh
-RUN /tmp/cleanup.sh
+RUN chmod +x \
+ && /tmp/cleanup.sh
 
 EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
