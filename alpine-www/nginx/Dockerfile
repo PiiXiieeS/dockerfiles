@@ -16,8 +16,8 @@ RUN if [ ! -d "/etc/nginx/sites-enabled" ]; then mkdir /etc/nginx/sites-enabled 
  && echo "charset utf-8;" > /etc/nginx/conf.d/charset.conf \
  && echo "client_max_body_size 2G;" > /etc/nginx/conf.d/uploads.conf
  
-RUN openssl genrsa -out /etc/nginx/tls/nginx.pem 4096 \
- && openssl req -new -x509 -days 3650 -key /etc/nginx/tls/nginx.pem -out /etc/nginx/tls/nginx.crt -subj "/C=US/CN=0.0.0.0" \
+RUN openssl genrsa -out /etc/nginx/nginx.pem 4096 \
+ && openssl req -new -x509 -days 3650 -key /etc/nginx/nginx.pem -out /etc/nginx/nginx.crt -subj "/C=US/CN=0.0.0.0" \
  && apk del openssl
 
 # Cleanup and security fixes
