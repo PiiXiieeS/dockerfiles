@@ -36,9 +36,9 @@ RUN if [ ! -d "/etc/hiawatha/sites-enabled" ]; then mkdir /etc/hiawatha/sites-en
 
 RUN openssl genrsa -out /etc/hiawatha/ssl/hiawatha.pem 4096 \
  && openssl req -new -x509 -days 3650 -key /etc/hiawatha/ssl/hiawatha.pem -out /tmp/hiawatha.crt -subj "/C=US/CN=0.0.0.0" \
- && echo "" >> /etc/hiawatha/ssl/hiawatha.pem \
- && cat /tmp/hiawatha.crt >> /etc/hiawatha/ssl/hiawatha.pem \
- && echo "" >> /etc/hiawatha/ssl/hiawatha.pem \
+ && echo "" >> /etc/hiawatha/hiawatha.pem \
+ && cat /tmp/hiawatha.crt >> /etc/hiawatha/hiawatha.pem \
+ && echo "" >> /etc/hiawatha/hiawatha.pem \
  && apk del openssl
 
 # Cleanup and security fixes
