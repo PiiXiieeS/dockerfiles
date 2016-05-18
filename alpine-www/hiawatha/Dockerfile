@@ -3,7 +3,7 @@ MAINTAINER Christian-Maxilian Steier
 
 ENV VERSION 10.2
 
-RUN apk -U add alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community/  --allow-untrusted
+RUN apk -U add alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev openssl --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community/  --allow-untrusted
 ADD https://www.hiawatha-webserver.org/files/hiawatha-${VERSION}.tar.gz /tmp/hiawatha.tar.gz
 RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
  && cd /tmp/hiawatha-* \
@@ -33,6 +33,13 @@ RUN chmod +x /etc/service/*/*
 
 RUN if [ ! -d "/etc/hiawatha/sites-enabled" ]; then mkdir /etc/hiawatha/sites-enabled ;fi \
  && echo "Include /etc/hiawatha/sites-enabled/" >> /etc/hiawatha/hiawatha.conf
+
+RUN openssl genrsa -out /etc/hiawatha/ssl/hiawatha.pem 4096 \
+ && openssl req -new -x509 -days 3650 -key /etc/hiawatha/ssl/hiawatha.pem -out /tmp/hiawatha.crt -subj "/C=US/CN=0.0.0.0" \
+ && echo "" >> /etc/hiawatha/ssl/hiawatha.pem \
+ && cat /tmp/hiawatha.crt >> /etc/hiawatha/ssl/hiawatha.pem \
+ && echo "" >> /etc/hiawatha/ssl/hiawatha.pem \
+ && apk del openssl
 
 # Cleanup and security fixes
 COPY scripts/cleanup.sh /tmp/cleanup.sh
