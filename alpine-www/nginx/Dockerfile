@@ -4,7 +4,7 @@ MAINTAINER Christian-Maxilian Steier
 RUN echo "http://dl-4.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/repositories    \
  && echo "http://dl-4.alpinelinux.org/alpine/v3.3/community/" | tee -a /etc/apk/repositories \
  && apk -U --no-progress upgrade
-RUN apk --no-cache --no-progress add ca-certificates nginx
+RUN apk --no-cache --no-progress add ca-certificates nginx openssl
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
@@ -15,11 +15,15 @@ ADD conf/nginx_localhost.site /etc/nginx/localhost.site
 RUN if [ ! -d "/etc/nginx/sites-enabled" ]; then mkdir /etc/nginx/sites-enabled ;fi \
  && echo "charset utf-8;" > /etc/nginx/conf.d/charset.conf \
  && echo "client_max_body_size 2G;" > /etc/nginx/conf.d/uploads.conf
+ 
+RUN openssl genrsa -out /etc/nginx/tls/nginx.pem 4096 \
+ && openssl req -new -x509 -days 3650 -key /etc/nginx/tls/nginx.pem -out /etc/nginx/tls/nginx.crt -subj "/C=US/CN=0.0.0.0" \
+ && apk del openssl
 
 # Cleanup and security fixes
 COPY scripts/cleanup.sh /tmp/cleanup.sh
 RUN /tmp/cleanup.sh
 
-EXPOSE 80 443
+EXPOSE 80/tcp 443/tcp
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
 CMD ["/etc/service"]
