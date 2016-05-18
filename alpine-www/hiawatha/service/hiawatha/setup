@@ -1,0 +1,12 @@
+set -e
+
+if [ ! -d /etc/hiawatha/tls ]; then
+	mkdir  /etc/hiawatha/tls
+fi
+
+if find "/etc/hiawatha/tls" -mindepth 1 -print | grep -q .; then
+	echo -e "\n[i] /tls not empty"
+else
+	echo -e "\n[i] No certificate found in /tls.\n Use hiawatha.pem."
+	cp -a /etc/hiawatha/hiawatha.pem /etc/hiawatha/tls/hiawatha.pem
+fi
