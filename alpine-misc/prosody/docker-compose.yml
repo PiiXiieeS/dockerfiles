@@ -1,0 +1,16 @@
+prosody:
+  container_name: prosody
+  restart: always
+  image: maxder/alpine-prosody:x86_64
+  ports:
+    - "5222:5222"
+    - "5269:5269"
+    - "5280:5280"
+    - "5281:5281"
+    - "127.0.0.1:5347:5347"
+  volumes:
+    - /srv/docker/prosody/config:/etc/prosody/config 
+    - /srv/docker/prosody/certs:/etc/prosody/certs
+    - /srv/docker/prosody/logs:/var/log/prosody
+    - /srv/docker/prosody/modules:/usr/lib/prosody-modules
+
