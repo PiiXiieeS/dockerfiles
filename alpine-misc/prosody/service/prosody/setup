@@ -1,0 +1,15 @@
+set -e
+
+if [ -f /firstrun ]; then
+  if [ ! -d /etc/prosody/config ]; then
+	mkdir /etc/prosody/config
+  fi
+
+  if find "/etc/prosody/config" -mindepth 1 -print | grep -q .; then
+	echo -e "\n[i] Config found."
+  else
+	mv /etc/prosody/prosody.cfg.lua /etc/prosody/config/prosody.cfg.lua
+	ln -s /etc/prosody/config/prosody.cfg.lua /etc/prosody/prosody.cfg.lua
+  fi
+  rm /firstrun
+fi
