@@ -9,8 +9,11 @@ all: build
 tag:
 	./scripts/architecture.sh
 	
-build:  tag
+builddocker:  
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
+
+build:  tag
+	$(MAKE) builddocker
 
 run:	tag
 	docker run -d --hostname ${NAME} --name ${NAME} --link mysql:db -e OCADMIN=ocadmin -e OCPASS=ocadmin -p 80:80 -v /srv/docker/${NAME}/data:/var/${NAME}/data -v /srv/docker/${NAME}/config:/usr/share/webapps/${NAME}/config ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
