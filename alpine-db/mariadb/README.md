@@ -5,21 +5,21 @@ MariaDB/MySQL based on Alpine
 ## Quickstart
 ```
 git clone -b alpine https://github.com/christiansteier/dockerfiles.git
-cd dockerfiles/alpine-db/alpine-mysql && make && make run
+cd dockerfiles/alpine-db/mariadb && quickstart
 ````
 ## Docker image usage
 
 ``` shell
-$ docker run -d --name mysql \
+$ docker run -d --name mariadb \
              -p 127.0.0.1:3306:3306 \
              -e DBUSER="dbadmin" \
              -e DBPASS="PASSWORD" \
-              maxder/alpine-mysql:x86_64
+              maxder/alpine-mariadb:x86_64
 ```
 
 If you build on a ARM platform like Raspberry PI
 ```
-docker run [docker-options] maxder/alpine-mysql:armhf
+docker run [docker-options] maxder/alpine-mariadb:armhf
 ```
 
 ## Connecting to the Database
@@ -29,7 +29,7 @@ You can install the `mysql-client` on your host machine by running the
 following (Debian or Ubuntu):
 
 ``` shell
-$ sudo apt-get install mysql-client
+$ sudo apt-get install mariadb-client
 ```
 
 As part of the startup for MariaDB, the container will generate a random
@@ -37,7 +37,7 @@ password for the superuser.  To view the login in run `docker logs
 <container_name>` like so:
 
 ``` shell
-$ docker logs mysql
+$ docker logs mariadb
 MARIADB_USER=dbadmin
 MARIADB_PASS=PASSWORD
 Starting MariaDB...
@@ -60,7 +60,7 @@ a separate container.
 To demonstrate this, we can spin up a new container like so:
 
 ``` shell
-$ docker run -t -i -link mysql:db debian bash
+$ docker run -t -i -link mariadb:db debian bash
 ```
 
 This assumes you're already running the database container with the name

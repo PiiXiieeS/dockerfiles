@@ -28,7 +28,7 @@ EOF
   fi
 
   rm /firstrun
-
   echo -e " \n---\n[i] Connecting to the Database:\nmysql -u $DBUSER --password=$DBPASS --protocol=tcp\n---\n "
+  apk del pwgen
 
 fi

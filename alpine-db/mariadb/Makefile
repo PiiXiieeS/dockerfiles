@@ -1,6 +1,6 @@
 .PHONY: all build run push
 
-NAME=mysql
+NAME=mariadb
 NAMESPACE=maxder
 IMAGENAME=alpine
 
