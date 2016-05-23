@@ -9,8 +9,11 @@ all: build
 tag:
 	./scripts/architecture.sh
 	
-build:  tag
+builddocker:
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
+
+build:  tag
+	$(MAKE) builddocker
 
 run:	tag
 	docker run --log-driver json-file --log-opt max-size=1k --log-opt max-file=10 -d --hostname ${NAME} --name ${NAME} -p 80:80 -p 443:443 -v /srv/docker/${NAME}/tls:/etc/nginx/tls  -v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
