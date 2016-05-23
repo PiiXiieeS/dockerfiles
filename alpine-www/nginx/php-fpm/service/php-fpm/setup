@@ -2,5 +2,5 @@ set -e
 
 if [ ! -d /tmp ]; then
         mkdir  /tmp
-        chmod 1777
+        chmod 1777 /tmp
 fi
