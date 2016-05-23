@@ -23,7 +23,7 @@ builder:
 
 library:
 	echo "build library alpine"
-	cd ./gliderlabs-docker-alpine* && docker run --name alpine-build-ARCHTAG ${NAMESPACE}/${IMAGENAME}-builder:ARCHTAG -s -t UTC -r edge -m http://dl-4.alpinelinux.org/alpine > versions/library-edge/rootfs.tar.gz
+	cd ./gliderlabs-docker-alpine* && docker run --name alpine-build-ARCHTAG ${NAMESPACE}/${IMAGENAME}-builder:ARCHTAG -s -t UTC -r edge -m http://nl.alpinelinux.org/alpine > versions/library-edge/rootfs.tar.gz
 	docker build --rm -t ${NAMESPACE}/${IMAGENAME}:ARCHTAG ./gliderlabs-docker-alpine*/versions/library-edge
 
 mini:
