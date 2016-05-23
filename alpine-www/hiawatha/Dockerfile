@@ -24,7 +24,7 @@ RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
  && apk del alpine-sdk cmake \
  && install -Dm644 /tmp/hiawatha-*/logrotate.d/hiawatha /etc/logrotate.d/hiawatha
 RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g;s*\#ServerId = www-data*ServerId = hiawatha*g" /etc/hiawatha/hiawatha.conf \
- && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = ssl/hiawatha.pem\n       TimeForRequest = 300\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf \
+ && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = tls/hiawatha.pem\n       TimeForRequest = 300\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf \
  && addgroup -Sg 82 www-data \
  && adduser -S -D -H -h /var/lib/hiawatha -s /sbin/nologin -G www-data -g www-data hiawatha 
 
