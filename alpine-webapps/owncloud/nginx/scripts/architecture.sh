@@ -1,1 +1,1 @@
-../../../alpine-base/scripts/architecture.sh
+../../../../alpine-base/scripts/architecture.sh
