@@ -1,1 +1,0 @@
-../../../alpine-nginx/scripts/placeholder.sh
