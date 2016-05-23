@@ -1,9 +1,0 @@
-hiawatha:
-  restart: always
-  image: maxder/alpine-hiawatha:armhf
-  ports:
-    - "80:80"
-    - "443:443"
-  volumes:
-    - /srv/docker/hiawatha/tls:/etc/hiawatha/tls
-    - /srv/docker/hiawatha/sites-enabled:/etc/hiawatha/sites-enabled
