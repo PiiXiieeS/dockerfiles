@@ -1,6 +1,6 @@
 .PHONY: all build run remove push
 
-NAME=php-fpm
+NAME=nginx-php
 NAMESPACE=maxder
 IMAGENAME=alpine
 
