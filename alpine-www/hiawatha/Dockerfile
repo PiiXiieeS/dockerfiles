@@ -3,7 +3,7 @@ MAINTAINER Christian-Maxilian Steier
 
 ENV VERSION 10.2
 
-RUN apk -U add alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev openssl --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community/  --allow-untrusted
+RUN apk -U add alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev openssl --update-cache --repository http://nl.alpinelinux.org/alpine/edge/community/  --allow-untrusted
 ADD https://www.hiawatha-webserver.org/files/hiawatha-${VERSION}.tar.gz /tmp/hiawatha.tar.gz
 RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
  && cd /tmp/hiawatha-* \
@@ -43,8 +43,7 @@ RUN openssl genrsa -out /etc/hiawatha/hiawatha.pem 4096 \
 
 # Cleanup and security fixes
 COPY scripts/cleanup.sh /tmp/cleanup.sh
-RUN chmod +x \
- && /tmp/cleanup.sh
+RUN /tmp/cleanup.sh
 
 EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
