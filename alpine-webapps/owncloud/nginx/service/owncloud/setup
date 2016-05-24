@@ -14,12 +14,20 @@ if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 fi
 
 if [ -f /firstrun ]; then
-if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
+
+  if [ -f /etc/nginx/sites-enabled/example.site ]; then
+  	rm /etc/nginx/sites-enabled/example.site
+  fi
+  if [ ! -f /etc/nginx/sites-enabled/owncloud.site ]; then
+  	cp /etc/nginx/owncloud.site /etc/nginx/sites-enabled/owncloud.site
+  fi
+
+  if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
         echo "$OC_DB exist"
         echo "So I expect a config.php under $OCDIR"
-elif [ -f $OCDIR/config/config.php ]; then
+  elif [ -f $OCDIR/config/config.php ]; then
         echo "config.php is expecting under $OCDIR"
-else
+  else
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
         chown -R nginx:www-data  $OCDIR/config/autoconfig.php
         sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
@@ -34,17 +42,14 @@ else
         chown nginx:www-data $OCDIR/config/config.php
         
         echo -e "\n[i] Set automatic configuration:\n OC admin: $OCADMIN\n OC pass: $OCPASS\n Salt: $OCSALT\n---\n"
-
-fi
- chown -R nginx:www-data /var/lib/nginx
- if [ ! -d /var/owncloud/data ]; then
+  fi
+  chown -R nginx:www-data /var/lib/nginx
+  if [ ! -d /var/owncloud/data ]; then
 	mkdir -p /var/owncloud/data
- fi
- chown -R nginx:www-data /var/owncloud/data
- chmod 755 /var/owncloud/data
- chown -R nginx:www-data $OCDIR/config
- rm /firstrun
-
+   fi
+   chown -R nginx:www-data /var/owncloud/data
+   chmod 755 /var/owncloud/data
+   chown -R nginx:www-data $OCDIR/config
+   rm /firstrun
 fi
-
 chmod -R 755 /var/lib/nginx
