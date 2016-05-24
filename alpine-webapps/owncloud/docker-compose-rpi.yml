@@ -17,7 +17,7 @@ owncloud:
     - "80:80"
     - "443:443"
   links:
-    - mysql:db
+    - db:db
   environment:
     - OCADMIN=ocadmin
     - OCPASS=ocadmin
