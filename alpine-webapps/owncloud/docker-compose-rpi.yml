@@ -1,29 +1,22 @@
-mysql:
-  image: maxder/alpine-mysql:armhf
+db:
+  container_name: owncloud_db
+  image: maxder/alpine-mariadb:armhf
   ports:
     - "127.0.0.1:3306:3306"
   environment:
     - DBUSER=dbadmin
     - DBPASS=dbadmin
   volumes:
-    - /srv/docker/mysql:/var/lib/mysql
-  restart: always
-
-redis-server:
-  image: maxder/alpine-redis:armhf
-  ports:
-    - "6379:6379"
-  volumes:
-    - /srv/docker/redis:/var/lib/redis
+    - /srv/docker/owncloud/db:/var/lib/mysql
   restart: always
 
 owncloud:
+  container_name: owncloud
   image: maxder/alpine-owncloud:armhf
   ports:
     - "80:80"
     - "443:443"
   links:
-    - redis-server:redis
     - mysql:db
   environment:
     - OCADMIN=ocadmin
