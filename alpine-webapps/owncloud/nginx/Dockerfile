@@ -31,7 +31,7 @@ RUN chmod +x /etc/service/*/*
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini \
  && if [ $(uname -m) == "armv6l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; elif [ $(uname -m) == "armv7l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; fi
-ADD conf/nginx-owncloud.conf /etc/nginx/sites-available/owncloud.site
+ADD conf/nginx-owncloud.conf /etc/nginx/owncloud.site
 
 ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
