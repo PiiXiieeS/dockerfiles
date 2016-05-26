@@ -9,9 +9,11 @@ all: build
 tag:
 	./scripts/architecture.sh
 	
-build:  
-	$(MAKE) tag
+builddocker:  
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
+
+build:  tag
+	$(MAKE) builddocker
 
 run:	
 	$(MAKE) tag
