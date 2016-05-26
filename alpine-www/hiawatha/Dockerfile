@@ -3,7 +3,7 @@ MAINTAINER Christian-Maxilian Steier
 
 ENV VERSION 10.2
 
-RUN apk -U add alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev openssl --update-cache --repository http://nl.alpinelinux.org/alpine/edge/community/  --allow-untrusted
+RUN apk -U add musl mbedtls libxml2 libxslt zlib alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev openssl --update-cache --repository http://nl.alpinelinux.org/alpine/edge/community/  --allow-untrusted
 ADD https://www.hiawatha-webserver.org/files/hiawatha-${VERSION}.tar.gz /tmp/hiawatha.tar.gz
 RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
  && cd /tmp/hiawatha-* \
@@ -21,7 +21,7 @@ RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
     -DWORK_DIR=/var/lib/hiawatha \
  && make \
  && make install \
- && apk del alpine-sdk cmake \
+ && apk del alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev \
  && install -Dm644 /tmp/hiawatha-*/logrotate.d/hiawatha /etc/logrotate.d/hiawatha
 RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g;s*\#ServerId = www-data*ServerId = hiawatha*g" /etc/hiawatha/hiawatha.conf \
  && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = tls/hiawatha.pem\n       Interface = 127.0.0.1\n       MaxRequestSize = 2048 #2MB\n       TimeForRequest = 300\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf \
