@@ -13,7 +13,7 @@ if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" $OCDIR/config/config.php
 fi
 
-if [ -f /secondrun ]; then
+if [ -f /__firstrun ]; then
 if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE $OC_DB;' 2>&1`" == "" ]; then
         echo "$OC_DB exist"
         echo "So I expect a config.php under $OCDIR"
@@ -21,7 +21,7 @@ elif [ -f $OCDIR/config/config.php ]; then
         echo "config.php is expecting under $OCDIR"
 else
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
-        chown -R root:nobody  $OCDIR/config/autoconfig.php
+        chown -R hiawatha:www-data  $OCDIR/config/autoconfig.php
         sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
         sed -i "s*DBPASS*$DBPASS*g"  $OCDIR/config/autoconfig.php
         sed -i "s*DBHOST*$DBHOST*g"  $OCDIR/config/autoconfig.php
@@ -40,10 +40,10 @@ fi
 	mkdir -p /var/owncloud/data
  fi
  chmod 755 /var/owncloud/data
- chown root:nobody /var/owncloud/data
- if [ -f /etc/hiawatha/sites-enabled/example.conf ]; then
-	mv /etc/hiawatha/sites-enabled/example.conf /etc/hiawatha/sites-enabled/owncloud.conf
+ chown hiawatha:www-data /var/owncloud/data
+ if [ ! -f /etc/hiawatha/sites-enabled/owncloud.site ]; then
+	cp /etc/hiawatha/owncloud.site /etc/hiawatha/sites-enabled/owncloud.site
  fi
- rm /secondrun
+ rm /__firstrun
 
 fi
