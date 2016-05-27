@@ -3,7 +3,7 @@ MAINTAINER Christian-Maxilian Steier
 
 ENV VERSION 10.2
 
-RUN apk -U add musl mbedtls libxml2 libxslt zlib alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev -U --repository http://nl.alpinelinux.org/alpine/edge/community/ --allow-untrusted
+RUN apk -U add musl mbedtls libxml2 libxslt zlib alpine-sdk cmake libxml2-dev libxslt-dev mbedtls-dev --repository http://nl.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 ADD https://www.hiawatha-webserver.org/files/hiawatha-${VERSION}.tar.gz /tmp/hiawatha.tar.gz
 RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
  && cd /tmp/hiawatha-* \
