@@ -21,7 +21,7 @@ elif [ -f $OCDIR/config/config.php ]; then
         echo "config.php is expecting under $OCDIR"
 else
         mv /autoconfig.php  $OCDIR/config/autoconfig.php
-        chown -R hiawatha:www-data  $OCDIR/config/autoconfig.php
+        chown -R root:nobody  $OCDIR/config/autoconfig.php
         sed -i "s*DBUSER*$DBADMIN*g"  $OCDIR/config/autoconfig.php
         sed -i "s*DBPASS*$DBPASS*g"  $OCDIR/config/autoconfig.php
         sed -i "s*DBHOST*$DBHOST*g"  $OCDIR/config/autoconfig.php
@@ -31,7 +31,7 @@ else
         sed -i "s*OCSALT*$OCSALT*g"  $OCDIR/config/autoconfig.php
 
         #echo -e  "<?php \n\$CONFIG = array (\n  'memcache.local' => '\\OC\\Memcache\\APCu',\n'memcache.locking' => '\\OC\\Memcache\\Redis',\n'redis' =>array (\n    'host' => 'redis',\n    'port' => 6379,\n  ),\n);\n" > $OCDIR/config/config.php
-        chown hiawatha:www-data -R $OCDIR/config
+        chown root:nobody -R $OCDIR/config
         
         echo -e "\n[i] Set automatic configuration:\n OC admin: $OCADMIN\n OC pass: $OCPASS\n Salt: $OCSALT\n---\n"
 
@@ -40,7 +40,7 @@ fi
 	mkdir -p /var/owncloud/data
  fi
  chmod 755 /var/owncloud/data
- chown hiawatha:www-data /var/owncloud/data
+ chown root:nobody /var/owncloud/data
  if [ -f /etc/hiawatha/sites-enabled/example.conf ]; then
 	mv /etc/hiawatha/sites-enabled/example.conf /etc/hiawatha/sites-enabled/owncloud.conf
  fi
