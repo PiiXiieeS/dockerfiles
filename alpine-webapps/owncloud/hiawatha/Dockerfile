@@ -1,4 +1,4 @@
-FROM maxder/alpine-hiawatha-php:armhf
+FROM maxder/alpine-hiawatha-php:ARCHTAG
 MAINTAINER Christian-Maximilian Steier
 
 ENV OWNCLOUD_VERSION 9.0
