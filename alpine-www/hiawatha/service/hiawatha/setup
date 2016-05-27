@@ -1,12 +1,27 @@
 set -e
 
-if [ ! -d /etc/hiawatha/tls ]; then
-	mkdir  /etc/hiawatha/tls
-fi
+if [ -f /firstrun ]; then
+  if [ ! -d /etc/hiawatha/config ]; then
+	mkdir /etc/hiawatha/config
+  fi
 
-if find "/etc/hiawatha/tls" -mindepth 1 -print | grep -q .; then
+ if find "/etc/hiawatha/config" -mindepth 1 -print | grep -q .; then
+	echo -e "\n[i] /config not empty."
+  else
+	mv /etc/hiawatha/hiawatha.conf /etc/hiawatha/config/hiawatha.conf
+	ln -s /etc/hiawatha/config/hiawatha.conf /etc/hiawatha/hiawatha.conf
+  fi
+
+  if [ ! -d /etc/hiawatha/tls ]; then
+	mkdir  /etc/hiawatha/tls
+  fi
+
+  if find "/etc/hiawatha/tls" -mindepth 1 -print | grep -q .; then
 	echo -e "\n[i] /tls not empty"
-else
+  else
 	echo -e "\n[i] No certificate found in /tls.\n Use hiawatha.pem."
 	cp -a /etc/hiawatha/hiawatha.pem /etc/hiawatha/tls/hiawatha.pem
+  fi
+  
+  rm /firstrun
 fi
