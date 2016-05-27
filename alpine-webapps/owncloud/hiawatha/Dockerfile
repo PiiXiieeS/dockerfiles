@@ -27,7 +27,7 @@ RUN chmod +x /etc/service/*/*
 
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini
-ADD conf/owncloud.site /etc/hiawatha/sites-available/owncloud.site
+ADD conf/owncloud.site /etc/hiawatha/owncloud.site
 
 ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
