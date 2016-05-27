@@ -5,5 +5,5 @@ then
   source ./setup
 fi
 
-chown -R hiawatha:www-data /usr/share/webapps/owncloud/config
-chown -R hiawatha:www-data /var/owncloud
+chown -R root:nobody /usr/share/webapps/owncloud/config
+chown -R root:nobody /var/owncloud
