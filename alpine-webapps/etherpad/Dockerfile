@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:x86_64
+FROM maxder/alpine-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 ENV ETHERPAD_VERSION 1.6.0
