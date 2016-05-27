@@ -17,7 +17,7 @@ build:  tag
 	
 run:	
 	tag
-	docker run --log-driver json-file --log-opt max-size=1k --log-opt max-file=10 -d --hostname ${NAME} --name ${NAME} -p 80:80 -p 443:443 -v /srv/docker/${NAME}/sites-enabled:/etc/hiawatha/sites-enabled -v /srv/docker/${NAME}/tls:/etc/hiawatha/tls ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run --log-driver json-file --log-opt max-size=1k --log-opt max-file=10 -d --hostname ${NAME} --name ${NAME} -p 80:80 -p 443:443 -v /srv/docker/${NAME}/config:/etc/hiawatha/config -v /srv/docker/${NAME}/sites-enabled:/etc/hiawatha/sites-enabled -v /srv/docker/${NAME}/tls:/etc/hiawatha/tls ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 	docker logs ${NAME}
 
 quickstart:
