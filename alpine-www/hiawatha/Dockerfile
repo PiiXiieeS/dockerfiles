@@ -22,7 +22,8 @@ RUN apk --no-progress add openssl \
 
 # Cleanup and security fixes
 COPY scripts/cleanup.sh /tmp/cleanup.sh
-RUN /tmp/cleanup.sh
+RUN /tmp/cleanup.sh \
+ && touch /firstrun
 
 EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
