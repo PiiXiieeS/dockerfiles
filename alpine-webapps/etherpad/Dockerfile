@@ -11,7 +11,7 @@ RUN apk -U add \
 	pwgen
 
 
-ENV pkgver=0.10.45
+ENV pkgver=0.10.11
 ADD https://nodejs.org/dist/v$pkgver/node-v$pkgver.tar.gz /tmp/nodejs.tar.gz
 RUN apk -U add \
 	alpine-sdk \
