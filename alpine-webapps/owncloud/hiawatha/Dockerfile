@@ -18,7 +18,7 @@ RUN apk -U --no-progress add \
     bzip2 \
     graphviz \
     ffmpeg \
-    mysql-client \
+    mariadb-client \
     pwgen \
     sudo
 
