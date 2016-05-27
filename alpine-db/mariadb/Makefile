@@ -12,7 +12,7 @@ tag:
 builddocker:  
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
 	
-buid:   tag
+build:  tag
 	$(MAKE) builddocker
 	
 run:	tag
