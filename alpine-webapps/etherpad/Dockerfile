@@ -1,44 +1,16 @@
-FROM maxder/alpine-base:ARCHTAG
+FROM maxder/alpine-base:x86_64
 MAINTAINER Christian-Maxilian Steier
 
 ENV ETHERPAD_VERSION 1.6.0
 
-RUN apk -U add \
+RUN echo "http://nl.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
+ && apk -U add nodejs \
+	curl \
 	openssl \
 	zlib \
 	libuv \
 	mariadb-client \
 	pwgen
-
-
-ENV pkgver=0.10.11
-ADD https://nodejs.org/dist/v$pkgver/node-v$pkgver.tar.gz /tmp/nodejs.tar.gz
-RUN apk -U add \
-	alpine-sdk \
-	python \ 
-	openssl-dev \
-	zlib-dev \
-	libuv-dev \
-        linux-headers \
-	paxmark \
-	binutils-gold
-Run cd /tmp \
- && tar xzf /tmp/nodejs.tar.gz -C /tmp/ \
- && cd node* \
- && ./configure --prefix=/usr \
-                --shared-zlib \
-                --shared-libuv \
-                --shared-openssl \
- && make -C out mksnapshot BUILDTYPE=Release \
- && paxmark -m out/Release/mksnapshot \
- && make \
- && make install \
- && paxmark -m /usr/bin/node \
- && cp -pr /usr/lib/node_modules/npm/man /usr/share
- && apk del alpine-sdk
-
-RUN npm -g install npm \
- && npm cache clean
 
 WORKDIR /opt/
 
