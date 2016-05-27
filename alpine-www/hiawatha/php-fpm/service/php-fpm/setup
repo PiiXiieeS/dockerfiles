@@ -1,7 +1,7 @@
 set -e
 
 if [ -f /_firstrun ]; then
-  [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/localhost.site /etc/hiawatha/sites-available/example.site
+  [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/localhost.site /etc/hiawatha/sites-enabled/example.site
   [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php 
   rm /_firstrun
 fi
