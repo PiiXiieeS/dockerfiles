@@ -1,7 +1,7 @@
 FROM maxder/alpine-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-RUN apk -U --no-progress --repository http://nl.alpinelinux.org/alpine/edge/community add mbedtls 
+RUN apk -U --no-progress --repository http://nl.alpinelinux.org/alpine/edge/community add mbedtls \
  && apk -U --no-progress --repository http://nl.alpinelinux.org/alpine/edge/testing add hiawatha
 RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g;s*\#ServerId = www-data*ServerId = hiawatha*g" /etc/hiawatha/hiawatha.conf \
  && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = tls/hiawatha.pem\n       Interface = 127.0.0.1\n       MaxRequestSize = 2048 #2MB\n       TimeForRequest = 300\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf
