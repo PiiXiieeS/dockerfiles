@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -f ./setup ]
+then
+  source ./setup
+fi
+
+#exec su -c "/opt/etherpad-lite/bin/run.sh" etherpad 
+exec /opt/etherpad-lite/bin/run.sh --root
