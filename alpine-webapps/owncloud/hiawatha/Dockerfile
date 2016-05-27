@@ -46,7 +46,7 @@ RUN echo -e "#!/bin/sh \n\nsudo -u nobody php /usr/share/webapps/owncloud/cron.p
 ADD conf/autoconfig.php /autoconfig.php
 
 RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
-RUN touch /secondrun
+RUN touch /__firstrun
 
 EXPOSE 80 443
 VOLUME ["/var/owncloud"]
