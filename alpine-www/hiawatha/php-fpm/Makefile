@@ -15,13 +15,10 @@ builddocker:
 build:  tag
 	$(MAKE) builddocker
 
-run:	
-	$(MAKE) tag
-	docker run -d --hostname ${NAME} --name ${NAME} -p 80:80 -p 443:443 -v /srv/docker/${NAME}/ssl:/etc/hiawatha/ssl -v /srv/docker/${NAME}/sites-enabled:/etc/hiawatha/sites-enabled -v /srv/docker/${NAME}/www:/usr/share/webapps ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+run:	tag
+	docker run -d --hostname ${NAME} --name ${NAME} -p 80:80 -p 443:443 -v /srv/docker/${NAME}/tls:/etc/hiawatha/tls -v /srv/docker/${NAME}/sites-enabled:/etc/hiawatha/sites-enabled -v /srv/docker/${NAME}/www:/usr/share/webapps ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
-quickstart:
-	$(MAKE) tag
-	$(MAKE) build
+quickstart: build
 	$(MAKE) run
 
 remove: 
