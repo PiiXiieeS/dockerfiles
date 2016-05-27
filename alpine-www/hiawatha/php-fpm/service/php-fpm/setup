@@ -1,9 +1,9 @@
 set -e
 
-if [ -f /firstrun_ ]; then
+if [ -f /_firstrun ]; then
   [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/localhost.site /etc/hiawatha/sites-available/example.site
   [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php 
-  rm /firstrun_
+  rm /_firstrun
 fi
 
 if [ ! -d /tmp ]; then
