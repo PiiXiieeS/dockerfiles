@@ -1,19 +1,7 @@
 set -e
 
-if [ ! -f /etc/hiawatha/ssl/hiawatha.pem ]; then
-        echo -e "\n[i] No certificate (hiawatha.pem) found in /ssl.\n Create one with OpenSSL.\n"
-        apk -U add openssl
-        openssl genrsa -out /etc/hiawatha/ssl/hiawatha.pem 4096
-        openssl req -new -x509 -days 3650 -key /etc/hiawatha/ssl/hiawatha.pem -out /tmp/hiawatha.crt -subj "/C=US/CN=0.0.0.0"
-        echo "" >> /etc/hiawatha/ssl/hiawatha.pem
-        cat /tmp/hiawatha.crt >> /etc/hiawatha/ssl/hiawatha.pem
-        echo "" >> /etc/hiawatha/ssl/hiawatha.pem
-        apk del openssl
-        rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
-fi
-
-if [ -f /firstrun ]; then
+if [ -f /firstrun_ ]; then
   [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/sites-available/localhost.conf /etc/hiawatha/sites-enabled/example.conf
   [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php 
-  rm /firstrun
+  rm /firstrun_
 fi
