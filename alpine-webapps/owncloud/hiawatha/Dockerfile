@@ -5,14 +5,12 @@ ENV OWNCLOUD_VERSION 9.0
 ENV OWNCLOUD_RELEASE 2
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-RUN apk -U add \
+RUN apk -U --no-progress add \
     file \
-    libcrypto1.0 \
     libintl \
     perl-xml-simple \
     perl-xml-writer@testing \
     phpredis@testing \
-    libxml2 \
     php-memcached@testing \
     memcached \
     libmemcached \
