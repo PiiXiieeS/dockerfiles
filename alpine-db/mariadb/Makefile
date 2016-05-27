@@ -15,12 +15,13 @@ builddocker:
 build:  tag
 	$(MAKE) builddocker
 	
-run:	tag
+rundicker:
 	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="dbadminpass" -v /srv/docker/mysql:/var/lib/mysql ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
-quickstart:
-	$(MAKE) build
-	$(MAKE) run
+run:	tag
+	$(MAKE) rundocker
+
+quickstart: build run
 
 remove:
 	docker rm -f ${NAME}
