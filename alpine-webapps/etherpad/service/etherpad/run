@@ -5,7 +5,4 @@ then
   source ./setup
 fi
 
-export PYTHON=python2
-
-#exec su -c "/opt/etherpad-lite/bin/run.sh" etherpad 
 exec /opt/etherpad-lite/bin/run.sh --root
