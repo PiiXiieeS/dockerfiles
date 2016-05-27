@@ -29,15 +29,14 @@ find $sysdirs -xdev -type f -a -perm +4000 -delete
 find $sysdirs -xdev \( \
   -name hexdump -o \
   -name chgrp -o \
-  -name ln -o \
   -name od -o \
   -name strings -o \
   -name su \
   \) -delete
   
 # Remove unnecessary user accounts.
-sed -i -r '/^(www-data|hiawatha|root)/!d' /etc/group
-sed -i -r '/^(hiawatha|root)/!d' /etc/passwd
+sed -i -r '/^(nobody|www-data|hiawatha|root)/!d' /etc/group
+sed -i -r '/^(nobody|hiawatha|root)/!d' /etc/passwd
 
 # Remove interactive login shell 
 sed -i -r 's#^(.*):[^:]*$#\1:/sbin/nologin#' /etc/passwd
