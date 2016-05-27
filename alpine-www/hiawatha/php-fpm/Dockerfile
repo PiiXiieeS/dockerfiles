@@ -66,7 +66,7 @@ RUN sed -i "s*\# DEFAULT WEBSITE*FastCGIserver \{\n        FastCGIid = PHP5\n   
  && if [ ! -d "/etc/hiawatha/sites-available" ]; then mkdir /etc/hiawatha/sites-available ;fi \
  && echo -e "VirtualHost {\n        Hostname = localhost\n        WebsiteRoot = /usr/share/webapps\n        TLScertFile = tls/hiawatha.pem\n	StartFile = index.php\n        UseFastCGI = PHP5\n        PreventSQLi = yes\n        PreventXSS = yes\n#       RequireTLS = yes\n}" > /etc/hiawatha/localhost.site \
  && if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi
-RUN touch /firstrun_
+RUN touch /_firstrun
 
 EXPOSE 80 443
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
