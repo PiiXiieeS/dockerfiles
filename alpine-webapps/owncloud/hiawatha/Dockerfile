@@ -27,7 +27,7 @@ RUN chmod +x /etc/service/*/*
 
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini
-ADD conf/hiawatha-owncloud.conf /etc/hiawatha/sites-available/localhost.conf
+ADD conf/owncloud.site /etc/hiawatha/sites-available/owncloud.site
 
 ENV ocpath /usr/share/webapps/owncloud
 ADD https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.${OWNCLOUD_RELEASE}.tar.bz2 /tmp/oc.tar.bz2
@@ -35,13 +35,13 @@ RUN mkdir -p /usr/share/webapps \
  && tar xfvj /tmp/oc.tar.bz2 -C /usr/share/webapps/ \
  && find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640 \
  && find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750 \
- && chown -R root:www-data ${ocpath}/ \
- && chown -R hiawatha:www-data ${ocpath}/apps/ \
- && chown -R hiawatha:www-data ${ocpath}/config/ \
- && chown -R hiawatha:www-data ${ocpath}/themes/ \
- && chown root:www-data ${ocpath}/.htaccess \
+ && chown -R root ${ocpath}/ \
+ && chown -R root:nobody ${ocpath}/apps/ \
+ && chown -R root:nobody ${ocpath}/config/ \
+ && chown -R root:nobody ${ocpath}/themes/ \
+ && chown root:nobody ${ocpath}/.htaccess \
  && chmod 0644 ${ocpath}/.htaccess
-RUN echo -e "#!/bin/sh \n\nsudo -u hiawatha php /usr/share/webapps/owncloud/cron.php" > /etc/periodic/15min/owncloud \
+RUN echo -e "#!/bin/sh \n\nsudo -u nobody php /usr/share/webapps/owncloud/cron.php" > /etc/periodic/15min/owncloud \
  && chmod +x /etc/periodic/15min/owncloud
 ADD conf/autoconfig.php /autoconfig.php
 
