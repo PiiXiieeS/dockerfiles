@@ -9,16 +9,16 @@ all: build
 tag:
 	./scripts/architecture.sh
 	
-build:  
-	$(MAKE) tag
+builddocker:  
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
-
-run:	
-	$(MAKE) tag
+	
+buid:   tag
+	$(MAKE) builddocker
+	
+run:	tag
 	docker run -d --hostname ${NAME} --name ${NAME} -p 127.0.0.1:3306:3306 -e DBUSER="dbadmin" -e DBPASS="dbadminpass" -v /srv/docker/mysql:/var/lib/mysql ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
 
-quickstart: 
-	$(MAKE) tag
+quickstart:
 	$(MAKE) build
 	$(MAKE) run
 
