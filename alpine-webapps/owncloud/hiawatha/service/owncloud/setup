@@ -43,6 +43,7 @@ fi
  chown hiawatha:www-data /var/owncloud/data
  if [ ! -f /etc/hiawatha/sites-enabled/owncloud.site ]; then
 	cp /etc/hiawatha/owncloud.site /etc/hiawatha/sites-enabled/owncloud.site
+	chown hiawatha:www-data /etc/hiawatha/sites-enabled/owncloud.site
  fi
  rm /__firstrun
 
