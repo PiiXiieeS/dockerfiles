@@ -22,6 +22,8 @@ run:	tag
 	$(MAKE) rundocker
 
 quickstart: build run
+	sleep 2
+	docker logs ${NAME}
 
 remove: 
 	docker rm -f ${NAME} 
