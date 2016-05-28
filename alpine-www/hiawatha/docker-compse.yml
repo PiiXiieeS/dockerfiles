@@ -2,6 +2,8 @@ hiawatha-php:
   container_name: hiawatha-php
   restart: always
   image: maxder/alpine-hiawatha-php:x86_64
+  dns:
+    - 127.0.0.1
   ports:
     - "80:80"
     - "443:443"
