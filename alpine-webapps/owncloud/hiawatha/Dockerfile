@@ -27,7 +27,6 @@ RUN chmod +x /etc/service/*/*
 
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini
-RUN rm /etc/hiawatha/localhost.site
 ADD conf/owncloud.site /etc/hiawatha/owncloud.site
 
 ENV ocpath /usr/share/webapps/owncloud
