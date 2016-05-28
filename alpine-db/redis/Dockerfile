@@ -1,13 +1,40 @@
 FROM maxder/alpine-base:armhf
 MAINTAINER Christian-Maxilian Steier
+# Based on https://github.com/docker-library/redis
 
-RUN apk -U add redis \
- && sed 's/^daemonize yes/daemonize no/' -i /etc/redis.conf \
- && sed 's/^loglevel notice/loglevel debug/' -i /etc/redis.conf \
- && sed "s*/var/log/redis/redis.log*/dev/stdout*g" -i /etc/redis.conf \
- && if [ $(uname -m) == "armv6l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; elif [ $(uname -m) == "armv7l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; fi
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN addgroup -S redis && adduser -S -G redis redis
 
-RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
+# grab su-exec for easy step-down from root
+RUN apk add --no-cache 'su-exec>=0.2'
+
+ENV REDIS_VERSION 3.2.0
+ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-3.2.0.tar.gz
+ENV REDIS_DOWNLOAD_SHA1 0c1820931094369c8cc19fc1be62f598bc5961ca
+
+# for redis-sentinel see: http://redis.io/topics/sentinel
+RUN set -x \
+	&& apk add --no-cache --virtual .build-deps \
+		gcc \
+		linux-headers \
+		make \
+		musl-dev \
+		tar \
+	&& wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL" \
+	&& echo "$REDIS_DOWNLOAD_SHA1 *redis.tar.gz" | sha1sum -c - \
+	&& mkdir -p /usr/src/redis \
+	&& tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
+	&& rm redis.tar.gz \
+	&& make -C /usr/src/redis \
+	&& make -C /usr/src/redis install \
+	&& rm -r /usr/src/redis \
+	&& apk del .build-deps \
+	&& rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
+	&& if [ $(uname -m) == "armv6l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; elif [ $(uname -m) == "armv7l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; fi
+
+RUN mkdir /data && chown redis:redis /data
+VOLUME /data
+WORKDIR /data
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
