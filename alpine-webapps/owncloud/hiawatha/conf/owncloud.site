@@ -4,7 +4,7 @@ UrlToolkit {
 }
 
 VirtualHost {
-	Hostname = localhost 
+	Hostname = HOSTNAME
 	WebsiteRoot = /usr/share/webapps/owncloud
 	#RequireTLS = yes,15552000	
 
