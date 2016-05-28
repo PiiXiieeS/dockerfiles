@@ -46,7 +46,7 @@ RUN echo -e "#!/bin/sh \n\nsudo -u hiawatha php /usr/share/webapps/owncloud/cron
 ADD conf/autoconfig.php /autoconfig.php
 
 RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
-RUN if [ ! -d /tmp ]; then mkdir  /tmp ;chmod -R 777 /tmp ;fi
+RUN if [ ! -d /tmp ]; then mkdir  /tmp ;chmod -R 777 /tmp ;fi \
  && touch /__firstrun
 
 EXPOSE 80 443
