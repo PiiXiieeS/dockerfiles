@@ -1,8 +1,8 @@
 set -e
 
 if [ -f /_firstrun ]; then
-  [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/localhost.site /etc/hiawatha/sites-enabled/example.site
-  [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php 
+  [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || cp /etc/hiawatha/localhost.site /etc/hiawatha/sites-enabled/example.site && chown hiawatha:www-data /etc/hiawatha/sites-enabled/example.site
+  [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php && chown -R hiawatha:www-data /usr/share/webapps
   rm /_firstrun
 fi
 
