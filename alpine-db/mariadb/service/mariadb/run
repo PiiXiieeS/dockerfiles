@@ -6,9 +6,9 @@ then
 fi
 
 exec /usr/bin/mysqld_safe \
-  --log-error=/dev/stderr \
   --log-warnings \
   --slow-query-log \
   --slow-query-log-file=/dev/stdout \
   --general-log \
-  --general-log-file=/dev/stdout
+  --general-log-file=/dev/stdout \
+  --log-bin-trust-function-creators=1
