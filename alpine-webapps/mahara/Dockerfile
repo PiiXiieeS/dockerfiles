@@ -44,7 +44,7 @@ RUN if [ ! -d "/usr/share/webapps" ]; then mkdir -p /usr/share/webapps ; fi \
  && sed -i "s*5.0.25*05.0.25*g" ${maharapath}/init.php
 
 RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
-RUN touch /firstrun
+RUN touch /__firstrun
 
 EXPOSE 80
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
