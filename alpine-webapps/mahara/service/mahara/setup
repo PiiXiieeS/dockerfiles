@@ -83,11 +83,11 @@ EOF
 	  echo -e "\n[i] Set automatic configuration:\n  DB = $MAHARA_DB_USER \n  DB User = $MAHARA_DB \n  DB PASS = $MAHARA_DB_PASS \n  SALD = $MAHARA_SALD\n---\n"
 fi
 chown -R nginx:www-data /var/mahara/data
-rm /firstrun
+rm /__firstrun
 
 }
 
-if [ -f /firstrun ]; then
+if [ -f /__firstrun ]; then
 
   pre_start_action
   post_start_action
