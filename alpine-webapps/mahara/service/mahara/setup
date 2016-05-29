@@ -74,7 +74,7 @@ echo " " && echo "---" && echo " "
 
 post_start_action() {
 
-if [ "$INSTALL" == "silent" ]; then
+if [ $INSTALL == "silent" ]; then
     	  echo "Create user and database"
     	  mysql -u${DBADMIN} -p${DBPASS} -h $DBHOST <<-EOF
     	  CREATE DATABASE IF NOT EXISTS $MAHARA_DB CHARACTER SET utf8 COLLATE utf8_general_ci;
