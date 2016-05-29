@@ -13,8 +13,8 @@ VirtualHost {
   #Alias = /cloud:/usr/share/webapps/owncloud
   #UseDirectory = owncloud
   
-  CustomHeader = X-Frame-Options SAMEORIGIN 
-  CustomHeader = Vary: Accept-Encoding
+  #CustomHeader = X-Frame-Options SAMEORIGIN 
+  #CustomHeader = Vary: Accept-Encoding
   RandomHeader = 64
   PreventXSS = yes
   #PreventCSRF = yes
