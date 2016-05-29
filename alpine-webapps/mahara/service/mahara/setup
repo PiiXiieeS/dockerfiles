@@ -44,7 +44,7 @@ fi
   	sed -i "s|dbhost   = 'localhost'|dbhost   = '$DBHOST'|g" /usr/share/webapps/mahara/config.php
   	sed -i 's|\/\/ \$cfg->wwwroot|\$cfg->wwwroot|g' /usr/share/webapps/mahara/config.php
   	sed -i "s|wwwroot = 'https:\/\/myhost.com\/mahara\/'|wwwroot = '$MAHARA_WWWROOT'|g" /usr/share/webapps/mahara/config.php
-  	sed -i "s|dataroot = '\/path\/to\/uploaddir'|dataroot = '\/var\/maharadata'|g" /usr/share/webapps/mahara/config.php
+  	sed -i "s|dataroot = '\/path\/to\/uploaddir'|dataroot = '\/var\/mahara\/data'|g" /usr/share/webapps/mahara/config.php
   	sed -i 's|\/\/ \$cfg->passwordsaltmain|\$cfg->passwordsaltmain|g' /usr/share/webapps/mahara/config.php
   	sed -i "s|passwordsaltmain = 'some long random string here with lots of characters'|passwordsaltmain = '$MAHARA_SALD'|g" /usr/share/webapps/mahara/config.php
   	sed -i "s|emailcontact = ''|emailcontact = '$MAHARA_EMAIL'|g" /usr/share/webapps/mahara/config.php
