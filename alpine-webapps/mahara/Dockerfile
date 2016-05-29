@@ -21,7 +21,7 @@ RUN apk -U add \
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
 
-ADD conf/nginx-mahara.conf  /etc/nginx/sites-enabled/localhost.site
+ADD conf/mahara.site  /etc/nginx/sites-enabled/mahara.site
 ADD conf/apachemod.conf /etc/nginx/apachemod.conf
 
 ## Mahara
