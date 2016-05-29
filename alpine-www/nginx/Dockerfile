@@ -1,8 +1,8 @@
 FROM maxder/alpine-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-RUN echo "http://dl-4.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/repositories    \
- && echo "http://dl-4.alpinelinux.org/alpine/v3.3/community/" | tee -a /etc/apk/repositories \
+RUN echo "http://nl.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/repositories    \
+ && echo "http://nl.alpinelinux.org/alpine/v3.3/community/" | tee -a /etc/apk/repositories \
  && apk -U --no-progress upgrade
 RUN apk --no-cache --no-progress add ca-certificates nginx openssl
 
