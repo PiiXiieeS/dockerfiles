@@ -1,7 +1,7 @@
-hiawatha-php:
-  container_name: hiawatha-php
+hiawatha:
+  container_name: hiawatha
   restart: always
-  image: maxder/alpine-hiawatha-php:x86_64
+  image: maxder/alpine-hiawatha:x86_64
   ports:
     - "80:80"
     - "443:443"
