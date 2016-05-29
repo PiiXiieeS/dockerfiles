@@ -1,4 +1,4 @@
-FROM maxder/alpine-php-fpm:ARCHTAG
+FROM maxder/alpine-nginx-php:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 ENV MAHARA_VERSION 16.04
