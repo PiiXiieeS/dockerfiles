@@ -27,6 +27,7 @@ pre_start_action() {
   fi
   if [ ! -f /etc/nginx/sites-enabled/mahara.site ]; then
         cp /etc/nginx/mahara.site /etc/nginx/sites-enabled/mahara.site
+        chown nginx:www-data /etc/nginx/sites-enabled/mahara.site
   fi
 
 if [ -z "$DB_PORT_3306_TCP_ADDR" ]; then
