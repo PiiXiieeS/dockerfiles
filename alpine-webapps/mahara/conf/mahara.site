@@ -3,7 +3,7 @@ server {
 	server_name localhost;
 
 	include /etc/nginx/fpm.conf;
-	include /etc/nginx/apachemod.conf;
+	#include /etc/nginx/apachemod.conf;
 
 	root /usr/share/webapps/mahara/;
 	client_max_body_size 2G;
