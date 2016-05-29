@@ -6,7 +6,7 @@ set -e
  chown -R nginx:www-data /var/mahara/data
  chmod 755 /var/mahara/data
 
-MAHARA_WWWROOT=${MAHARA_WWWROOT:-/mahara/}
+MAHARA_WWWROOT=${MAHARA_WWWROOT:-/}
 MAHARA_EMAIL=${MAHARA_EMAIL:-contact@domain.org}
 MAHARA_DB=${MAHARA_DB:-mahara}
 MAHARA_DB_USER=${MAHARA_DB_USER:-mahara}
