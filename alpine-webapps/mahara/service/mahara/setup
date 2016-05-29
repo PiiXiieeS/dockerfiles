@@ -79,6 +79,7 @@ if [ $INSTALL == "silent" ]; then
     	  mysql -u${DBADMIN} -p${DBPASS} -h $DBHOST <<-EOF
     	  CREATE DATABASE IF NOT EXISTS $MAHARA_DB CHARACTER SET utf8 COLLATE utf8_general_ci;
     	  GRANT ALL PRIVILEGES ON $MAHARA_DB.* TO '$MAHARA_DB_USER'@'%' IDENTIFIED BY '$MAHARA_DB_PASS';
+    	  GRANT TRIGGER ON $MAHARA_DB.* TO '$MAHARA_DB_USER'@'%';
     	  FLUSH PRIVILEGES;
 EOF
     	  sed -i "s|dbuser   = '$MAHARA_DB_USER'|dbuser   = '$DBADMIN'|g" /usr/share/webapps/mahara/config.php
