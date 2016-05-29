@@ -20,4 +20,5 @@ else
 fi
 
 chown -R nginx:www-data /var/lib/nginx
+chown -R nginx:www-data /etc/nginx/sites-enabled
 chmod -R 777 /var/lib/nginx/tmp
