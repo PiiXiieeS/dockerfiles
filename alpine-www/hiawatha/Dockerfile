@@ -26,7 +26,7 @@ RUN tar -xvzf /tmp/hiawatha.tar.gz -C /tmp/ \
  && addgroup -Sg 82 www-data \
  && adduser -S -D -H -h /var/lib/hiawatha -s /sbin/nologin -G www-data -g www-data hiawatha 
 RUN sed -i "s*GENERAL SETTINGS*GENERAL SETTINGS\nLogFormat = extended\nServerString = SimpleHTTPserver\n*g;s*\#ServerId = www-data*ServerId = hiawatha*g" /etc/hiawatha/hiawatha.conf \
- && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = tls/hiawatha.pem\n       MaxRequestSize = 2048 #2MB\n       TimeForRequest = 300\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf
+ && sed -i "s*\#Binding*Binding \{\n       Port = 443\n       TLScertFile = tls/hiawatha.pem\n       MaxRequestSize = 2048 #2MB\n       TimeForRequest = 30\n\}\n\n\#Binding*g" /etc/hiawatha/hiawatha.conf
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
