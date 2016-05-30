@@ -9,6 +9,9 @@ VirtualHost {
   TLScertFile = tls/hiawatha.pem
   #RequireTLS = yes,15552000
   
+  AccessLogfile = /var/log/hiawatha/owncloud-access.log
+  ErrorLogfile = /var/log/hiawatha/owncloud-error.log
+  
   StartFile = index.php
   #Alias = /cloud:/usr/share/webapps/owncloud
   #UseDirectory = owncloud
