@@ -50,6 +50,7 @@ fi
 	cp /etc/hiawatha/owncloud.site /etc/hiawatha/sites-enabled/owncloud.site
 	chown hiawatha:www-data /etc/hiawatha/sites-enabled/owncloud.site
  fi
+ sed -i "s*TimeForRequest = 30*TimeForRequest = 600*g" /etc/hiawatha/config/hiawatha.conf
  killall hiawatha
  rm /__firstrun
 
