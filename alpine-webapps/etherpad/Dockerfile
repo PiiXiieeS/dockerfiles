@@ -4,7 +4,9 @@ MAINTAINER Christian-Maxilian Steier
 ENV ETHERPAD_VERSION 1.6.0
 
 RUN echo "http://nl.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
- && apk -U add nodejs \
+ && apk -U add \
+ 	make \
+ 	nodejs \
  	python \
 	curl \
 	openssl \
