@@ -5,4 +5,4 @@ then
   source ./setup
 fi
 
-exec /opt/etherpad-lite/bin/run.sh --root
+exec /usr/share/webapps/etherpad/bin/run.sh --root

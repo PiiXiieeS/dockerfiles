@@ -13,22 +13,27 @@ if [ -f /firstrun ]; then
   ETHERPAD_ADMIN_PASS=${ETHERPAD_ADMIN_PASS-$(pwgen -s -1 16)}
   DBADMIN=${DBADMIN:-$DB_ENV_DBUSER}
   DBPASS=${DBPASS:-$DB_ENV_DBPASS}
-  DBHOST=${DBHOST:-$DB_PORT_3306_TCP_ADDR}
-  eppath=/opt/etherpad-lite
+  DBHOST=${DBHOST:-db}
+  eppath=/usr/share/webapps/etherpad
 
-  if [ -z "$DB_PORT_3306_TCP_ADDR" ]; then
-	echo >&2 'error: missing MYSQL_PORT_3306_TCP environment variable'
-	echo >&2 '  Did you forget to --link some_mysql_container:db ?'
-	exit 1
-  fi
+  #if [ -z "$DB_PORT_3306_TCP_ADDR" ]; then
+  #	echo >&2 'error: missing MYSQL_PORT_3306_TCP environment variable'
+  #	echo >&2 '  Did you forget to --link some_mysql_container:db ?'
+  #	exit 1
+  #fi
 
   # Check if database already exists
-  RESULT=`mysql -u${DBADMIN} -p${DBPASS} \
-	-h${DBHOST} --skip-column-names \
-	-e "SHOW DATABASES LIKE '${ETHERPAD_DB_NAME}'"`
-
-  if [ "$RESULT" != $ETHERPAD_DB_NAME ]; then
+  #RESULT=`mysql -u${DBADMIN} -p${DBPASS} \
+#	-h${DBHOST} --skip-column-names \
+#	-e "SHOW DATABASES LIKE '${ETHERPAD_DB_NAME}'"`
+#
+ # if [ "$RESULT" != $ETHERPAD_DB_NAME ]; then
 	# mysql database does not exist, create it
+
+if [ "`mysql -u$DBADMIN -p$DBPASS -h $DBHOST -se'USE ${ETHERPAD_DB_NAME};' 2>&1`" == "" ]; then
+        echo "${ETHERPAD_DB_NAME} exist"
+        echo "So I expect a settings.json under $eppath"
+else
 	echo "Creating database ${ETHERPAD_DB_NAME}"
 
   mysql -u $DBADMIN --password=$DBPASS -h $DBHOST <<-EOF
@@ -43,7 +48,7 @@ EOF
   if [ ! -f $eppath/settings.json ]; then
 	cp $eppath/settings.json.template $eppath/settings.json
 
-cat << EOF > /opt/etherpad-lite/settings.json
+cat << EOF > /usr/share/webapps/etherpad/settings.json
 {
   "title": "${ETHERPAD_TITLE}",
   "ip": "0.0.0.0",
@@ -57,7 +62,7 @@ cat << EOF > /opt/etherpad-lite/settings.json
                   },
 EOF
 
-cat << EOF >> /opt/etherpad-lite/settings.json
+cat << EOF >> /usr/share/webapps/settings.json
   "users": {
     "${ETHERPAD_ADMIN_USER}": {
       "password": "${ETHERPAD_ADMIN_PASS}",
@@ -66,15 +71,14 @@ cat << EOF >> /opt/etherpad-lite/settings.json
   },
 EOF
 
-cat << EOF >> /opt/etherpad-lite/settings.json
+cat << EOF >> $eppath/settings.json
 }
 EOF
 
   fi
 
-echo -e "\n\n[i] Set automatic configuration:\n  APIKEY: $(cat /opt/etherpad-lite/APIKEY.txt)\n  ADMIN: $ETHERPAD_ADMIN_USER\n  PASS: $ETHERPAD_ADMIN_PASS\n---\n"
-
+apk del pwgen mariadb-client rsync
+echo -e "\n\n[i] Set automatic configuration:\n  APIKEY: $(cat $eppath/APIKEY.txt)\n  ADMIN: $ETHERPAD_ADMIN_USER\n  PASS: $ETHERPAD_ADMIN_PASS\n---\n"
 rm /firstrun
-apk del pwgen mariadb-client
 
 fi

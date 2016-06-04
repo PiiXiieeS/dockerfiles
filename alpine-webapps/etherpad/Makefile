@@ -11,13 +11,13 @@ tag:
 	./scripts/architecture.sh
         
 builddocker:
-	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG .
+	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:x86_64 .
 
 build:	tag
 	$(MAKE) builddocker
 
 rundocker:
-	docker run -d --hostname ${NAME} --name ${NAME} --link mariadb:db -p 9001:9001 ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker run -d --hostname ${NAME} --name ${NAME} --link mariadb:db -p 9001:9001 ${NAMESPACE}/${IMAGENAME}-${NAME}:x86_64
 
 run:	tag
 	$(MAKE) rundocker
@@ -28,4 +28,4 @@ remove:
 	docker rm -f ${NAME} 
 
 push:	
-	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:ARCHTAG
+	docker push ${NAMESPACE}/${IMAGENAME}-${NAME}:x86_64

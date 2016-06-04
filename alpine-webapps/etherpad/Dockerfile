@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:ARCHTAG
+FROM maxder/alpine-base:x86_64
 MAINTAINER Christian-Maxilian Steier
 
 ENV ETHERPAD_VERSION 1.6.0
@@ -13,19 +13,37 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
 	zlib \
 	libuv \
 	mariadb-client \
-	pwgen
-
-WORKDIR /opt/
+	pwgen \
+	rsync
 
 ADD https://github.com/ether/etherpad-lite/archive/${ETHERPAD_VERSION}.tar.gz /tmp/etherpad.tar.gz
-RUN cd /tmp \
- && tar -xvzf /tmp/etherpad.tar.gz \
- && mv /tmp/etherpad-lite-${ETHERPAD_VERSION} /opt/etherpad-lite
+WORKDIR /tmp
+RUN if [ ! -d /usr/share/webapps ]; then mkdir /usr/share/webapps ;fi \
+ && tar -xvzf etherpad.tar.gz \
+ && cd etherpad-lite-${ETHERPAD_VERSION} \
+ && rsync \
+    --delete \
+    --exclude 'CHANGELOG.md'\
+    --exclude 'CONTRIBUTING.md'\
+    --exclude 'LICENSE'\
+    --exclude 'README.md'\
+    --exclude 'Makefile'\
+    --exclude 'settings.json'\
+    --exclude '.git'\
+    --exclude '.gitignore'\
+    --exclude '.travis.yml'\
+    --exclude 'bin/buildDebian.sh'\
+    --exclude 'bin/buildForWindows.sh'\
+    --exclude 'bin/deb-src'\
+    --exclude 'bin/installOnWindows.bat'\
+    --exclude 'doc/'\
+    --exclude 'start.bat'\
+    --exclude 'tests/'\
+    --exclude 'var/'\
+    -a . /usr/share/webapps/etherpad
 
-WORKDIR /opt/etherpad-lite
-ENV HOME /opt/etherpad-lite
+WORKDIR /usr/share/webapps/etherpad
 RUN bin/installDeps.sh \
- && rm settings.json \
  && touch APIKEY.txt \
  && echo "$(pwgen -s -1 16)" > APIKEY.txt
 
