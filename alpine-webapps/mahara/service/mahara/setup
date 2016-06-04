@@ -30,12 +30,6 @@ pre_start_action() {
         chown nginx:www-data /etc/nginx/sites-enabled/mahara.site
   fi
 
-if [ -z "$DB_PORT_3306_TCP_ADDR" ]; then
-	echo >&2 'error: missing MYSQL_PORT_3306_TCP environment variable'
-	echo >&2 '  Did you forget to --link some_mysql_container:db ?'
-	exit 1
-fi
-
     if [ ! -f /usr/share/webapps/mahara/config.php ]; then
   	cp -a /usr/share/webapps/mahara/config-dist.php /usr/share/webapps/mahara/config.php
   	sed -i "s|dbtype   = 'postgres'|dbtype   = 'mysql'|g" /usr/share/webapps/mahara/config.php
