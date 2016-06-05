@@ -1,7 +1,7 @@
 FROM maxder/alpine-mini:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-ENV RELEASE v3.3
+ENV RELEASE v3.4
 RUN echo "http://nl.alpinelinux.org/alpine/$RELEASE/main/" > /etc/apk/repositories    \
  && echo "http://nl.alpinelinux.org/alpine/$RELEASE/community/" >> /etc/apk/repositories \
  && apk -U --no-progress upgrade
