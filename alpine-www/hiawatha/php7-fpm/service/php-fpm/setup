@@ -1,0 +1,14 @@
+set -e
+
+if [ -f /_firstrun ]; then
+  HOSTNAME=${HOSTNAME:-localhost}
+  [ "$(ls -A /etc/hiawatha/sites-enabled)" ] || echo -e "VirtualHost {\n        Hostname = ${HOSTNAME}\n        WebsiteRoot = /usr/share/webapps\n        TLScertFile = tls/hiawatha.pem\n        StartFile = index.php\n        UseFastCGI = PHP5\n        PreventSQLi = yes\n        PreventXSS = yes\n#       RequireTLS = yes\n}" > /etc/hiawatha/sites-enabled/example.site  && chown hiawatha:www-data /etc/hiawatha/sites-enabled/example.site
+  if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi
+  [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php && chown -R hiawatha:www-data /usr/share/webapps
+  rm /_firstrun
+fi
+
+if [ ! -d /tmp ]; then
+  mkdir  /tmp
+  chmod -R 777 /tmp
+fi
