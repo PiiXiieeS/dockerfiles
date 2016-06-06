@@ -1,6 +1,7 @@
 FROM maxder/alpine-hiawatha:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
+RUN echo "http://nl.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories
 RUN apk -U --no-progress add \
 	php-apcu \
 	php-bcmath \
