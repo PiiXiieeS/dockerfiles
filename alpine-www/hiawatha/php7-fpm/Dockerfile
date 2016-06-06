@@ -55,6 +55,7 @@ RUN apk -U --no-progress add \
 RUN ln -s /etc/php7 /etc/php \
  && ln -s /usr/bin/php7 /usr/bin/php \
  && ln -s /usr/sbin/php-fpm7 /usr/bin/php-fpm \
+ && ln -s /usr/sbin/php-cgi7 /usr/sbin/php-cgi \
  && ln -s /usr/lib/php7 /usr/lib/php
 
 ## PHP config
@@ -67,10 +68,10 @@ RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/p
 RUN curl -sS https://getcomposer.org/installer | php \
  && mv composer.phar /usr/local/bin/composer
 
-#RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
-# && echo "apc.ttl=7200" >> /etc/php/conf.d/apcu.ini \
-# && echo "apc.user_ttl=7200" >> /etc/php/conf.d/apcu.ini \
-# && echo "apc.gc_ttl=3600" >> /etc/php/conf.d/apcu.ini
+#RUN echo "apc.shm_size = 128M" >> /etc/php7/conf.d/00-apcu.ini \
+# && echo "apc.ttl=7200" >> /etc/php7/conf.d/00-apcu.ini \
+# && echo "apc.user_ttl=7200" >> /etc/php7/conf.d/00-apcu.ini \
+# && echo "apc.gc_ttl=3600" >> /etc/php7/conf.d/00-apcu.ini
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
