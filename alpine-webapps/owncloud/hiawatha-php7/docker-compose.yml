@@ -1,0 +1,33 @@
+oc_db:
+  container_name: owncloud_db
+  image: maxder/alpine-mariadb:x86_64
+  environment:
+    - DBUSER=dbadmin
+    - DBPASS=dbadmin
+  volumes:
+    - /srv/docker/owncloud/db:/var/lib/mysql
+  restart: always
+
+#oc_redis:
+#  container_name: owncloud_redis
+#  image: maxder/alpine-redis:x84_64
+#  volumes:
+#    - /srv/docker/owncloud/redis:/var/lib/redis
+#  restart: always
+
+oc:
+  container_name: owncloud
+  image: maxder/alpine-owncloud:x86_64
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+#    - oc_redis:redis
+    - oc_db:db
+  environment:
+    - OCADMIN=ocadmin
+    - OCPASS=ocadmin
+  volumes:
+    - /srv/docker/owncloud/data:/var/owncloud/data
+    - /srv/docker/owncloud/config:/usr/share/webapp/owncloud/config
+  restart: always

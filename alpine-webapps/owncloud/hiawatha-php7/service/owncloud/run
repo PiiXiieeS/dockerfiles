@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -f ./setup ]
+then
+  source ./setup
+fi
+
+chown -R hiawatha:www-data /usr/share/webapps/owncloud/config
+chown -R hiawatha:www-data /var/owncloud
+chmod -R 777 /tmp

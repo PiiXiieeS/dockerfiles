@@ -1,0 +1,39 @@
+UrlToolkit {
+  ToolkitID = ownCloud
+  Match ^/data DenyAccess
+}
+
+VirtualHost {
+  Hostname = HOSTNAME
+  WebsiteRoot = /usr/share/webapps/owncloud
+  TLScertFile = tls/hiawatha.pem
+  #RequireTLS = yes,15552000
+  
+  AccessLogfile = /var/log/hiawatha/owncloud-access.log
+  ErrorLogfile = /var/log/hiawatha/owncloud-error.log
+  
+  StartFile = index.php
+  #Alias = /cloud:/usr/share/webapps/owncloud
+  #UseDirectory = owncloud
+  
+  #CustomHeader = X-Frame-Options SAMEORIGIN 
+  #CustomHeader = Vary: Accept-Encoding
+  RandomHeader = 64
+  PreventXSS = yes
+  #PreventCSRF = yes
+  PreventSQLi = yes
+  
+  TimeForCGI = 150
+  WebDAVapp = yes
+  FollowSymlinks = yes
+  AllowDotFiles = yes
+  EnablePathInfo = yes
+  UseToolkit = ownCloud
+  EnablePathInfo = yes
+}
+
+Directory {
+  DirectoryID = owncloud
+  Path = /cloud
+  StartFile = index.php
+}
