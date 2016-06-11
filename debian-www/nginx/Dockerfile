@@ -14,6 +14,9 @@ RUN openssl genrsa -out /etc/nginx/nginx.pem 4096 \
  && openssl req -new -x509 -days 3650 -key /etc/nginx/nginx.pem -out /etc/nginx/nginx.crt -subj "/C=US/CN=0.0.0.0" \
  && apt-get purge -y openssl
 
+ADD service/nginx /etc/service/nginx
+RUN chmod +x /etc/service/*/*
+
 # Cleanup and security fixes
 #COPY scripts/cleanup.sh /tmp/cleanup.sh
 #RUN /tmp/cleanup.sh
