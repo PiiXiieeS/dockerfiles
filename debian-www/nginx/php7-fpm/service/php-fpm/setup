@@ -1,0 +1,10 @@
+set -e
+
+if [ -f /_firstrun ]; then
+  cp -a /etc/nginx/localhost.site  /etc/nginx/sites-enabled/example.site
+  sed -i "s*/usr/share/nginx/html*/usr/share/webapps*g" /etc/nginx/sites-enabled/example.site
+  if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi
+  [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php \
+  && chown -R www-data:www-data /usr/share/webapps
+  rm /_firstrun
+fi
