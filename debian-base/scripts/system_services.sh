@@ -1,23 +1,12 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
+ source /bd_build/buildconfig
 set -x
 
-## Install init process.
-cp /bd_build/bin/my_init /sbin/
-mkdir -p /etc/my_init.d
-mkdir -p /etc/container_environment
-touch /etc/container_environment.sh
-touch /etc/container_environment.json
-chmod 700 /etc/container_environment
-
-groupadd -g 8377 docker_env
-chown :docker_env /etc/container_environment.sh /etc/container_environment.json
-chmod 640 /etc/container_environment.sh /etc/container_environment.json
-ln -s /etc/container_environment.sh /etc/profile.d/
-
-## Install runit.
-$minimal_apt_get_install runit
+## Install s6
+$minimal_apt_get_install curl
+curl -o /tmp/s6-overlay.tar.gz -L https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}.${S6_RELEASE}/s6-overlay-amd64.tar.gz
+tar xzf /tmp/s6-overlay.tar.gz -C /
 
 ## Install a syslog daemon and logrotate.
 [ "$DISABLE_SYSLOG" -eq 0 ] && /bd_build/services/syslog-ng/syslog-ng.sh || true
