@@ -17,8 +17,6 @@ RUN openssl genrsa -out /etc/nginx/nginx.pem 4096 \
 ADD service/nginx /etc/service/nginx
 RUN chmod +x /etc/service/*/*
 
-# Cleanup and security fixes
-#COPY scripts/cleanup.sh /tmp/cleanup.sh
-#RUN /tmp/cleanup.sh
-
 EXPOSE 80/tcp 443/tcp
+ENTRYPOINT ["/bin/s6-svscan", "-t0"]
+CMD ["/etc/service"]
