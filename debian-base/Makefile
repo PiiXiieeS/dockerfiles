@@ -1,6 +1,5 @@
 .PHONY: all build push
 
-CURRENT_DIRECTORY := $(shell pwd)
 UNAME := $(shell uname -m)
 ifeq ($(UNAME), x86_64)
  ARCHTAG=x86_64
