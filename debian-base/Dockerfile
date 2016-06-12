@@ -1,4 +1,4 @@
-FROM debian:jessie:$ARCHTAG
+FROM maxder/debian-mini:jessie
 MAINTAINER Christian-Maximilian
 # Minimal Debian baseimage modified for Docker-friendliness, 
 # based on phusion/baseimage-docker
