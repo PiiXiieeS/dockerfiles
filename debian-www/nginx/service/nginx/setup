@@ -18,7 +18,3 @@ if find "/etc/nginx/sites-enabled" -mindepth 1 -name "*.site" -print | grep -q .
 else
 	cp -a /etc/nginx/localhost.site /etc/nginx/sites-enabled/example.site
 fi
-
-chown -R nginx:www-data /var/lib/nginx
-chown -R nginx:www-data /etc/nginx/sites-enabled
-chmod -R 777 /var/lib/nginx/tmp
