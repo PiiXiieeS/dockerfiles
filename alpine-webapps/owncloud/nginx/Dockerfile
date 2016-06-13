@@ -52,7 +52,7 @@ ADD conf/autoconfig.php /autoconfig.php
 RUN rm -rf /var/cache/apk/*  /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp
 
 EXPOSE 80 443
-RUN touch __/firstrun
+RUN touch /__firstrun
 
 VOLUME ["/var/owncloud"]
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
