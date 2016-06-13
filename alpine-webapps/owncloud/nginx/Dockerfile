@@ -45,7 +45,7 @@ RUN mkdir -p /usr/share/webapps \
  && chown -R nginx:www-data ${ocpath}/themes/ \
  && chown root:www-data ${ocpath}/.htaccess \
  && chmod 0644 ${ocpath}/.htaccess
-RUN echo -e "#!/bin/sh \n\nsudo -u nginx php /usr/share/webapps/owncloud/cron.php" > /etc/periodic/15min/owncloud \
+RUN echo -e "#!/bin/sh \n\n sudo -u nginx php /usr/share/webapps/owncloud/cron.php\n # If music app exists, scan all files\n if [ -d "/usr/share/webapps/owncloud/apps/music" ]; then sudo -u nginx php /usr/share/webapps/owncloud/occ music:scan --all ;fi\n" > /etc/periodic/15min/owncloud \
  && chmod +x /etc/periodic/15min/owncloud
 ADD conf/autoconfig.php /autoconfig.php
 
