@@ -13,7 +13,7 @@ if [ ! -z "$MYSQL_PORT_3306_TCP_ADDR" ]; then
 	sed -i "s/.*dbhost.*/  'dbhost' => '$MYSQL_PORT_3306_TCP_ADDR',/" $OCDIR/config/config.php
 fi
 
-if [ -f __/firstrun ]; then
+if [ -f /__firstrun ]; then
 
   if [ -f /etc/nginx/sites-enabled/example.site ]; then
   	rm /etc/nginx/sites-enabled/example.site
@@ -50,6 +50,6 @@ if [ -f __/firstrun ]; then
    chown -R nginx:www-data /var/owncloud/data
    chmod 755 /var/owncloud/data
    chown -R nginx:www-data $OCDIR/config
-   rm __/firstrun
+   rm /__firstrun
 fi
 chmod -R 755 /var/lib/nginx
