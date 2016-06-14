@@ -3,7 +3,7 @@ version: '2'
 services:
   oc_db:
     container_name: owncloud_db
-    image: maxder/alpine-mariadb:x86_64
+    image: maxder/alpine-mariadb:armhf
     dns:
     - "127.0.0.1"
     environment:
@@ -14,7 +14,7 @@ services:
     restart: always
 
   oc:
-    image: maxder/alpine-owncloud:x86_64
+    image: maxder/alpine-owncloud:armhf
     container_name: owncloud
     ports:
     - "80:80"
