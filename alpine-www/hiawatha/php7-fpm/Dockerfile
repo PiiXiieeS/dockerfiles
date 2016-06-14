@@ -58,7 +58,7 @@ RUN ln -s /etc/php7 /etc/php \
  && ln -s /usr/sbin/php-cgi7 /usr/sbin/php-cgi \
  && ln -s /usr/lib/php7 /usr/lib/php
 
-RUN addgroup nginx www-data \
+RUN addgroup hiawatha www-data \
  && sed -i "s*user = nobody*user = hiawatha*g" /etc/php/php-fpm.conf \
  && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
  && echo "clear_env = no" >> /etc/php/php-fpm.conf
