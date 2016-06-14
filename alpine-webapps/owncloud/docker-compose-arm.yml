@@ -28,5 +28,6 @@ services:
     - /srv/docker/owncloud/data:/var/owncloud/data
     - /srv/docker/owncloud/config:/usr/share/webapp/owncloud/config
     - /srv/docker/owncloud/www:/etc/nginx/sites-enabled
-    - /srv/docker/owncloud/www/tls:/etc/nginx/tls 
+    - /srv/docker/owncloud/www/tls:/etc/nginx/tls
     restart: always
+
