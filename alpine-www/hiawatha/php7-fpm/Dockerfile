@@ -58,11 +58,16 @@ RUN ln -s /etc/php7 /etc/php \
  && ln -s /usr/sbin/php-cgi7 /usr/sbin/php-cgi \
  && ln -s /usr/lib/php7 /usr/lib/php
 
+RUN addgroup nginx www-data \
+ && sed -i "s*user = nobody*user = hiawatha*g" /etc/php/php-fpm.conf \
+ && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
+ && echo "clear_env = no" >> /etc/php/php-fpm.conf
+
 ## PHP config
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/php.ini \
  && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini \
  && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini \
- && sed -i "s*\;env\[PATH\]*env\[PATH\]*g" /etc/php/php-fpm.conf 
+ && sed -i -e "s/always_populate_raw_post_data\s*=\s*On/always_populate_raw_post_data = -1/g" /etc/php/php.ini
 
 # Install composer global bin
 RUN curl -sS https://getcomposer.org/installer | php \

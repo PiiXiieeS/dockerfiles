@@ -53,7 +53,8 @@ RUN addgroup nginx www-data \
 ## PHP config
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/php.ini \
  && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini \
- && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini
+ && sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/php.ini \
+ && sed -i -e "s/always_populate_raw_post_data\s*=\s*On/always_populate_raw_post_data = -1/g" /etc/php/php.ini
 
 RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.ttl=7200" >> /etc/php/conf.d/apcu.ini \
