@@ -60,6 +60,10 @@ RUN echo "apc.shm_size = 128M" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.ttl=7200" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.user_ttl=7200" >> /etc/php/conf.d/apcu.ini \
  && echo "apc.gc_ttl=3600" >> /etc/php/conf.d/apcu.ini
+ 
+# Install composer global bin
+RUN curl -sS https://getcomposer.org/installer | php \
+ && mv composer.phar /usr/local/bin/composer
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
