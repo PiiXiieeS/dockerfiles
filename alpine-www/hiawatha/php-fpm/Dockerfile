@@ -46,7 +46,7 @@ RUN apk -U --no-progress add \
         php-zlib \
         php-zip
 
-RUN addgroup nginx www-data \
+RUN addgroup hiawatha www-data \
  && sed -i "s*user = nobody*user = hiawatha*g" /etc/php/php-fpm.conf \
  && sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf \
  && echo "clear_env = no" >> /etc/php/php-fpm.conf
