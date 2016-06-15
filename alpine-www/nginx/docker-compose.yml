@@ -1,14 +1,29 @@
-nginx:
-  container_name: nginx
-  restart: always
-  image: maxder/alpine-nginx:x86_64
-  ports:
+version: '2'
+
+services:
+  nginx:
+    container_name: nginx
+    restart: always
+    image: maxder/alpine-nginx:x86_64
+    ports:
     - "80:80"
     - "443:443"
-  volumes:
+    volumes:
     - /srv/docker/nginx/tls:/etc/nginx/tls
     - /srv/docker/nginx/sites-enabled:/etc/nginx/sites-enabled
     logging:
     - log-driver json-file
     - log-opt max-size=1k
     - log-opt max-file=10
+    
+  php-fpm:
+    container_name: php
+    restart: always
+    image: maxder/alpine-php-fpm:x86_64
+    volumes_from:
+    - nginx
+    logging:
+    - log-driver json-file
+    - log-opt max-size=1k
+    - log-opt max-file=10
+
