@@ -1,1 +1,0 @@
-../../../nginx/scripts/placeholder.sh
