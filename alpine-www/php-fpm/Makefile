@@ -11,7 +11,7 @@ ifeq ($(UNAME), armv7l)
  ARCHTAG=armhf
 endif
 
-NAME=nginx-php
+NAME=php-fpm
 NAMESPACE=maxder
 IMAGENAME=alpine
 
