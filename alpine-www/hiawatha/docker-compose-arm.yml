@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  hiawatha:
+    container_name: hiawatha
+    restart: always
+    image: maxder/alpine-hiawatha:armhf
+    #image: maxder/alpine-hiawatha-php:armhf
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - /srv/docker/hiawatha/tls:/etc/hiawatha/tls
+    - /srv/docker/hiawatha/sites-enabled:/etc/hiawatha/sites-enabled
+    - /srv/docker/hiawatha/www:/usr/share/webapps
+    - /srv/docker/hiawatha/config:/etc/hiawatha/config
