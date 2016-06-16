@@ -4,11 +4,11 @@ services:
   hiawatha:
     container_name: hiawatha
     restart: always
-    #image: maxder/alpine-hiawatha:x86_64
-    image: maxder/alpine-hiawatha-php:x86_64
+    image: maxder/alpine-hiawatha:x86_64
+    #image: maxder/alpine-hiawatha-php:x86_64
     ports:
-    - "10080:80"
-    - "10443:443"
+    - "80:80"
+    - "443:443"
     volumes:
     - /srv/docker/hiawatha/tls:/etc/hiawatha/tls
     - /srv/docker/hiawatha/sites-enabled:/etc/hiawatha/sites-enabled
