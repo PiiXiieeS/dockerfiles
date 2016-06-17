@@ -14,7 +14,6 @@ endif
 NAME=nginx
 NAMESPACE=maxder
 IMAGENAME=alpine
-LOG="--log-driver json-file --log-opt max-size=1k --log-opt max-file=10"
 
 all: build
 	
@@ -32,14 +31,14 @@ phpbuild:
 	mv Dockerfile Dockerfile_PHP
 
 run:
-	docker run ${LOG} -d --hostname ${NAME} --name ${NAME} \
+	docker run -d --hostname ${NAME} --name ${NAME} \
 	-p 80:80 -p 443:443 \
 	-v /srv/docker/${NAME}/tls:/etc/nginx/tls \
 	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
 	${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG}
 
 phprun:
-	docker run ${LOG} -d --hostname ${NAME}-php --name ${NAME}-php \
+	docker run -d --hostname ${NAME}-php --name ${NAME}-php \
 	-p 80:80 -p 443:443 \
 	-v /srv/docker/${NAME}-php/tls:/etc/nginx/tls \
 	-v /srv/docker/${NAME}-php/sites-enabled:/etc/nginx/sites-enabled \
