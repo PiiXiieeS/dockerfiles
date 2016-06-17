@@ -1,4 +1,4 @@
-/bin/bash
+#! /bin/bash
 
 if [ -d "/usr/share/docker-engine/contrib" ]; then
   MKIMAGESCRIPT="/usr/share/docker-engine/contrib/mkimage.sh"
