@@ -10,6 +10,7 @@ tag:
 	$(MAKE) build
 	
 scratch:
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./scripts/mkimage-alpine-scratch.sh
 	IMAGENAME=$(NAMESPACE)/$(IMAGENAME)-scratch REL=$(VERSION) ./scripts/mkimage-alpine-scratch.sh
 
 builder:
