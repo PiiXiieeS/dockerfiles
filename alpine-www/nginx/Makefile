@@ -38,7 +38,7 @@ run:
 	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
 	${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG}
 
-run:
+phprun:
 	docker run ${LOG} -d --hostname ${NAME}-php --name ${NAME}-php \
 	-p 80:80 -p 443:443 \
 	-v /srv/docker/${NAME}-php/tls:/etc/nginx/tls \
