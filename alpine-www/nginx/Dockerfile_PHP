@@ -1,8 +1,8 @@
 FROM maxder/alpine-php-fpm:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-RUN echo "http://nl.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/repositories    \
- && echo "http://nl.alpinelinux.org/alpine/v3.3/community/" | tee -a /etc/apk/repositories \
+RUN echo "http://nl.alpinelinux.org/alpine/v3.4/main/"      | tee /etc/apk/repositories    \
+ && echo "http://nl.alpinelinux.org/alpine/v3.4/community/" | tee -a /etc/apk/repositories \
  && apk -U --no-progress upgrade
  apk --no-cache --no-progress add ca-certificates nginx openssl
 
