@@ -18,9 +18,9 @@ RUN apk -U add \
     	pwgen \
 	sudo
 
-## PHP config	
+## Set max pload to 2 GB
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/php.ini \
- && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini \
+ && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini
 
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
