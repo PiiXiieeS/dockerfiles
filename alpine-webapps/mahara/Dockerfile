@@ -2,7 +2,7 @@ FROM maxder/alpine-nginx-php:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 ENV MAHARA_VERSION 16.04
-ENV MAHARA_RELEASE 0
+ENV MAHARA_RELEASE 1
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk -U add \
@@ -14,7 +14,7 @@ RUN apk -U add \
     	imagemagick \
     	bzip2 \
 	graphviz \
-   	mysql-client \
+   	mariadb-client \
     	pwgen \
 	sudo
 
@@ -44,7 +44,7 @@ RUN if [ ! -d "/usr/share/webapps" ]; then mkdir -p /usr/share/webapps ; fi \
  && sed -i "s*5.0.25*05.0.25*g" ${maharapath}/init.php
 
 RUN rm -rf /var/cache/apk/* /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp /tmp/*
-RUN touch /__firstrun
+RUN touch /mahara_firstrun
 
 EXPOSE 80
 ENTRYPOINT ["/bin/s6-svscan", "-t0"]
