@@ -28,6 +28,10 @@ RUN apk -U add \
 ADD service /etc/service
 RUN chmod +x /etc/service/*/*
 
+## Set max pload to 2 GB
+RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/php.ini \
+ && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/php.ini
+
 RUN touch /etc/php/conf.d/redis.ini \
  && echo extension=redis.so > /etc/php/conf.d/redis.ini \
  && if [ $(uname -m) == "armv6l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; elif [ $(uname -m) == "armv7l" ]; then sed "s*# maxmemory <bytes>*maxmemory 67108864*g" -i /etc/redis.conf ; fi
