@@ -1,6 +1,8 @@
 FROM maxder/debian-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
+ENV COMPOSER_VERSION 1.1.2
+
 RUN echo 'deb http://packages.dotdeb.org jessie all' > /etc/apt/sources.list.d/dotdeb.list \
  && apt-get update \
  && apt-get install -y apt-transport-https \
@@ -46,6 +48,9 @@ RUN ln -s /usr/sbin/php-fpm7.0 /usr/bin/php-fpm \
 # fix ownership of sock file for php-fpm
 RUN sed -i -e "s*;listen.mode = 0660*listen.mode = 0750*g" /etc/php/7.0/fpm/pool.d/www.conf && \
 find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} \
+ && chmod +x /usr/local/bin/composer
 
 ADD service/php-fpm /etc/service/php-fpm
 RUN chmod +x /etc/service/*/*
