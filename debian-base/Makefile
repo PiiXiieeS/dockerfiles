@@ -23,7 +23,7 @@ debootstrap:
 	
 build:
 	$(MAKE) debootstrap
-	sed -i "s*alpine-mini:ARCHTAG*alpine-mini:${ARCHTAG}*g" ./Dockerfile
+	sed -i "s*debian-mini:ARCHTAG*debian-mini:${ARCHTAG}*g" ./Dockerfile
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG} .
 
 push:	
