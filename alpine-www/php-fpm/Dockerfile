@@ -1,7 +1,9 @@
 FROM maxder/alpine-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-RUN apk -U --no-cache --no-progress add \
+RUN echo "http://nl.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/repositories    \
+ && echo "http://nl.alpinelinux.org/alpine/v3.3/community/" | tee -a /etc/apk/repositories \
+ && apk -U --no-cache --no-progress add \
 	php-apcu \
 	php-bcmath \
 	php-bz2 \
