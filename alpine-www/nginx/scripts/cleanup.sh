@@ -36,7 +36,7 @@ find $sysdirs -xdev \( \
   \) -delete
   
 # Remove unnecessary user accounts.
-sed -i -r '/^(www-data|nginx|root)/!d' /etc/group
+sed -i -r '/^(nogroup|www-data|nginx|root)/!d' /etc/group
 sed -i -r '/^(nginx|root)/!d' /etc/passwd
 
 # Remove interactive login shell 
