@@ -14,11 +14,7 @@ endif
 NAMESPACE=maxder
 IMAGENAME=alpine
 
-all: tag
-
-tag:
-	./scripts/architecture.sh
-	$(MAKE) build
+all: build
 	
 scratch:
 	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./scripts/mkimage-alpine-scratch.sh
