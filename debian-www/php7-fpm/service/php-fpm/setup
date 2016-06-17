@@ -12,6 +12,7 @@ if [ -f /_firstrun ]; then
 
         chown -R www-data:www-data /usr/share/webapps
 	mv /fpm.conf /etc/nginx/fpm.conf
+	chown -R www-data:www-data /etc/nginx/fpm.conf
   	sed -i -e '15,20d' /etc/service/nginx/setup
   else
   	echo -e "\n[i] NGINX not found.\n---\n"
