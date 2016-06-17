@@ -5,20 +5,16 @@ if [ -f /_firstrun ]; then
   if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi
   [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php
 
-  if [ $(grep -c '^nginx:' /etc/passwd) = 1 ]; then
-	addgroup nginx www-data
-	sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf
-	sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf
-
+  if [ -d "/etc/nginx" ]; then
 	sed -i "s*root /usr/share/nginx/html\;*root /usr/share/nginx/html\;\n        include /etc/nginx/fpm.conf\;\n*g" /etc/nginx/localhost.site
         cp -a /etc/nginx/localhost.site  /etc/nginx/sites-enabled/example.site
         sed -i "s*/usr/share/nginx/html*/usr/share/webapps*g" /etc/nginx/sites-enabled/example.site
 
-        chown -R nginx:www-data /usr/share/webapps
+        chown -R www-data:www-data /usr/share/webapps
 	mv /fpm.conf /etc/nginx/fpm.conf
   	sed -i -e '15,20d' /etc/service/nginx/setup
   else
-  	"No NGINX found."
+  	echo -e "\n[i] NGINX not found.\n---\n"
   fi
 
   rm /_firstrun
