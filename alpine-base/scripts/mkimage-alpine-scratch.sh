@@ -40,7 +40,7 @@ conf() {
 pack() {
   local id
   id=$(tar --numeric-owner -C $ROOTFS -c . | docker import - $DOCKER:$REL)
-  docker tag $id $DOCKER:x86_64
+  docker tag $id $DOCKER:ARCHTAG
   docker rmi -f $DOCKER:${REL}
 }
 
@@ -67,6 +67,6 @@ DOCKER=${IMAGENAME:-alpine}
 REL=${REL:-edge}
 MIRROR=${MIRROR:-http://nl.alpinelinux.org/alpine}
 REPO=$MIRROR/$REL/main
-if [ $(uname -m) == "armv6l" ]; then ARCH="x86_64" ; elif [ $(uname -m) == "armv7l" ]; then ARCH="x86_64" ; else ARCH=$(uname -m) ; fi
+ARCH=ARCHTAG
 
 tmp && getapk && mkbase && conf && pack
