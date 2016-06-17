@@ -4,6 +4,7 @@ MAINTAINER Christian-Maxilian Steier
 RUN apk -U --no-progress add \
 	mariadb \
 	mariadb-client \
+	tzdata \
 	pwgen
 
 ADD service /etc/service
