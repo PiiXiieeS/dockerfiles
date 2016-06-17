@@ -39,7 +39,7 @@ run:
 
 phprun:
 	docker run -d --hostname ${NAME}-php --name ${NAME}-php \
-	-p 10080:80 -p 10443:443 \
+	-p 80:80 -p 443:443 \
 	-v /srv/docker/${NAME}-php/tls:/etc/nginx/tls \
 	-v /srv/docker/${NAME}-php/sites-enabled:/etc/nginx/sites-enabled \
 	${NAMESPACE}/${IMAGENAME}-${NAME}-php:${ARCHTAG}
