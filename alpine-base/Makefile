@@ -22,7 +22,6 @@ tag:
 	
 scratch:
 	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./scripts/mkimage-alpine-scratch.sh
-	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./Dockerfile
 	IMAGENAME=$(NAMESPACE)/$(IMAGENAME)-scratch REL=$(VERSION) ./scripts/mkimage-alpine-scratch.sh
 
 builder:
@@ -41,6 +40,7 @@ library:
 
 mini:
 	echo "build alpine-mini based on gliderlabs/alpine"
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./Dockerfile
 	docker rm -f alpine-build-${ARCHTAG}
 	cd ./gliderlabs-docker-alpine* && docker run --name alpine-build-${ARCHTAG} ${NAMESPACE}/${IMAGENAME}-builder:${ARCHTAG} -s -c -t UTC -r edge -m http://alpine.gliderlabs.com/alpine > versions/gliderlabs-edge/rootfs.tar.gz
 	cd ./gliderlabs-docker-alpine* && docker  build --rm -t ${NAMESPACE}/${IMAGENAME}-mini:${ARCHTAG} versions/gliderlabs-edge
