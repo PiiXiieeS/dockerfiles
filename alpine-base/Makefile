@@ -1,5 +1,16 @@
 .PHONY: all build push
 
+UNAME := $(shell uname -m)
+ifeq ($(UNAME), x86_64)
+ ARCHTAG=x86_64
+endif
+ifeq ($(UNAME), armv6l)
+ ARCHTAG=armhf
+endif
+ifeq ($(UNAME), armv7l)
+ ARCHTAG=armhf
+endif
+
 NAMESPACE=maxder
 IMAGENAME=alpine
 
