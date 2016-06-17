@@ -22,6 +22,7 @@ tag:
 	
 scratch:
 	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./scripts/mkimage-alpine-scratch.sh
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./Dockerfile
 	IMAGENAME=$(NAMESPACE)/$(IMAGENAME)-scratch REL=$(VERSION) ./scripts/mkimage-alpine-scratch.sh
 
 builder:
