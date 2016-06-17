@@ -1,6 +1,6 @@
 # Debian Docker image (x86_64 and armhf)
 
-Build a small Debian Docker image with cron and S6 installed. 
+Build a small Debian Docker image with cron and (s6) [http://skarnet.org/software/s6] installed. 
 
 ## Build automagical
 
