@@ -1,16 +1,24 @@
-#!/bin/bash
+/bin/bash
 
 if [ -d "/usr/share/docker-engine/contrib" ]; then
-  MKIMAGE="/usr/share/docker-engine/contrib/mkimage.sh"
+  MKIMAGESCRIPT="/usr/share/docker-engine/contrib/mkimage.sh"
 else
-  curl -o /tmp/maxder_debian-mini_mkimage.sh -L https://raw.githubusercontent.com/docker/docker/master/contrib/mkimage.sh
-  chmod +x /tmp/maxder_debian-mini_mkimage.sh
-  MKIMAGE="/tmp/maxder_debian-mini_mkimage.sh"
+  cd /tmp
+  curl -L https://github.com/docker/docker/archive/master.tar.gz | tar xz
+  tar xf master.tar.gz
+  chmod +x /tmp/docker-master/contrib/mkimage.sh
+  MKIMAGESCRIPT="/tmp/docker-master/contrib/mkimage.sh"
 fi
 
 TAGPREFIX=maxder/debian-mini
 SUITES="jessie"
 
-for suite in ${SUITES}; do 
-  $MKIMAGE -t ${TAGPREFIX}:ARCHTAG debootstrap --variant=minbase ${suite} http://httpredir.debian.org/debian
+for suite in ${SUITES}; do
+  $MKIMAGESCRIPT -t ${TAGPREFIX}:armhf debootstrap --variant=minbase ${suite} http://httpredir.debian.org/debian
 done
+
+if [ $MKIMAGESCRIPT = "/tmp/docker-master/contrib/mkimage.sh"  ]; then
+  rm -rf /tmp/docker-master
+fi
+
+exit 0
