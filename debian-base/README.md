@@ -11,7 +11,7 @@ git clone -b debian https://github.com/christiansteier/dockerfiles.git
 cd dockerfiles/debian-base && sudo make
 ```
 
-To build you need debootstrap and debian-keyring
+To build you need debootstrap and debian-keyring installed:
  * Debian based systems
    ```
    sudo apt-get install debootstrap debian-keyring
