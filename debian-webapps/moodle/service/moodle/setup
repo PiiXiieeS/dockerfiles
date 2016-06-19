@@ -45,7 +45,7 @@ pre_start_action() {
 EOF
   fi
   
-  if [ $MOODLE_WWWROOT ! == "/" ]; then
+  if [ ! $MOODLE_WWWROOT == "/" ]; then
     if [ ! $MOODLE_WWWROOT == "/moodle" ]; then
       mv /usr/share/webapps/moodle /usr/share/webapps/$MOODLE_WWWROOT
       chown www-data:www-data /usr/share/webapps/$MOODLE_WWWROOT
