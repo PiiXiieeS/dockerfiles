@@ -34,6 +34,9 @@ RUN cd /tmp \
  && export appdir="/usr/share/webapps/moodle" \
  && if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi \
  && tar zxvf moodle-latest-${MOODLE_VERSION}.tgz -C /usr/share/webapps/ \
+ && mkdir $appdir/config \                                                                              
+ && touch $appdir/config/config.php \                                                                   
+ && ln -s $appdir/config/config.php $appdir/config.php \
  && chown -R www-data:www-data $appdir \
  && mkdir /var/moodledata \
  && chown -R www-data:www-data /var/moodledata
