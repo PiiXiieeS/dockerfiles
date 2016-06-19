@@ -18,7 +18,7 @@ IMAGENAME=alpine
 all: build
 	
 build:
-	sed -i "s*debian-mini:ARCHTAG*debian-mini:${ARCHTAG}*g" ./Dockerfile  
+	sed -i "s*alpine-nginx-php:ARCHTAG*alpine-nginx-php:${ARCHTAG}*g" ./Dockerfile  
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG} .
 
 run:	
