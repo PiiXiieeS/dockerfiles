@@ -1,4 +1,4 @@
-FROM maxder/debian-nginx-php:x86_64
+FROM maxder/debian-nginx-php:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 ENV MOODLE_VERSION 31
