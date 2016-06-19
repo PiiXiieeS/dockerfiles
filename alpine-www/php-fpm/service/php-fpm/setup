@@ -5,7 +5,7 @@ if [ -f /_firstrun ]; then
   if [ ! -d "/usr/share/webapps" ]; then mkdir /usr/share/webapps ;fi
   [ "$(ls -A /usr/share/webapps)" ] || echo -e "<?PHP\nphpinfo ();\n?>" > /usr/share/webapps/index.php
 
-  if [ $(grep -c '^hiawatha:' /etc/passwd) = 1 ]; then
+  if [ $(grep -c '^hiawatha:' /etc/passwd) == 1 ]; then
 	addgroup hiawatha www-data
 	sed -i "s*user = nobody*user = hiawatha*g" /etc/php/php-fpm.conf
 	sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf
@@ -21,7 +21,7 @@ if [ -f /_firstrun ]; then
   	echo "No Hiawatha found."
   fi
   
-  if [ $(grep -c '^nginx:' /etc/passwd) = 1 ]; then
+  if [ $(grep -c '^nginx:' /etc/passwd) == 1 ]; then
 	addgroup nginx www-data
 	sed -i "s*user = nobody*user = nginx*g" /etc/php/php-fpm.conf
 	sed -i "s*group = nobody*group = www-data*g" /etc/php/php-fpm.conf
