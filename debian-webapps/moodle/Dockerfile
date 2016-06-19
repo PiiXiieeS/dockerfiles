@@ -43,6 +43,8 @@ RUN cd /tmp \
 RUN echo "* * * * * www-data php $appdir/admin/cli/cron.php >/dev/null" >> /etc/crontab
 RUN usermod -c "Moodle" www-data
 ADD conf/nginx_moodle.site /etc/nginx/moodle.site
+RUN sed -i -e '6d' /etc/service/php-fpm/setup \                                                                                                                                                                    
+ && sed -i -e '9,12d' /etc/service/php-fpm/setup
 
 # Moosh by Tomasz Muras
 WORKDIR /opt
