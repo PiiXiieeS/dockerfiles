@@ -22,13 +22,13 @@ pre_start_action() {
   if [ $INSTALL == "silent" ]; then
     if [ ! -f $APPDIR/config.php ]; then
     	export APPDIR="/usr/share/webapps/moodle"
-    	cp -ax $APPDIR/config-dist.php $APPDIR/config.php
-  	sed -i "s*pgsql*mariadb*g" $APPDIR/config.php
-  	sed -i "s*localhost*$DBHOST*g" $APPDIR/config.php
-  	sed -i "s*username*$MOODLE_DB*g" $APPDIR/config.php
-  	sed -i "s*password*$MOODLE_PASS*g" $APPDIR/config.php
-  	sed -i "s*\/home\/example\/moodledata*\/var\/moodledata*g" $APPDIR/config.php
-  	chown www-data:www-data $APPDIR/config.php
+    	cp -ax $APPDIR/config-dist.php $APPDIR/config/config.php
+  	sed -i "s*pgsql*mariadb*g" $APPDIR/config/config.php
+  	sed -i "s*localhost*$DBHOST*g" $APPDIR/config/config.php
+  	sed -i "s*username*$MOODLE_DB*g" $APPDIR/config/config.php
+  	sed -i "s*password*$MOODLE_PASS*g" $APPDIR/config/config.php
+  	sed -i "s*\/home\/example\/moodledata*\/var\/moodledata*g" $APPDIR/config/config.php
+  	chown www-data:www-data $APPDIR/config/config.php
   	chown -R www-data:www-data /var/moodledata
     fi
 
@@ -49,7 +49,7 @@ EOF
       mv /usr/share/webapps/moodle /usr/share/webapps/$MOODLE_WWWROOT
       chown www-data:www-data /usr/share/webapps/$MOODLE_WWWROOT
     fi
-    sed -i "s*example.com*$MOODLE_WWWROOT*g" $APPDIR/config.php
+    sed -i "s*example.com*$MOODLE_WWWROOT*g" $APPDIR/config/config.php
     sed -i "s*root /usr/share/webapps/moodle*root /usr/share/webapps*g" /etc/nginx/sites-enabled/moodle.site
   fi
 
