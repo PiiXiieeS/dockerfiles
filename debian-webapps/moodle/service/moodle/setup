@@ -12,7 +12,6 @@ INSTALL=${INSTALL:-normal}
 
 pre_start_action() {
 
-  sed -i -e '9,12d' /etc/service/php-fpm/setup
   if [ -f /etc/nginx/sites-enabled/example.site ]; then
   	rm /etc/nginx/sites-enabled/example.site
   fi
