@@ -25,6 +25,7 @@ build:
 run:
 	docker run -d --hostname ${NAME} --name ${NAME} \
 	-p 80:80 -p 443:443 \
+	#-e MOODLE_WWWROOT="/subfolder" 
 	-v /srv/docker/${NAME}/config:/usr/share/webapps/moodle/config
 	-v /srv/docker/${NAME}/tls:/etc/nginx/tls \
 	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
