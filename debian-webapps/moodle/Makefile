@@ -15,7 +15,7 @@ NAME=moodle
 NAMESPACE=maxder
 IMAGENAME=debian
 
-all:
+all: build
 
 build:
 	$(MAKE) -C ../../debian-www/nginx phpbuild
