@@ -1,4 +1,4 @@
-FROM maxder/alpine-php-fpm:ARCHTAG
+FROM maxder/alpine-php-fpm:armhf
 MAINTAINER Christian-Maxilian Steier
 
 RUN echo "http://nl.alpinelinux.org/alpine/v3.4/main/"      | tee /etc/apk/repositories    \

@@ -1,4 +1,4 @@
-FROM maxder/alpine-base:ARCHTAG
+FROM maxder/alpine-base:armhf
 MAINTAINER Christian-Maxilian Steier
 
 RUN echo "http://nl.alpinelinux.org/alpine/v3.3/main/"      | tee /etc/apk/repositories    \

@@ -1,4 +1,4 @@
-FROM maxder/alpine-mini:ARCHTAG
+FROM maxder/alpine-mini:armhf
 MAINTAINER Christian-Maxilian Steier
 
 ENV RELEASE v3.4
