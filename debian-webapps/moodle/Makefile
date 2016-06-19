@@ -24,7 +24,8 @@ build:
 
 run:
 	docker run -d --hostname ${NAME} --name ${NAME} \
-	-p 10080:80 -p 10443:443 \
+	-p 80:80 -p 443:443 \
+	-v /srv/docker/${NAME}/config:/usr/share/webapps/moodle/config
 	-v /srv/docker/${NAME}/tls:/etc/nginx/tls \
 	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
 	${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG}
