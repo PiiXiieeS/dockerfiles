@@ -4,7 +4,7 @@ MOODLE_DB=${MOODLE_DB:-moodle}
 MOODLE_DB_USER${MOODLE_DB_USER:-moodle}
 MOODLE_DB_PASS=${MOODLE_PASS:-$(pwgen -s -1 16)}
 MOODLE_SALD=${MOODLE_SALD:-$(pwgen -s -1 16)}
-MOODLE_WWWROOT=${MOODLE_WWWROOT:-/moodle}
+MOODLE_WWWROOT=${MOODLE_WWWROOT:-/}
 DBADMIN=${DBADMIN:-$DB_ENV_USER}
 DBPASS=${DBPASS:-$DB_ENV_PASS}
 DBHOST=${DBHOST:-db}
@@ -28,7 +28,6 @@ pre_start_action() {
   	sed -i "s*localhost*$DBHOST*g" $APPDIR/config.php
   	sed -i "s*username*$MOODLE_DB*g" $APPDIR/config.php
   	sed -i "s*password*$MOODLE_PASS*g" $APPDIR/config.php
-  	sed -i "s*example.com*$MOODLE_WWWROOT*g" $APPDIR/config.php
   	sed -i "s*\/home\/example\/moodledata*\/var\/moodledata*g" $APPDIR/config.php
   	chown www-data:www-data $APPDIR/config.php
   	chown -R www-data:www-data /var/moodledata
@@ -45,6 +44,16 @@ pre_start_action() {
       SET GLOBAL innodb_file_format=Barracuda;
 EOF
   fi
+  
+  if [ $MOODLE_WWWROOT ! == "/" ]; then
+    if [ ! $MOODLE_WWWROOT == "/moodle" ]; then
+      mv /usr/share/webapps/moodle /usr/share/webapps/$MOODLE_WWWROOT
+      chown www-data:www-data /usr/share/webapps/$MOODLE_WWWROOT
+    fi
+    sed -i "s*example.com*$MOODLE_WWWROOT*g" $APPDIR/config.php
+    sed -i "s*root /usr/share/webapps/moodle*root /usr/share/webapps*g" /etc/nginx/sites-enabled/moodle.site
+  fi
+
 }
 
 post_start_action() {
