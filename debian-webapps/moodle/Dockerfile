@@ -37,6 +37,7 @@ RUN cd /tmp \
  && mkdir $appdir/config \                                                                              
  && touch $appdir/config/config.php \                                                                   
  && ln -s $appdir/config/config.php $appdir/config.php \
+ && ln -s $appdir/lib $appdir/config/lib \
  && chown -R www-data:www-data $appdir \
  && mkdir /var/moodledata \
  && chown -R www-data:www-data /var/moodledata
