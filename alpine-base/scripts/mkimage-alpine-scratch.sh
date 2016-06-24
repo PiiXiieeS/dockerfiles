@@ -67,6 +67,6 @@ DOCKER=${IMAGENAME:-alpine}
 REL=${REL:-edge}
 MIRROR=${MIRROR:-http://nl.alpinelinux.org/alpine}
 REPO=$MIRROR/$REL/main
-ARCH=armhf
+ARCH=ARCHTAG
 
 tmp && getapk && mkbase && conf && pack
