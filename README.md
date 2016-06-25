@@ -7,12 +7,12 @@ Docker files based on [Alpine] (https://github.com/christiansteier/dockerfiles/t
 ## Use
 Alpine
 ```
-git clone -b alpine https://github.com/christiansteier/dockerfiles.git
+git clone -b alpine https://github.com/christiansteier/dockerfiles.git --depth 1
 cd dockerfiles
 ```
 
 Debian
 ```
-git clone -b debian https://github.com/christiansteier/dockerfiles.git
+git clone -b debian https://github.com/christiansteier/dockerfiles.git --depth 1
 cd dockerfiles
 ```
