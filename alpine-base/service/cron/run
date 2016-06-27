@@ -1,2 +1,4 @@
-#!/bin/sh
-exec /usr/sbin/crond -f
+#!/bin/execlineb -P
+fdmove -c 2 1
+exec -c
+/usr/sbin/crond -f
