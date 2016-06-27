@@ -5,7 +5,7 @@ ENV RELEASE v3.4
 RUN echo "http://nl.alpinelinux.org/alpine/$RELEASE/main/" > /etc/apk/repositories    \
  && echo "http://nl.alpinelinux.org/alpine/$RELEASE/community/" >> /etc/apk/repositories \
  && apk -U --no-progress upgrade
-RUN apk -U --no-progress add bash s6 linux-pam
+RUN apk -U --no-progress add bash skalibs execline s6 linux-pam
 
 ADD service /etc/service
 RUN mkdir -p /var/spool/cron/crontabs
