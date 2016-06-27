@@ -10,6 +10,12 @@ RUN apk -U --no-progress add bash s6 linux-pam
 ADD service /etc/service
 RUN mkdir -p /var/spool/cron/crontabs
 
+# set_tz from https://github.com/nimmis/docker-utils
+RUN apk add curl \
+ && curl -o /usr/sbin/set_tz -L https://raw.githubusercontent.com/nimmis/docker-utils/master/alpine/bin/set_tz \
+ && chmod +x /usr/sbin/set_tz \
+ && apk del curl
+
 # Bash/Prompt customization
 RUN echo "PS1='\[\033[40;1;37m\][`date +%H:%M:%S`]\[\033[0m\] [\[\033[1;31m\]\u\[\033[0m\]@\h]:\[\033[01;34m\]\w\[\033[00m\]\$  '" >> /root/.bashrc
 
