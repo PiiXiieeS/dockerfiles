@@ -7,6 +7,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/$RELEASE/main/" > /etc/apk/repositori
  && apk -U --no-progress upgrade
 RUN apk -U --no-progress add bash skalibs execline s6 linux-pam
 
+COPY service /etc/service
 RUN mkdir -p /var/log/syslogd \
  && chown nobody /var/log/syslogd \
  && mkdir -p /var/spool/cron/crontabs
