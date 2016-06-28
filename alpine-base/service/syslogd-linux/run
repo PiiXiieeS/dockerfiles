@@ -1,4 +1,4 @@
-#!/command/execlineb -P
+#!/bin/execlineb -P
 fdmove -c 2 1
 exec -c
 s6-envuidgid nobody
