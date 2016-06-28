@@ -1,5 +1,5 @@
 #!/bin/execlineb -P
-s6-setuidgid syslog
+s6-setuidgid nobody
 s6-envdir -f env
 import -Cs LOGSCRIPT
 exec -c
