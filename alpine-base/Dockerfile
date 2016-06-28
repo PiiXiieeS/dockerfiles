@@ -5,7 +5,7 @@ ENV RELEASE v3.4
 RUN echo "http://nl.alpinelinux.org/alpine/$RELEASE/main/" > /etc/apk/repositories    \
  && echo "http://nl.alpinelinux.org/alpine/$RELEASE/community/" >> /etc/apk/repositories \
  && apk -U --no-progress upgrade
-RUN apk -U --no-progress add bash skalibs execline s6 linux-pam
+RUN apk -U --no-progress add bash skalibs execline s6 s6-portable-utils linux-pam
 
 COPY service /etc/service
 RUN mkdir -p /var/log/syslogd \
