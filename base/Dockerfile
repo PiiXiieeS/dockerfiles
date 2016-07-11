@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM phusion/baseimage:0.9.18
 MAINTAINER Christian-Maximilian
 
 # Set locale to en_US.UTF-8
@@ -21,8 +21,8 @@ RUN apt-get install software-properties-common \
  && add-apt-repository -y ppa:ondrej/php
 
 # Install key for BigBlueButton
-RUN curl -Lo http://ubuntu.bigbluebutton.org/bigbluebutton.asc | apt-key add - \
- && cho "deb http://ubuntu.bigbluebutton.org/trusty-1-0/ bigbluebutton-trusty main" >> /etc/apt/sources.list.d/bigbluebutton.list \
+RUN curl http://ubuntu.bigbluebutton.org/bigbluebutton.asc | apt-key add - \
+ && echo "deb http://ubuntu.bigbluebutton.org/trusty-1-0/ bigbluebutton-trusty main" >> /etc/apt/sources.list.d/bigbluebutton.list \
  && apt-get update
 
 EXPOSE 80/tcp 443/tcp 1935/tcp 5080/tcp 9123/tcp 16384/udp 16385/udp 16386/udp 16387/udp 16388/udp 16389/udp 16390/udp 16391/udp 16392/udp 16393/udp 5080/udp
