@@ -1,9 +1,0 @@
-.PHONY: build
-
-NAME=bbb-base
-NAMESPACE=maxder
-IMAGENAME=ubuntu
-
-build:
-	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME} .
-
