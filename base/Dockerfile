@@ -1,6 +1,9 @@
 FROM phusion/baseimage:0.9.18
 MAINTAINER Christian-Maximilian
 
+RUN apt-get update \
+ && apt-get upgrade -y
+
 # Set locale to en_US.UTF-8
 RUN apt-get install language-pack-en \
  && update-locale LANG=en_US.UTF-8 \
