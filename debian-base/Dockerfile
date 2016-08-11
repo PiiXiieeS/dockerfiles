@@ -3,8 +3,8 @@ MAINTAINER Christian-Maximilian
 # Minimal Debian baseimage modified for Docker-friendliness, 
 # based on phusion/baseimage-docker
 
-ENV S6_VERSION 1.17
-ENV S6_RELEASE 2.0
+ENV S6_VERSION 1.18
+ENV S6_RELEASE 1.3
 
 # Scripts
 ADD . /bd_build
@@ -16,5 +16,5 @@ RUN /bd_build/scripts/prepare.sh && \
 # Bash/Prompt customization
 RUN echo "PS1='\[\033[40;1;37m\][`date +%H:%M:%S`]\[\033[0m\] [\[\033[1;31m\]\u\[\033[0m\]@\h]:\[\033[01;34m\]\w\[\033[00m\]\$  '" >> /root/.bashrc
 
-ENTRYPOINT ["/bin/s6-svscan", "-t0"]
-CMD ["/etc/service"]
+ENTRYPOINT ["/init"]
+CMD []
