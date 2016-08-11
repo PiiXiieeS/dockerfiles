@@ -1,0 +1,5 @@
+/etc/nginx true www-data 0600 0700
+/etc/nginx/tls true www-data 0600 0700
+/etc/nginx/sites-enabled true www-data 0600 0700
+/var/lib/nginx/tmp true www-data 0700 0700
+/var/log/NGINX true nobody 0700 0700

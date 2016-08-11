@@ -18,17 +18,14 @@ IMAGENAME=debian
 all: build
 	
 build:
-	sed -i "s*debian-base:ARCHTAG*debian-base:${ARCHTAG}*g" Dockerfile_NGINX
-	mv Dockerfile_NGINX Dockerfile
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" Dockerfile
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG} .
-	mv Dockerfile Dockerfile_NGINX
 
 phpbuild:	
 	$(MAKE) -C ../php7-fpm build
-	sed -i "s*debian-php-fpm:ARCHTAG*debian-php-fpm:${ARCHTAG}*g" Dockerfile_PHP
-	mv Dockerfile_PHP Dockerfile
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" Dockerfile
+	sed -i "s*debian-base*debian-php-fpm*g" Dockerfile
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}-php:${ARCHTAG} .
-	mv Dockerfile Dockerfile_PHP
 
 run:
 	docker run -d --hostname ${NAME} --name ${NAME} \
