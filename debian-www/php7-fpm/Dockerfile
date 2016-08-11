@@ -50,13 +50,13 @@ RUN sed -i -e "s*;listen.mode = 0660*listen.mode = 0750*g" /etc/php/7.0/fpm/pool
 find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
 ## PHP config
-#RUN sed -i -e "s*short_open_tag = Off*short_open_tag = On*g" /etc/php/7.0/php.ini \
-# && sed -i -e "s*;always_populate_raw_post_data = -1*always_populate_raw_post_data = -1*g" /etc/php/7.0/php.ini
+RUN sed -i -e "s*short_open_tag = Off*short_open_tag = On*g" /etc/php/7.0/fpm/php.ini \
+ && sed -i -e "s*;always_populate_raw_post_data = -1*always_populate_raw_post_data = -1*g" /etc/php/7.0/fpm/php.ini
 
-#RUN echo "apc.shm_size = 128M" >> /etc/php/7.0/conf.d/apcu.ini \
-# && echo "apc.ttl=7200" >> /etc/php/7.0/conf.d/apcu.ini \
-# && echo "apc.user_ttl=7200" >> /etc/php/7.0/conf.d/apcu.ini \
-# && echo "apc.gc_ttl=3600" >> /etc/php/7.0/conf.d/apcu.ini
+RUN echo "apc.shm_size = 128M" >> /etc/php/7.0/mods-available/apcu.ini \
+&& echo "apc.ttl=7200" >> /etc/php/7.0/mods-available/apcu.ini \
+&& echo "apc.user_ttl=7200" >> /etc/php/7.0/mods-available/apcu.ini \
+&& echo "apc.gc_ttl=3600" >> /etc/php/7.0/mods-available/apcu.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} \
  && chmod +x /usr/local/bin/composer
