@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+
+exec -c
+php-fpm --nodaemonize

@@ -15,7 +15,7 @@ NAME=php-fpm
 NAMESPACE=maxder
 IMAGENAME=debian
 
-all:
+all: build
 
 build:
 	sed -i "s*debian-base:ARCHTAG*debian-base:${ARCHTAG}*g" ./Dockerfile
