@@ -19,14 +19,13 @@ all: build
 
 build:
 	$(MAKE) -C ../../debian-www/nginx phpbuild
-	sed -i "s*debian-nginx-php:ARCHTAG*debian-nginx-php:${ARCHTAG}*g" ./Dockerfile
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" Dockerfile
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG} .
 
 run:
 	docker run -d --hostname ${NAME} --name ${NAME} \
-	-p 80:80 -p 443:443 \
-	#-e MOODLE_WWWROOT="/subfolder" 
-	-v /srv/docker/${NAME}/config:/usr/share/webapps/moodle/config
+	-p 80:80 -p 443:443 -v /srv/docker/${NAME}/config:/usr/share/webapps/moodle/config \
+	-v /srv/docker/${NAME}/data:/usr/share/webapps/moodledata \
 	-v /srv/docker/${NAME}/tls:/etc/nginx/tls \
 	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
 	${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG}

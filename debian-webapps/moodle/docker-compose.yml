@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  redis:
+    restart: always
+    container_name: moodle_redis
+    hostname: redis
+    image: maxder/alpine-redis:x86_64
+  mariadb:
+    restart: always
+    container_name: moodle_db
+    hostname: mariadb
+    image: maxder/alpine-mariadb:x86_64
+    volumes:
+    - /srv/docker/moodle/db:/var/lib/mysql
+    environment:
+    - DBUSER=dbadmin
+    - DBPASS=dbadminpass
+  moodle:
+    restart: always
+    container_name: moodle
+    hostname: moodle
+    image: maxder/debian-moodle:x86_64
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+    - /srv/docker/moodle/data:/usr/share/webapps/moodledata
+    - /srv/docker/moodle/config:/usr/share/webapps/moodle/config
+    - /srv/docker/moodle/log:/var/log/NGINX
+    - /srv/docker/moodle/sites-enabled:/etc/nginx/sites-enabled
+    environment:
+    - DBUSER=dbadmin
+    - DBPASS=dbadminpass
+    - INSTALL=silent
+    depends_on:
+    - mariadb
+    - redis
+    links:
+    - mariadb:db
+    - redis:redis

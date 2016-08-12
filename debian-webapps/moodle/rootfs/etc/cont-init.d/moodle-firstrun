@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+
+if -t { s6-test -f /usr/local/sbin/firstrun }
+if { /usr/local/sbin/firstrun }
