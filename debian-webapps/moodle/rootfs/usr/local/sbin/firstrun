@@ -59,7 +59,7 @@ s6-envuidgid www-data php $APPDIR/admin/cli/install.php \
 	--adminpass=${APPADMINPASS} \
 	--adminemail=${APPADMINEMAIL}
 cp -ax $APPDIR/config.php $APPDIR/config/config.php
-sed -i "s*http://localhos*${WWWROOT}*g" $APPDIR/config/config.php 
+sed -i "s*http://localhost*${WWWROOT}*g" $APPDIR/config/config.php 
 echo "\n[i] Set automatic configuration:\n  Admin = $APPADMIN \n  Pass = $APPADMINPASS \n  www_root:$WWWROOT\n---\n"
 fi
 
