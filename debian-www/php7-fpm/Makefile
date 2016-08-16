@@ -18,14 +18,13 @@ IMAGENAME=debian
 all: build
 
 build:
-	sed -i "s*debian-base:ARCHTAG*debian-base:${ARCHTAG}*g" ./Dockerfile
+	sed -i "s*ARCHTAG*${ARCHTAG}*g" ./Dockerfile
+	$(MAKE) -C ../../debian-base build
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG} .
 
 run:
 	docker run -d --hostname ${NAME} --name ${NAME} \
-	-p 80:80 -p 443:443 \
-	-v /srv/docker/${NAME}/tls:/etc/nginx/tls \
-	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
+	-p 900:900 \
 	${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG}
 
 remove: 
