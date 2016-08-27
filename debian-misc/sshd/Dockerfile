@@ -1,4 +1,4 @@
-FROM maxder/debian-base:x86_64
+FROM maxder/debian-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN rm -rf /etc/s6/services/s6-fdholderd/down \
