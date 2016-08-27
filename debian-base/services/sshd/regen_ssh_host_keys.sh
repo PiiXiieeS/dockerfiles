@@ -1,8 +1,5 @@
-#!/usr/bin/with-contenv sh
-set -e
-if [ ! -e /etc/s6/services/sshd/down && ! -e /etc/ssh/ssh_host_rsa_key ] || [ "$1" == "-f" ]; then
-	echo "No SSH host key available. Generating one..."
-	export LC_ALL=C
-	export DEBIAN_FRONTEND=noninteractive
-	dpkg-reconfigure openssh-server
-fi
+#!/bin/execlineb -P
+
+if -t { s6-test ! -f /etc/s6/services/sshd/down }
+if -t { s6-test ! -f /etc/ssh/ssh_host_rsa_key }
+if { dpkg-reconfigure openssh-server }
