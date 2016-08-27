@@ -1,4 +1,4 @@
-FROM maxder/debian-php-fpm:ARCHTAG
+FROM maxder/debian-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 RUN apt-get update \
