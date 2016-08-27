@@ -1,4 +1,5 @@
-#!/usr/bin/with-contenv sh
+#!/bin/bash
+
 set -e
  source /bd_build/buildconfig
 set -x

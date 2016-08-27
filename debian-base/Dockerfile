@@ -1,6 +1,6 @@
 FROM maxder/debian-mini:ARCHTAG
 MAINTAINER Christian-Maximilian
-# Minimal Debian baseimage modified for Docker-friendliness, 
+# Minimal Debian baseimage with s6, 
 # based on phusion/baseimage-docker
 
 ENV S6_VERSION 1.18

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/with-contenv sh
 set -e
 
 AUTHORIZED_KEYS=/root/.ssh/authorized_keys
