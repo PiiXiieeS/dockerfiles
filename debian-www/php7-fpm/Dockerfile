@@ -44,8 +44,7 @@ RUN apt-get update \
 	aspell-de
 
 ## Small fixes
-RUN ln -s /usr/sbin/php-fpm7.0 /usr/bin/php-fpm \
- && mkdir /run/php
+RUN ln -s /usr/sbin/php-fpm7.0 /usr/bin/php-fpm
 # fix ownership of sock file for php-fpm
 RUN sed -i -e "s*;listen.mode = 0660*listen.mode = 0750*g" /etc/php/7.0/fpm/pool.d/www.conf && \
 find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
