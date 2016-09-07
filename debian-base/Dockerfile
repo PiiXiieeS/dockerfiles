@@ -4,7 +4,7 @@ MAINTAINER Christian-Maximilian
 # based on phusion/baseimage-docker
 
 ENV S6_VERSION 1.18
-ENV S6_RELEASE 1.3
+ENV S6_RELEASE 1.5
 
 # Scripts
 ADD . /bd_build
