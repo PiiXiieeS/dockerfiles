@@ -12,7 +12,7 @@ else
 fi
 
 TAGPREFIX=maxder/debian-mini
-SUITES="jessie"
+SUITES="stretch"
 
 for suite in ${SUITES}; do
   $MKIMAGESCRIPT -t ${TAGPREFIX}:${ARCH} debootstrap --variant=minbase ${suite} http://httpredir.debian.org/debian
