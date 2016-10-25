@@ -1,17 +1,12 @@
 FROM maxder/debian-base:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-ENV COMPOSER_VERSION 1.2.0
-
-RUN echo 'deb http://packages.dotdeb.org jessie all' > /etc/apt/sources.list.d/dotdeb.list \
- && apt-get update \
- && apt-get install -y apt-transport-https \
- && curl http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+ENV COMPOSER_VERSION 1.2.1
 
 RUN apt-get update \
  && apt-get install -y \
+	apt-transport-https \
 	php7.0-apcu \
-	php7.0-apcu-bc \
 	php7.0-bz2 \
 	php7.0-cgi \
 	php7.0-cli \

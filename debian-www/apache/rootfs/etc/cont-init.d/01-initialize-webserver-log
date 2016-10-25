@@ -1,0 +1,3 @@
+#!/usr/bin/execlineb -P
+
+if { logutil-newfifo -o www-data /var/run/s6/apache-error-log-fifo }
