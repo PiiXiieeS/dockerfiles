@@ -4,7 +4,8 @@ MAINTAINER Christian-Maxilian Steier
 RUN apt-get update \
  && apt-get install -y apache2 apache2-utils \
  && echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
- && a2enconf servername
+ && a2enconf servername \
+ &&  a2enmod ssl
  
 RUN rm -rf /etc/s6/services/s6-fdholderd/down 
 COPY rootfs /

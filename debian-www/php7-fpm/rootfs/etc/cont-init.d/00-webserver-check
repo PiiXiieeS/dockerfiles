@@ -26,6 +26,7 @@ if [ -f /firstrun ]; then
     s6-rmrf /etc/services.d/php-fpm
     cp -a /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
     sed -i "s*/var/www/html*/usr/share/webapps*" /etc/apache2/sites-enabled/000-default.conf
+    a2dissite default-ssl
     cp -a /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
     sed -i "s*/var/www/html*/usr/share/webapps*" /etc/apache2/sites-enabled/default-ssl.conf
   fi
