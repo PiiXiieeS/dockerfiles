@@ -24,6 +24,7 @@ if [ -f /firstrun ]; then
     s6-rmrf /etc/php/7.0/fpm
     s6-rmrf /nginx_fpm.conf
     s6-rmrf /etc/services.d/php-fpm
+    a2dissite 000-default
     cp -a /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
     sed -i "s*/var/www/html*/usr/share/webapps*" /etc/apache2/sites-enabled/000-default.conf
     a2dissite default-ssl
