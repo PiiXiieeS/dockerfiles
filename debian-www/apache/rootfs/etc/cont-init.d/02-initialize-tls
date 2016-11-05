@@ -8,14 +8,10 @@ foreground {
 
 if -t { s6-test ! -f /etc/apache2/tls/apache.pem }
 if { s6-echo "[i] Create a server certificate" }
-if { apt-get update }
-if { apt-get install -y openssl }
-if { export RANDFILE /dev/null openssl genrsa -out /etc/apache2/tls/apache.pem 4096 }
-if { openssl req -new -x509 -days 3650 -key /etc/apache2/tls/apache.pem -out /etc/apache2/tls/apache.crt -subj "/C=US/CN=0.0.0.0" }
+if { mv /etc/apache2/apache.pem /etc/apache2/tls/apache.pem }
+if { mv /etc/apache2/apache.crt /etc/apache2/tls/apache.crt }
 if { s6-envuidgid www-data s6-chown -U -- /etc/apache2/tls/apache.pem }
 if { s6-envuidgid www-data s6-chown -U -- /etc/apache2/tls/apache.crt }
 if { sed -i "s*/etc/ssl/certs/ssl-cert-snakeoil.pem*/etc/apache2/tls/apache.crt*g" /etc/apache2/sites-enabled/default-ssl.conf }
 if { sed -i "s*/etc/ssl/private/ssl-cert-snakeoil.key*/etc/apache2/tls/apache.pem*g" /etc/apache2/sites-enabled/default-ssl.conf }
-if { apt-get purge -y openssl }
-if { apt-get clean }
 if { s6-rmrf  /usr/share/doc /usr/share/man/ /usr/share/info/* /var/cache/man/* /var/tmp }
