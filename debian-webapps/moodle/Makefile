@@ -18,16 +18,14 @@ IMAGENAME=debian
 all: build
 
 build:
-	$(MAKE) -C ../../debian-www/nginx phpbuild
+	$(MAKE) -C ../../debian-www/apache phpbuild
 	sed -i "s*ARCHTAG*${ARCHTAG}*g" Dockerfile
 	docker build --rm --no-cache=true -t ${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG} .
 
 run:
 	docker run -d --hostname ${NAME} --name ${NAME} \
-	-p 80:80 -p 443:443 -v /srv/docker/${NAME}/config:/usr/share/webapps/moodle/config \
-	-v /srv/docker/${NAME}/data:/usr/share/webapps/moodledata \
-	-v /srv/docker/${NAME}/tls:/etc/nginx/tls \
-	-v /srv/docker/${NAME}/sites-enabled:/etc/nginx/sites-enabled \
+	-p 80:80 -p 443:443 
+	-v /srv/docker/${NAME}/data:/var/moodledata \
 	${NAMESPACE}/${IMAGENAME}-${NAME}:${ARCHTAG}
 
 remove: 

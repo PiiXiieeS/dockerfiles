@@ -25,14 +25,15 @@ services:
     - 80:80
     - 443:443
     volumes:
-    - /srv/docker/moodle/data:/usr/share/webapps/moodledata
-    - /srv/docker/moodle/config:/usr/share/webapps/moodle/config
-    - /srv/docker/moodle/log:/var/log/NGINX
-    - /srv/docker/moodle/sites-enabled:/etc/nginx/sites-enabled
+    - /srv/docker/moodle/data:/moodledata
+    - /srv/docker/moodle/apache/tls:/etc/apache2/tls
+    - /srv/docker/moodle/apache/sites-enabled:/etc/apache2/sites-enabled
     environment:
     - DBUSER=dbadmin
     - DBPASS=dbadminpass
-    - INSTALL=silent
+    #- SUBDIR=moodle ## Moodle in a subfolder.
+    - WWWROOT=https://localhost ## Your domain or IP address here
+    - INSTALL=silent ## Silent installation via CLI. See docker logs for admin password (docker logs moodle)
     depends_on:
     - mariadb
     - redis

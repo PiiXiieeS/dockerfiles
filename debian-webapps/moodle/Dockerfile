@@ -1,4 +1,4 @@
-FROM maxder/debian-nginx-php:ARCHTAG
+FROM maxder/debian-apache-php:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
 ENV VERSION 31
@@ -24,11 +24,8 @@ RUN apt-get -y install \
 	tinymce \
 	ttf-bitstream-vera \
 	ttf-freefont \
+	openssl \
 	mariadb-client
-
-## Set max pload to 2 GB
-RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 2G/g" /etc/php/7.0/fpm/php.ini \
- && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 2G/g" /etc/php/7.0/fpm/php.ini
 
 # Moodle
 WORKDIR /usr/share/webapps
