@@ -20,7 +20,12 @@ RUN apt-get -y install \
 	libjs-jquery \
 	perl \
 	memcached \
-	php7.0-redis \
+        php7.0-memcached \
+        php7.0-redis \
+        php7.0-mbstring \
+        php7.0-soap \
+        php-mongodb \
+        php7.0-opcache \
 	tinymce \
 	ttf-bitstream-vera \
 	ttf-freefont \
