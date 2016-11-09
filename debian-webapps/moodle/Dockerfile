@@ -46,14 +46,6 @@ RUN export APPDIR="/usr/share/webapps/moodle" \
  && mkdir /var/moodledata \
  && chown -R www-data:www-data /var/moodledata
 
-# Redis
-WORKDIR /usr/share/webapps/moodle/local
-ADD https://github.com/moodlerooms/moodle-local_redislock/archive/master.zip moodle-local_redislock.zip
-RUN unzip moodle-local_redislock.zip \
- && mv moodle-local_redislock-master redislock \
- && chown -R www-data:www-data redislock \
- && rm moodle-local_redislock.zip
-
 RUN echo -e "*/15 * * * * www-data php $APPDIR/admin/cli/cron.php >/dev/null\n" >> /etc/crontab \
  && usermod -c "Moodle" www-data
 
