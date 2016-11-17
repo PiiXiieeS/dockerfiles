@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+
+exec -c
+memcached -u daemon -S -l 127.0.0.1
