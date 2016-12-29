@@ -25,10 +25,6 @@ sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php
 sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php/7.0/apache2/php.ini
 sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/7.0/apache2/php.ini
 
-sed -i "s*/usr/share/webapps*/usr/share/webapps/moodle*g" /etc/apache2/sites-enabled/000-default.conf
-sed -i "s*/usr/share/webapps*/usr/share/webapps/moodle*g" /etc/apache2/sites-enabled/default-ssl.conf
-
-
 if [ ${SUBDIR} != "" ]; then
   if [ ! $SUBDIR = "moodle" ]; then
     mv /usr/share/webapps/moodle /usr/share/webapps/$SUBDIR
