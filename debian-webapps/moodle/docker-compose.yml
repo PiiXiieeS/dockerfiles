@@ -22,7 +22,7 @@ services:
     hostname: moodle
     image: maxder/debian-moodle:x86_64
     ports:
-    - 10083:80
+    - 10080:80
     - 10443:443
     volumes:
     - /srv/docker/moodle/data:/moodledata
