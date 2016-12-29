@@ -23,7 +23,7 @@ services:
     image: maxder/debian-moodle:x86_64
     ports:
     - 10083:80
-    #- 443:443
+    - 10443:443
     volumes:
     - /srv/docker/moodle/data:/moodledata
     - /srv/docker/moodle/apache/tls:/etc/apache2/tls
