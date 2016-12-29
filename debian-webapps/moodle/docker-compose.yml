@@ -22,8 +22,8 @@ services:
     hostname: moodle
     image: maxder/debian-moodle:x86_64
     ports:
-    - 80:80
-    - 443:443
+    - 10083:80
+    #- 443:443
     volumes:
     - /srv/docker/moodle/data:/moodledata
     - /srv/docker/moodle/apache/tls:/etc/apache2/tls
@@ -31,9 +31,12 @@ services:
     environment:
     - DBUSER=dbadmin
     - DBPASS=dbadminpass
-    #- SUBDIR=moodle ## Moodle in a subfolder.
-    - WWWROOT=https://localhost ## Your domain or IP address here
-    - INSTALL=silent ## Silent installation via CLI. See docker logs for admin password (docker logs moodle)
+    - SUBDIR=lms 			## Maps Moodle to subdir
+    - WWWROOT=https://localhost		## Your domain or IP address here
+    #- INSTALL=silent 			## Silent installation via CLI
+    #- APPADMINPASS=adminpass 		## Admin password for silent installation
+    #- APPADMIN=admin 			## Admin username for silent installation
+    #- APPADMINEMAIL=admin@domain.org	## Admin email for silent installation
     depends_on:
     - mariadb
     - redis

@@ -1,7 +1,7 @@
 FROM maxder/debian-apache-php:ARCHTAG
 MAINTAINER Christian-Maxilian Steier
 
-ENV VERSION 31
+ENV VERSION 32
 
 # Basic Requirements
 RUN apt-get update \ 
@@ -61,7 +61,5 @@ COPY rootfs /
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /tmp/*
 
-WORKDIR /usr/share/webapps/moodle
-VOLUME ["/usr/share/webapps/moodle", "/var/moodledata"]
-
+WORKDIR /usr/share/webapps
 EXPOSE 80/tcp 443/tcp

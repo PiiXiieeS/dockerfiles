@@ -2,7 +2,8 @@
 
 set -e
 
-APPDIR=/usr/share/webapps/moodle
+SUBDIR=${SUBDIR:-}
+APPDIR=/usr/share/webapps/${SUBDIR}
 APPADMIN=${APPADMIN:-admin}
 APPADMINPASS=${APPADMINPASS:-$(pwgen -s -1 8)}
 APPADMINEMAIL=${APPADMINEMAIL:-admin@lochalhost.local}
@@ -11,7 +12,6 @@ APPDBUSER=${APPDBUSER:-moodle}
 APPDBPASS=${APPDBPASS:-$(pwgen -s -1 16)}
 SALD=${SALD:-$(pwgen -s -1 16)}
 WWWROOT=${WWWROOT:-http://localhost}
-SUBDIR=${SUBDIR:-}
 FULLNAME=${FULLNAME:-Moodle}
 SHORTNAME=${SHORTNAME:-MOODLE}
 SUMMARY=${SUMMARY:-Moodle}
@@ -28,26 +28,31 @@ sed -i -e "s/short_open_tag\s*=\s*Off/short_open_tag = On/g" /etc/php/7.0/apache
 sed -i "s*/usr/share/webapps*/usr/share/webapps/moodle*g" /etc/apache2/sites-enabled/000-default.conf
 sed -i "s*/usr/share/webapps*/usr/share/webapps/moodle*g" /etc/apache2/sites-enabled/default-ssl.conf
 
-if [ ! $SUBDIR = "" ]; then
+
+if [ ${SUBDIR} != "" ]; then
   if [ ! $SUBDIR = "moodle" ]; then
-    mv $APPDIR /usr/share/webapps/$SUBDIR
+    mv /usr/share/webapps/moodle /usr/share/webapps/$SUBDIR
     chown www-data:www-data /usr/share/webapps/$SUBDIR
   fi
-  sed -i "s*/usr/share/webapps/moodle*/usr/share/webapps*g" /etc/apache2/sites-enabled/000-default.conf
-  sed -i "s*/usr/share/webapps/moodle*/usr/share/webapps*g" /etc/apache2/sites-enabled/default-ssl.conf
+  if [ -f /etc/apache2/sites-enabled/000-default.conf ]; then
+    sed -i "s*/usr/share/webapps/moodle*/usr/share/webapps*g" /etc/apache2/sites-enabled/000-default.conf
+  fi
+  if [ -f /etc/apache2/sites-enabled/default-ssl.conf ]; then
+    sed -i "s*/usr/share/webapps/moodle*/usr/share/webapps*g" /etc/apache2/sites-enabled/default-ssl.conf
+  fi
 fi
 
 if [ $INSTALL = "silent" ]; then
   echo "Create database user $APPDBUSER and database $APPDB"
   until nc -z ${DBHOST} 3306; do sleep 1; echo "Waiting for DB to come up..."; done
   mysql -u ${DBUSER} --password=${DBPASS} -h ${DBHOST} <<-EOF
-   CREATE DATABASE IF NOT EXISTS $APPDB CHARACTER SET utf8;
-   GRANT ALL PRIVILEGES ON $APPDB.* TO $APPDBUSER IDENTIFIED BY '$APPDBPASS';
-   FLUSH PRIVILEGES;
-   USE $APPDB;
-   SET SESSION sql_mode=STRICT_ALL_TABLES;
-   SET GLOBAL innodb_file_per_table=1;
-   SET GLOBAL innodb_file_format=Barracuda;
+  CREATE DATABASE IF NOT EXISTS $APPDB CHARACTER SET utf8;
+  GRANT ALL PRIVILEGES ON $APPDB.* TO $APPDBUSER IDENTIFIED BY '$APPDBPASS';
+  FLUSH PRIVILEGES;
+  USE $APPDB;
+  SET SESSION sql_mode=STRICT_ALL_TABLES;
+  SET GLOBAL innodb_file_per_table=1;
+  SET GLOBAL innodb_file_format=Barracuda;
 EOF
 
   apt-get update
@@ -99,6 +104,17 @@ EOF
   echo "\n[i] Set automatic configuration:\n  Admin = $APPADMIN \n  Pass = $APPADMINPASS \n  www_root: $WWWROOT/${SUBDIR}\n---\n"
 fi
 
+if [ -f $APPDIR/config.php ] && [ -f /etc/moodle/config.php ]; then
+  mv $APPDIR/config.php /etc/moodle/orig.config.php
+  ln -s /etc/moodle/config.php $APPDIR/config.php
+fi
+if [ ! -f $APPDIR/config.php ] && [ -f /etc/moodle/config.php ]; then
+  ln -s /etc/moodle/config.php $APPDIR/config.php
+fi
+if [ -f $APPDIR/config.php ] && [ ! -f /etc/moodle/config.php ]; then
+  mv $APPDIR/config.php /etc/moodle/config.php
+  ln -s /etc/moodle/config.php $APPDIR/config.php
+fi 
 rm /etc/cont-init.d/04-firstrun
 
 exit 0
