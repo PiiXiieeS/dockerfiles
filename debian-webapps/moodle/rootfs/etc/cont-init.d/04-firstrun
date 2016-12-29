@@ -110,7 +110,10 @@ fi
 if [ -f $APPDIR/config.php ] && [ ! -f /etc/moodle/config.php ]; then
   mv $APPDIR/config.php /etc/moodle/config.php
   ln -s /etc/moodle/config.php $APPDIR/config.php
-fi 
+fi
+if [ ! -L /etc/moodle/lib ]; then
+ ln -s $APPDIR/lib /etc/moodle/lib 
+fi
 rm /etc/cont-init.d/04-firstrun
 
 exit 0
